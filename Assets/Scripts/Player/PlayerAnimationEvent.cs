@@ -21,6 +21,7 @@ public class PlayerAnimationEvent : MonoBehaviour
     {
         visualController.MaximizeRigWeigtht();
         weaponController.CurrentWeapon().RefillBullets();
+        weaponController.SetWeaponReady(true);
     }
     /// <summary>
     /// 骨骼回正
@@ -31,11 +32,11 @@ public class PlayerAnimationEvent : MonoBehaviour
         visualController.MaximizeLeftHandWeight();
     }
     /// <summary>
-    /// 拾取武器完毕
+    /// 切换武器完毕
     /// </summary>
-    public void WeaponGrabIsOver()
+    public void WeaponEquipingIsOver()
     {
-        visualController.SetBusyGrabbingWeaponTo(false);
+        weaponController.SetWeaponReady(true);
     }
     public void SwitchOnWeaponModel() => visualController.SwitchOnCurrentWeaponModel();
 }

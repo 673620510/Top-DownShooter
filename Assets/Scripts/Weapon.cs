@@ -40,7 +40,13 @@ public class Weapon
     /// <returns></returns>
     public bool CanShoot()
     {
-        return HaveEnoughBullets() && ReadyToFire();
+        if (HaveEnoughBullets() && ReadyToFire())
+        {
+            bulletsInMagazine--;
+            return true;
+        }
+
+        return false;
     }
     /// <summary>
     /// 是否准备射击
@@ -93,15 +99,7 @@ public class Weapon
     /// 是否有子弹
     /// </summary>
     /// <returns></returns>
-    private bool HaveEnoughBullets()
-    {
-        if (bulletsInMagazine > 0)
-        {
-            bulletsInMagazine--;
-            return true;
-        }
-        return false;
-    }
+    private bool HaveEnoughBullets() => bulletsInMagazine > 0;
     #endregion
 }
 

@@ -13,16 +13,13 @@ public class PlayerWeaponController : MonoBehaviour
 
     [SerializeField]
     private Weapon currentWeapon;
-    [SerializeField]
-    private Weapon secondWeapon;
+    private bool weaponReady;
 
     [Header("Bullet details")]
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
     private float bulletSpeed;
-    [SerializeField]
-    private Transform gunPoint;
 
     [SerializeField]
     private Transform weaponHolder;
@@ -39,7 +36,7 @@ public class PlayerWeaponController : MonoBehaviour
         AssignInputEvents();
         Invoke("EquipStartingWeapon", .1f);
     }
-    #region Sloats managment - Pickup\Equip\Drop Weapon
+    #region Sloats managment - Pickup\Equip\Drop\Ready Weapon
     /// <summary>
     /// 装备初始武器
     /// </summary>
@@ -50,6 +47,8 @@ public class PlayerWeaponController : MonoBehaviour
     /// <param name="i"></param>
     private void EquipWeapon(int i)
     {
+        SetWeaponReady(false);
+
         currentWeapon = weaponSlosts[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
     }
@@ -79,25 +78,44 @@ public class PlayerWeaponController : MonoBehaviour
 
         EquipWeapon(0);
     }
+    /// <summary>
+    /// 设置武器是否准备完毕
+    /// </summary>
+    /// <param name="ready"></param>
+    public void SetWeaponReady(bool ready) => weaponReady = ready;
+    /// <summary>
+    /// 武器是否准备完毕
+    /// </summary>
+    /// <returns></returns>
+    public bool WeaponReady() => weaponReady;
     #endregion
     /// <summary>
     /// 武器开火
     /// </summary>
     private void Shoot()
     {
+        if (!WeaponReady()) return;
         if (!currentWeapon.CanShoot()) return;
 
         GameObject newBullet = ObjectPool.instance.GetBullet();
 
-        newBullet.transform.position = gunPoint.position;
-        newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
+        newBullet.transform.position = GunPoint().position;
+        newBullet.transform.rotation = Quaternion.LookRotation(GunPoint().forward);
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
         rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
         rbNewBullet.velocity = BulletDirection() * bulletSpeed;
 
-        GetComponentInChildren<Animator>().SetTrigger("Fire");
+        player.weaponVisuals.PlayFireAnimation();
+    }
+    /// <summary>
+    /// 换弹
+    /// </summary>
+    private void Reload()
+    {
+        SetWeaponReady(false);
+        player.weaponVisuals.PlayerReloadAnimation();
     }
     /// <summary>
     /// 修正子弹方向
@@ -106,17 +124,26 @@ public class PlayerWeaponController : MonoBehaviour
     public Vector3 BulletDirection()
     {
         Transform aim = player.aim.Aim();
-        Vector3 direction = (aim.position - gunPoint.position).normalized;
+        Vector3 direction = (aim.position - GunPoint().position).normalized;
 
         if (!player.aim.CanAimPrecisly() && player.aim.Target() == null) direction.y = 0;
 
-        //weaponHolder.LookAt(aim);
-        //gunPoint.LookAt(aim);
-
         return direction;
     }
+    /// <summary>
+    /// 是否只有一把武器
+    /// </summary>
+    /// <returns></returns>
     public bool HasOnlyOneWeapon() => weaponSlosts.Count <= 1;
+    /// <summary>
+    /// 当前武器
+    /// </summary>
+    /// <returns></returns>
     public Weapon CurrentWeapon() => currentWeapon;
+    /// <summary>
+    /// 备用武器
+    /// </summary>
+    /// <returns></returns>
     public Weapon BackupWeapon()
     {
         foreach (Weapon weapon in weaponSlosts)
@@ -125,7 +152,11 @@ public class PlayerWeaponController : MonoBehaviour
         }
         return null;
     }
-    public Transform GunPoint() => gunPoint;
+    /// <summary>
+    /// 枪口坐标
+    /// </summary>
+    /// <returns></returns>
+    public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
     #region Input Events
     /// <summary>
     /// 注册输入事件
@@ -143,9 +174,10 @@ public class PlayerWeaponController : MonoBehaviour
 
         controls.Character.Reload.performed += context =>
         {
-            if (currentWeapon.CanReload()) player.weaponVisuals.PlayerReloadAnimation();
+            if (currentWeapon.CanReload() && WeaponReady()) Reload();
         };   
     }
+
     #endregion
     //private void OnDrawGizmos()
     //{

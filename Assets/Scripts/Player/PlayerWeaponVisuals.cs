@@ -10,7 +10,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
 {
     private Player player;
     private Animator anim;
-    private bool isEquipingWeapon;
 
     [SerializeField]
     private WeaponModel[] weaponModels;//武器模型数组
@@ -51,8 +50,6 @@ public class PlayerWeaponVisuals : MonoBehaviour
     /// </summary>
     public void PlayerReloadAnimation()
     {
-        if (isEquipingWeapon) return;
-
         float reloadSpeed = player.weapon.CurrentWeapon().reloadSpeed;
 
         anim.SetFloat("ReloadSpeed", reloadSpeed);
@@ -60,7 +57,11 @@ public class PlayerWeaponVisuals : MonoBehaviour
         ReduceRigWeight();
     }
     /// <summary>
-    /// 玩家拾取武器动画
+    /// 播放开火动画
+    /// </summary>
+    public void PlayFireAnimation() => anim.SetTrigger("Fire");
+    /// <summary>
+    /// 播放拾取武器动画
     /// </summary>
     public void PlayWeaponEquipAnimation()
     {
@@ -73,19 +74,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
         anim.SetTrigger("EquipWeapon");
         anim.SetFloat("EquipType", (float)equipType);
         anim.SetFloat("EquipSpeed", equipmentSpeed);
-
-        SetBusyGrabbingWeaponTo(true);
     }
-    /// <summary>
-    /// 设置武器拾取位置
-    /// </summary>
-    /// <param name="busy"></param>
-    public void SetBusyGrabbingWeaponTo(bool busy)
-    {
-        isEquipingWeapon = busy;
-        anim.SetBool("BusyEquipingWeapon", isEquipingWeapon);
-    }
-
     /// <summary>
     /// 开始切换武器模型
     /// </summary>
