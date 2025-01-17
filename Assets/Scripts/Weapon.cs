@@ -40,7 +40,7 @@ public class Weapon
     /// <returns></returns>
     public bool CanShoot()
     {
-        return HaveEnoughBullets();
+        return HaveEnoughBullets() && ReadyToFire();
     }
     /// <summary>
     /// 是否准备射击
