@@ -40,8 +40,6 @@ public class PlayerWeaponController : MonoBehaviour
     private void Update()
     {
         if (isShooting) Shoot();
-
-        if (Input.GetKeyDown(KeyCode.T)) currentWeapon.ToggleBurst();
     }
     #region Sloats managment - Pickup\Equip\Drop\Ready Weapon
     /// <summary>
@@ -54,6 +52,8 @@ public class PlayerWeaponController : MonoBehaviour
     /// <param name="i"></param>
     private void EquipWeapon(int i)
     {
+        if (i >= weaponSlosts.Count) return;
+
         SetWeaponReady(false);
 
         currentWeapon = weaponSlosts[i];
@@ -225,7 +225,8 @@ public class PlayerWeaponController : MonoBehaviour
         controls.Character.Reload.performed += context =>
         {
             if (currentWeapon.CanReload() && WeaponReady()) Reload();
-        };   
+        };
+        controls.Character.ToggleWeaponMode.performed += context => currentWeapon.ToggleBurst();
     }
 
     #endregion
