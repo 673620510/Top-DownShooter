@@ -953,7 +953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5458161ea0584940940f65d7aa73603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 585727945967274601, guid: 80e5d3d962ae7f342a6041524f5267dd, type: 3}
   poolSize: 50
 --- !u!1 &549626839
 GameObject:
@@ -2532,7 +2531,7 @@ GameObject:
   - component: {fileID: 1246759010}
   - component: {fileID: 1246759011}
   m_Layer: 0
-  m_Name: Pickup_Auto-Rifle
+  m_Name: Pick up Item-AutoRifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
