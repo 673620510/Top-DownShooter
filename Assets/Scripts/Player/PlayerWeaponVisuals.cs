@@ -16,13 +16,13 @@ public class PlayerWeaponVisuals : MonoBehaviour
     [SerializeField]
     private BackupWeaponModel[] backupWeaponModels;//备用武器模型数组
 
-    [Header("Rig")]
+    [Header("Rig 骨骼")]
     [SerializeField]
     private float rigWeightIncreaseRate;
     private bool shouldIncrease_RigWeight;
     private Rig rig;
 
-    [Header("Left hand IK")]
+    [Header("Left hand IK 左手IK")]
     [SerializeField]
     private float leftHandIKWeightIncreaseRate;
     [SerializeField]

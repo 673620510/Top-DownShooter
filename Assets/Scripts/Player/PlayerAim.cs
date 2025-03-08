@@ -11,11 +11,11 @@ public class PlayerAim : MonoBehaviour
     private Player player;
     private PlayerControls controls;
 
-    [Header("Aim Viusal - Laser")]
+    [Header("Aim Viusal - Laser 激光瞄准视觉效果")]
     [SerializeField]
     private LineRenderer aimLaser;
 
-    [Header("Aim control")]
+    [Header("Aim control 瞄准控制器")]
     [SerializeField]
     private Transform aim;
 
@@ -24,7 +24,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField]
     private bool isLockingToTarget;
 
-    [Header("Camera control")]
+    [Header("Camera control 相机控制器")]
     [SerializeField]
     private Transform cameraTarget;
     [Range(.5f,1f)]
@@ -77,7 +77,7 @@ public class PlayerAim : MonoBehaviour
         Vector3 laserDirection = player.weapon.BulletDirection();
 
         float laserTipLenght = .5f;
-        float gunDistance = 4f;
+        float gunDistance = player.weapon.CurrentWeapon().gunDistance;
 
         Vector3 endPoint = gunPoint.position + laserDirection * gunDistance;
 

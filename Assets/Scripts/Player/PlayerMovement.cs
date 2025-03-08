@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private Animator animator;
 
-    [Header("Movement info")]
+    [Header("Movement info 移动信息")]
     [SerializeField]
     private float walkSpeed;
     [SerializeField]

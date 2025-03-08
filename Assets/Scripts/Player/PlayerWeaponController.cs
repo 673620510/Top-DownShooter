@@ -9,13 +9,14 @@ public class PlayerWeaponController : MonoBehaviour
 {
     private Player player;
 
-    private const float REFERNCE_BULLET_SPEED = 20;
+    private const float REFERNCE_BULLET_SPEED = 20;//参考子弹速度
 
     [SerializeField]
     private Weapon currentWeapon;
     private bool weaponReady;
+    private bool isShooting;
 
-    [Header("Bullet details")]
+    [Header("Bullet details 子弹详情")]
     [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
@@ -24,7 +25,7 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField]
     private Transform weaponHolder;
 
-    [Header("Inventory")]
+    [Header("Inventory 容量")]
     [SerializeField]
     private int maxSlots = 2;
     [SerializeField]
@@ -35,6 +36,12 @@ public class PlayerWeaponController : MonoBehaviour
         player = GetComponent<Player>();
         AssignInputEvents();
         Invoke("EquipStartingWeapon", .1f);
+    }
+    private void Update()
+    {
+        if (isShooting) Shoot();
+
+        if (Input.GetKeyDown(KeyCode.T)) currentWeapon.ToggleBurst();
     }
     #region Sloats managment - Pickup\Equip\Drop\Ready Weapon
     /// <summary>
@@ -51,6 +58,8 @@ public class PlayerWeaponController : MonoBehaviour
 
         currentWeapon = weaponSlosts[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
+
+        CameraManager.instance.ChangeCamerDistance(currentWeapon.cameraDistance);
     }
     /// <summary>
     /// 拾取武器
@@ -90,12 +99,48 @@ public class PlayerWeaponController : MonoBehaviour
     public bool WeaponReady() => weaponReady;
     #endregion
     /// <summary>
+    /// 连发协程
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator BurstFire()
+    {
+        SetWeaponReady(false);
+
+        for (int i = 0; i <= currentWeapon.bulletsPerShot; i++)
+        {
+            FireSingleBullet();
+
+            yield return new WaitForSeconds(currentWeapon.burstFireDelay);
+
+            if (i >= currentWeapon.bulletsPerShot) SetWeaponReady(true);
+        }
+    }
+    /// <summary>
     /// 武器开火
     /// </summary>
     private void Shoot()
     {
         if (!WeaponReady()) return;
         if (!currentWeapon.CanShoot()) return;
+
+        player.weaponVisuals.PlayFireAnimation();
+
+        if (currentWeapon.shootType == ShootType.Single) isShooting = false;
+        if (currentWeapon.BurstActivated())
+        {
+            StartCoroutine(BurstFire());
+            return;
+        }
+
+        FireSingleBullet();
+
+    }
+    /// <summary>
+    /// 发射单发子弹
+    /// </summary>
+    private void FireSingleBullet()
+    {
+        currentWeapon.bulletsInMagazine--;
 
         GameObject newBullet = ObjectPool.instance.GetBullet();
 
@@ -104,11 +149,15 @@ public class PlayerWeaponController : MonoBehaviour
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
-        rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
-        rbNewBullet.linearVelocity = BulletDirection() * bulletSpeed;
+        Bullet bulletScript = newBullet.GetComponent<Bullet>();
+        bulletScript.BulletSetUp(currentWeapon.gunDistance);
 
-        player.weaponVisuals.PlayFireAnimation();
+        Vector3 bulletDirection = currentWeapon.ApplySpread(BulletDirection());
+
+        rbNewBullet.mass = REFERNCE_BULLET_SPEED / bulletSpeed;
+        rbNewBullet.linearVelocity = bulletDirection * bulletSpeed;
     }
+
     /// <summary>
     /// 换弹
     /// </summary>
@@ -165,7 +214,8 @@ public class PlayerWeaponController : MonoBehaviour
     {
         PlayerControls controls = player.controls;
 
-        controls.Character.Fire.performed += context => Shoot();
+        controls.Character.Fire.performed += context => isShooting = true;
+        controls.Character.Fire.canceled += context => isShooting = false;
 
         controls.Character.EquipSlot1.performed += context => EquipWeapon(0);
         controls.Character.EquipSlot2.performed += context => EquipWeapon(1);

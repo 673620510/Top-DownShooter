@@ -62,6 +62,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -153,6 +156,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -177,17 +183,17 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.25
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.1
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.07485962
+        value: 0.300706
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -195,7 +201,7 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.8959579
+        time: 1
         value: 0
         inSlope: 0
         outSlope: 0
@@ -260,4 +266,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc8c6ba9f237ff469b5234014cd2d65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cd: {fileID: 3560243228542254610}
+  rb: {fileID: 8440331993687457595}
+  meshRenderer: {fileID: 6816779104676749325}
+  trailRenderer: {fileID: 7450392986031842442}
   bulletImpactFX: {fileID: 4666444503222374531, guid: a059379420cce784fb4a58f1a70b3034, type: 3}
