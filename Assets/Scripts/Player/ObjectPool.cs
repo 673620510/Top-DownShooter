@@ -14,12 +14,19 @@ public class ObjectPool : MonoBehaviour
 
     private Dictionary<GameObject, Queue<GameObject>> poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();//对象池队列字典
 
+    [Header("To Initialize")]
+    [SerializeField]
+    private GameObject weaponPickup;
     private void Awake()
     {
         if (instance == null)
             instance = this;
         else
             Destroy(gameObject);
+    }
+    private void Start()
+    {
+        InitializeNewPool(weaponPickup);
     }
     /// <summary>
     /// 获取对象池中的对象

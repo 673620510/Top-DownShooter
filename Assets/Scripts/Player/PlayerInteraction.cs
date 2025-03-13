@@ -5,10 +5,29 @@ using UnityEngine;
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
-    public List<Interactable> interactables;//可交互列表
+    private List<Interactable> interactables = new List<Interactable>();//可交互列表
 
     private Interactable closestInteractable;//最近的可交互物体
 
+    private void Start()
+    {
+        Player player = GetComponent<Player>();
+        player.controls.Character.Interaction.performed += context => InteractWithClosest();
+    }
+
+    /// <summary>
+    /// 与最近的可交互对象互动
+    /// </summary>
+    private void InteractWithClosest()
+    {
+        closestInteractable?.Interaction();
+        interactables.Remove(closestInteractable);
+
+        UpdateClosestInteractable();
+    }
+    /// <summary>
+    /// 更新最近的可交互物体
+    /// </summary>
     public void UpdateClosestInteractable()
     {
         closestInteractable?.HighlightActive(false);
@@ -29,4 +48,5 @@ public class PlayerInteraction : MonoBehaviour
 
         closestInteractable?.HighlightActive(true);
     }
+    public List<Interactable> GetInteractables() => interactables;
 }

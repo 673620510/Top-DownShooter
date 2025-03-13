@@ -48,7 +48,7 @@ public class Weapon
     public int magazineCapacity;//弹夹容纳量
     public int totalReserveAmmo;//当前枪支总备用弹药量
 
-    #region Weapon generic info 武器通用信息
+    #region Weapon generic info variables 武器通用信息
     public float reloadSpeed { get; private set; }//换弹速度
     public float equipmentSpeed { get; private set; }//更换装备速度
     public float gunDistance { get; private set; }//武器射程
@@ -65,6 +65,8 @@ public class Weapon
     private float lastSpreadUpdateTime;//最后扩散更新时间
     private float spreadCooldown = 1;//扩散重置时间
     #endregion
+
+    public Weapon_Data weaponData{  get; private set; }
     public Weapon(Weapon_Data weaponData)
     {
         bulletsInMagazine = weaponData.bulletsInMagazine;
@@ -93,6 +95,8 @@ public class Weapon
         cameraDistance = weaponData.cameraDistance;
 
         defaultFireRate = fireRate;
+
+        this.weaponData = weaponData;
     }
     #region Spread methods 扩散方法们
     /// <summary>

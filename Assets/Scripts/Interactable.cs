@@ -4,11 +4,10 @@ using UnityEngine;
 /// </summary>
 public class Interactable : MonoBehaviour
 {
-    [SerializeField]
-    private MeshRenderer mesh;//网格
+    protected MeshRenderer mesh;//网格
     [SerializeField]
     private Material highlightMaterial;//高亮材质
-    private Material defaultMaterial;//材质
+    protected Material defaultMaterial;//材质
 
     private void Start()
     {
@@ -16,6 +15,26 @@ public class Interactable : MonoBehaviour
 
         defaultMaterial = mesh.material;
     }
+    /// <summary>
+    /// 更新网格和材质
+    /// </summary>
+    /// <param name="newMesh"></param>
+    protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
+    {
+        mesh = newMesh;
+        defaultMaterial = newMesh.sharedMaterial;
+    }
+    /// <summary>
+    /// 交互行为
+    /// </summary>
+    public virtual void Interaction()
+    {
+        Debug.Log("Interacted with" + gameObject.name);
+    }
+    /// <summary>
+    /// 高亮物体
+    /// </summary>
+    /// <param name="active"></param>
     public void HighlightActive(bool active)
     {
         if (active)
@@ -27,22 +46,22 @@ public class Interactable : MonoBehaviour
             mesh.material = defaultMaterial;
         }
     }
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
 
         if (playerInteraction == null) return;
 
-        playerInteraction.interactables.Add(this);
+        playerInteraction.GetInteractables().Add(this);
         playerInteraction.UpdateClosestInteractable();
     }
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
 
         if (playerInteraction == null) return;
 
-        playerInteraction.interactables.Remove(this);
+        playerInteraction.GetInteractables().Remove(this);
         playerInteraction.UpdateClosestInteractable();
     }
 }
