@@ -12,6 +12,8 @@ public class PlayerWeaponController : MonoBehaviour
     private const float REFERNCE_BULLET_SPEED = 20;//参考子弹速度
 
     [SerializeField]
+    private Weapon_Data defaultWeaponData;
+    [SerializeField]
     private Weapon currentWeapon;
     private bool weaponReady;
     private bool isShooting;
@@ -29,7 +31,7 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField]
     private int maxSlots = 2;
     [SerializeField]
-    private List<Weapon> weaponSlosts;
+    private List<Weapon> weaponSlots;
 
     private void Start()
     {
@@ -45,18 +47,22 @@ public class PlayerWeaponController : MonoBehaviour
     /// <summary>
     /// 装备初始武器
     /// </summary>
-    private void EquipStartingWeapon() => EquipWeapon(0);
+    private void EquipStartingWeapon() 
+    {
+        weaponSlots[0] = new Weapon(defaultWeaponData);
+        EquipWeapon(0);
+    } 
     /// <summary>
     /// 切换武器
     /// </summary>
     /// <param name="i"></param>
     private void EquipWeapon(int i)
     {
-        if (i >= weaponSlosts.Count) return;
+        if (i >= weaponSlots.Count) return;
 
         SetWeaponReady(false);
 
-        currentWeapon = weaponSlosts[i];
+        currentWeapon = weaponSlots[i];
         player.weaponVisuals.PlayWeaponEquipAnimation();
 
         CameraManager.instance.ChangeCamerDistance(currentWeapon.cameraDistance);
@@ -65,15 +71,15 @@ public class PlayerWeaponController : MonoBehaviour
     /// 拾取武器
     /// </summary>
     /// <param name="newWeapon"></param>
-    public void PickupWeapon(Weapon newWeapon)
+    public void PickupWeapon(Weapon_Data newWeaponData)
     {
-        if (weaponSlosts.Count >= maxSlots)
+        if (weaponSlots.Count >= maxSlots)
         {
             Debug.Log("No slots avalible");
             return;
         }
-
-        weaponSlosts.Add(newWeapon);
+        Weapon newWeapon = new Weapon(newWeaponData);
+        weaponSlots.Add(newWeapon);
         player.weaponVisuals.SwitchOnBackupWeaponModel();
     }
     /// <summary>
@@ -83,7 +89,7 @@ public class PlayerWeaponController : MonoBehaviour
     {
         if (HasOnlyOneWeapon()) return;
 
-        weaponSlosts.Remove(currentWeapon);
+        weaponSlots.Remove(currentWeapon);
 
         EquipWeapon(0);
     }
@@ -183,7 +189,7 @@ public class PlayerWeaponController : MonoBehaviour
     /// 是否只有一把武器
     /// </summary>
     /// <returns></returns>
-    public bool HasOnlyOneWeapon() => weaponSlosts.Count <= 1;
+    public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
     /// <summary>
     /// 当前武器
     /// </summary>
@@ -195,7 +201,7 @@ public class PlayerWeaponController : MonoBehaviour
     /// <returns></returns>
     public Weapon BackupWeapon()
     {
-        foreach (Weapon weapon in weaponSlosts)
+        foreach (Weapon weapon in weaponSlots)
         {
             if (weapon != currentWeapon) return weapon;
         }
