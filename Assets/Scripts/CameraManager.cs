@@ -7,13 +7,13 @@ public class CameraManager : MonoBehaviour
     public static CameraManager instance;
 
     private CinemachineVirtualCamera virtualCamera;
-    private CinemachineFramingTransposer transposer;//È¡¾°ÖÃ»»Æ÷£¨¸úËæÄ¿±êÒÆ¶¯£¬²¢ÔÚÆÁÄ»¿Õ¼ä±£³ÖÏà»úºÍ¸úËæÄ¿±êµÄÏà¶ÔÎ»ÖÃ£©
+    private CinemachineFramingTransposer transposer;//å–æ™¯ç½®æ¢å™¨ï¼ˆè·Ÿéšç›®æ ‡ç§»åŠ¨ï¼Œå¹¶åœ¨å±å¹•ç©ºé—´ä¿æŒç›¸æœºå’Œè·Ÿéšç›®æ ‡çš„ç›¸å¯¹ä½ç½®ï¼‰
     [Header("Camera distance")]
     [SerializeField]
-    private bool canChangeCameraDistance;//ÄÜ·ñ¸Ä±äÏà»ú¾àÀë
+    private bool canChangeCameraDistance;//èƒ½å¦æ”¹å˜ç›¸æœºè·ç¦»
     [SerializeField]
-    private float distanceChangeRate;//¾àÀë±ä»¯ÂÊ
-    private float targetCameraDistance;//Ä¿±êÏà»ú¾àÀë
+    private float distanceChangeRate;//è·ç¦»å˜åŒ–ç‡
+    private float targetCameraDistance;//ç›®æ ‡ç›¸æœºè·ç¦»
 
     private void Awake()
     {
@@ -47,8 +47,8 @@ public class CameraManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¸Ä±äÏà»ú¾àÀë
+    /// æ”¹å˜ç›¸æœºè·ç¦»
     /// </summary>
-    /// <param name="distance">¾àÀë</param>
+    /// <param name="distance">è·ç¦»</param>
     public void ChangeCamerDistance(float distance) => targetCameraDistance = distance;
 }

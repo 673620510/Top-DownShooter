@@ -103,7 +103,7 @@ public class PlayerWeaponController : MonoBehaviour
     /// </summary>
     /// <param name="weaponType"></param>
     /// <returns></returns>
-    private Weapon WeaponInSlots(WeaponType weaponType)
+    public Weapon WeaponInSlots(WeaponType weaponType)
     {
         foreach (Weapon weapon  in weaponSlots)
         {

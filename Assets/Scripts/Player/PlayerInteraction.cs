@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// Íæ¼Ò½»»¥Àà
+/// ç©å®¶äº¤äº’ç±»
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
-    private List<Interactable> interactables = new List<Interactable>();//¿É½»»¥ÁĞ±í
+    private List<Interactable> interactables = new List<Interactable>();//å¯äº¤äº’åˆ—è¡¨
 
-    private Interactable closestInteractable;//×î½üµÄ¿É½»»¥ÎïÌå
+    private Interactable closestInteractable;//æœ€è¿‘çš„å¯äº¤äº’ç‰©ä½“
 
     private void Start()
     {
@@ -16,7 +16,7 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     /// <summary>
-    /// Óë×î½üµÄ¿É½»»¥¶ÔÏó»¥¶¯
+    /// ä¸æœ€è¿‘çš„å¯äº¤äº’å¯¹è±¡äº’åŠ¨
     /// </summary>
     private void InteractWithClosest()
     {
@@ -26,7 +26,7 @@ public class PlayerInteraction : MonoBehaviour
         UpdateClosestInteractable();
     }
     /// <summary>
-    /// ¸üĞÂ×î½üµÄ¿É½»»¥ÎïÌå
+    /// æ›´æ–°æœ€è¿‘çš„å¯äº¤äº’ç‰©ä½“
     /// </summary>
     public void UpdateClosestInteractable()
     {

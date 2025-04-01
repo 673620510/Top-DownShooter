@@ -20,10 +20,10 @@ public class Pickup_Weapon : Interactable
         UpdateGameObject();
     }
     /// <summary>
-    /// ÉèÖÃÊ°È¡ÎäÆ÷
+    /// è®¾ç½®æ‹¾å–æ­¦å™¨
     /// </summary>
-    /// <param name="weapon">ÎäÆ÷</param>
-    /// <param name="transform">Î»ÖÃ</param>
+    /// <param name="weapon">æ­¦å™¨</param>
+    /// <param name="transform">ä½ç½®</param>
     public void SetupPickupWeapon(Weapon weapon, Transform transform)
     {
         oldWeapon = true;
@@ -32,9 +32,9 @@ public class Pickup_Weapon : Interactable
 
         this.transform.position = transform.position + new Vector3 (0f, 0.75f, 0f);
     }
-    [ContextMenu("Update Item Model ¸üĞÂÎïÆ·Ä£ĞÍ")]//½Å±¾×é¼şÓÒ¼ü²Ëµ¥ÖĞÌí¼ÓÍØÕ¹¹¦ÄÜ
+    [ContextMenu("Update Item Model æ›´æ–°ç‰©å“æ¨¡å‹")]//è„šæœ¬ç»„ä»¶å³é”®èœå•ä¸­æ·»åŠ æ‹“å±•åŠŸèƒ½
     /// <summary>
-    /// ¸üĞÂÓÎÏ·ÎïÌå
+    /// æ›´æ–°æ¸¸æˆç‰©ä½“
     /// </summary>
     public void UpdateGameObject()
     {
@@ -42,7 +42,7 @@ public class Pickup_Weapon : Interactable
         UpdateItemModel();
     }
     /// <summary>
-    /// ¸üĞÂÎïÆ·Ä£ĞÍ
+    /// æ›´æ–°ç‰©å“æ¨¡å‹
     /// </summary>
     public void UpdateItemModel()
     {

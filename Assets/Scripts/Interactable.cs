@@ -1,13 +1,13 @@
 using UnityEngine;
 /// <summary>
-/// ¿É½»»¥Àà
+/// å¯äº¤äº’ç±»
 /// </summary>
 public class Interactable : MonoBehaviour
 {
-    protected MeshRenderer mesh;//Íø¸ñ
+    protected MeshRenderer mesh;//ç½‘æ ¼
     [SerializeField]
-    private Material highlightMaterial;//¸ßÁÁ²ÄÖÊ
-    protected Material defaultMaterial;//²ÄÖÊ
+    private Material highlightMaterial;//é«˜äº®æè´¨
+    protected Material defaultMaterial;//æè´¨
 
     private void Start()
     {
@@ -16,7 +16,7 @@ public class Interactable : MonoBehaviour
         defaultMaterial = mesh.material;
     }
     /// <summary>
-    /// ¸üĞÂÍø¸ñºÍ²ÄÖÊ
+    /// æ›´æ–°ç½‘æ ¼å’Œæè´¨
     /// </summary>
     /// <param name="newMesh"></param>
     protected void UpdateMeshAndMaterial(MeshRenderer newMesh)
@@ -25,14 +25,14 @@ public class Interactable : MonoBehaviour
         defaultMaterial = newMesh.sharedMaterial;
     }
     /// <summary>
-    /// ½»»¥ĞĞÎª
+    /// äº¤äº’è¡Œä¸º
     /// </summary>
     public virtual void Interaction()
     {
         Debug.Log("Interacted with" + gameObject.name);
     }
     /// <summary>
-    /// ¸ßÁÁÎïÌå
+    /// é«˜äº®ç‰©ä½“
     /// </summary>
     /// <param name="active"></param>
     public void HighlightActive(bool active)

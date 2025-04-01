@@ -1,41 +1,41 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon Data", menuName = "Weapon System/Weapon Data")]
-public class Weapon_Data : ScriptableObject//UnityÌá¹©µÄÊı¾İÅäÖÃ´æ´¢»ùÀà
+public class Weapon_Data : ScriptableObject//Unityæä¾›çš„æ•°æ®é…ç½®å­˜å‚¨åŸºç±»
 {
-    public string weaponName;//ÎäÆ÷Ãû³Æ
+    public string weaponName;//æ­¦å™¨åç§°
 
-    [Header("Magazine details µ¯¼ĞÏêÇé")]
-    public int bulletsInMagazine;//µ±Ç°Ç¹Ö§µ¯Ò©Á¿
-    public int magazineCapacity;//µ¯¼ĞÈİÄÉÁ¿
-    public int totalReserveAmmo;//µ±Ç°Ç¹Ö§×Ü±¸ÓÃµ¯Ò©Á¿
+    [Header("Magazine details å¼¹å¤¹è¯¦æƒ…")]
+    public int bulletsInMagazine;//å½“å‰æªæ”¯å¼¹è¯é‡
+    public int magazineCapacity;//å¼¹å¤¹å®¹çº³é‡
+    public int totalReserveAmmo;//å½“å‰æªæ”¯æ€»å¤‡ç”¨å¼¹è¯é‡
 
-    [Header("Regular shot ³£¹æÉä»÷")]
-    public ShootType shootType;//Éä»÷ÀàĞÍ
-    public int bulletPerShot = 1;//Ã¿´Î¿ª»ğ×Óµ¯ÊıÁ¿
-    public float fireRate;//Ã¿ÃëÉäËÙ
+    [Header("Regular shot å¸¸è§„å°„å‡»")]
+    public ShootType shootType;//å°„å‡»ç±»å‹
+    public int bulletPerShot = 1;//æ¯æ¬¡å¼€ç«å­å¼¹æ•°é‡
+    public float fireRate;//æ¯ç§’å°„é€Ÿ
 
-    [Header("Burst shot Á¬·¢Éä»÷")]
-    public bool burstAvalible;//ÊÇ·ñÔÊĞíÁ¬·¢Ä£Ê½
-    public bool burstActive;//ÊÇ·ñ¿ªÆôÁ¬·¢Ä£Ê½
-    public int burstBulletsPerShot;//Á¬·¢Ä£Ê½Ã¿´ÎÉä»÷×Óµ¯ÊıÁ¿
-    public float burstFireRate;//Á¬·¢Ä£Ê½Éä»÷ËÙ¶È
-    public float burstFireDelay = .1f;//Á¬·¢ÑÓ³Ù
+    [Header("Burst shot è¿å‘å°„å‡»")]
+    public bool burstAvalible;//æ˜¯å¦å…è®¸è¿å‘æ¨¡å¼
+    public bool burstActive;//æ˜¯å¦å¼€å¯è¿å‘æ¨¡å¼
+    public int burstBulletsPerShot;//è¿å‘æ¨¡å¼æ¯æ¬¡å°„å‡»å­å¼¹æ•°é‡
+    public float burstFireRate;//è¿å‘æ¨¡å¼å°„å‡»é€Ÿåº¦
+    public float burstFireDelay = .1f;//è¿å‘å»¶è¿Ÿ
 
-    [Header("Weapon spread ÎäÆ÷À©É¢")]
-    public float baseSpread;//Ô­Ê¼À©É¢Á¿
-    public float maxSpread;//×î´óÀ©É¢Á¿
-    public float SpreadIncreaseRate = .15f;//À©É¢Ôö³¤ÂÊ
+    [Header("Weapon spread æ­¦å™¨æ‰©æ•£")]
+    public float baseSpread;//åŸå§‹æ‰©æ•£é‡
+    public float maxSpread;//æœ€å¤§æ‰©æ•£é‡
+    public float SpreadIncreaseRate = .15f;//æ‰©æ•£å¢é•¿ç‡
 
-    [Header("Weapon generics ÎäÆ÷Í¨ÓÃ")]
-    public WeaponType weaponType;//ÎäÆ÷ÀàĞÍ
+    [Header("Weapon generics æ­¦å™¨é€šç”¨")]
+    public WeaponType weaponType;//æ­¦å™¨ç±»å‹
     [Range(1f, 3f)]
-    public float reloadSpeed = 1;//»»µ¯ËÙ¶È
+    public float reloadSpeed = 1;//æ¢å¼¹é€Ÿåº¦
     [Range(1f, 3f)]
-    public float equipmentSpeed = 1;//¸ü»»×°±¸ËÙ¶È
+    public float equipmentSpeed = 1;//æ›´æ¢è£…å¤‡é€Ÿåº¦
     [Range(4, 8)]
-    public float gunDistance = 4;//ÎäÆ÷Éä³Ì
+    public float gunDistance = 4;//æ­¦å™¨å°„ç¨‹
     [Range(4, 8)]
-    public float cameraDistance = 6;//Ïà»ú¾àÀë
+    public float cameraDistance = 6;//ç›¸æœºè·ç¦»
 
 }
