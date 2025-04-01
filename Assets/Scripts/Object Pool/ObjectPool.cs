@@ -29,6 +29,7 @@ public class ObjectPool : MonoBehaviour
     private void Start()
     {
         InitializeNewPool(weaponPickup);
+        InitializeNewPool(ammoPickup);
     }
     /// <summary>
     /// 获取对象池中的对象

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Pickup_Weapon : Interactable
 {
-    private PlayerWeaponController weaponController;
     [SerializeField] 
     private Weapon_Data weaponData;
     [SerializeField]
@@ -17,7 +16,7 @@ public class Pickup_Weapon : Interactable
     {
         if (oldWeapon == false) weapon = new Weapon(weaponData);
 
-        UpdateGameObject();
+        SetupGameObject();
     }
     /// <summary>
     /// 设置拾取武器
@@ -34,17 +33,17 @@ public class Pickup_Weapon : Interactable
     }
     [ContextMenu("Update Item Model 更新物品模型")]//脚本组件右键菜单中添加拓展功能
     /// <summary>
-    /// 更新游戏物体
+    /// 设置游戏对象
     /// </summary>
-    public void UpdateGameObject()
+    public void SetupGameObject()
     {
         gameObject.name = "Pickup_Weapon - "+ weaponData.weaponType.ToString();
-        UpdateItemModel();
+        SetupWeaponModel();
     }
     /// <summary>
-    /// 更新物品模型
+    /// 设置武器模型
     /// </summary>
-    public void UpdateItemModel()
+    private void SetupWeaponModel()
     {
         foreach (BackupWeaponModel model in models)
         {
@@ -62,13 +61,5 @@ public class Pickup_Weapon : Interactable
         weaponController.PickupWeapon(weapon);
 
         ObjectPool.instance.ReturnObject(gameObject);
-    }
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-        if (weaponController == null)
-        {
-            weaponController = other.GetComponent<PlayerWeaponController>();
-        }
     }
 }

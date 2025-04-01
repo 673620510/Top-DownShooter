@@ -10,18 +10,21 @@ public enum AmmoBoxType
     bigBox
 }
 
+[Serializable]
+public struct AmmoData//弹药数据
+{
+    public WeaponType weaponType;//武器类型
+    [Range(10, 100)]
+    public int minAmount;
+    [Range(10, 100)]
+    public int maxAmount;
+}
+
 public class Pickup_Ammo : Interactable
 {
-    private PlayerWeaponController weaponController;
-
     [SerializeField]
     private AmmoBoxType boxType;//弹药箱类型
-    [Serializable]
-    public struct AmmoData//弹药数据
-    {
-        public WeaponType weaponType;//武器类型
-        public int amount;//数量
-    }
+
 
     [SerializeField]
     private List<AmmoData> smallBoxAmmo;//小弹药箱
@@ -29,6 +32,7 @@ public class Pickup_Ammo : Interactable
     private List<AmmoData> bigBoxAmmo;//大弹药箱
     [SerializeField]
     private GameObject[] boxModel;//弹药箱模型
+
     private void Start()
     {
         SetupBoxModel();
@@ -45,14 +49,19 @@ public class Pickup_Ammo : Interactable
         {
             Weapon weapon = weaponController.WeaponInSlots(ammo.weaponType);
 
-            AddBulletsToWeapon(weapon, ammo.amount);
+            AddBulletsToWeapon(weapon, GetBulltetAmount(ammo));
         }
-    }
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
 
-        if(weaponController == null) weaponController = other.GetComponent<PlayerWeaponController>();
+        ObjectPool.instance.ReturnObject(gameObject);
+    }
+    private int GetBulltetAmount(AmmoData ammoData)
+    {
+        float min = Mathf.Min(ammoData.minAmount, ammoData.maxAmount);
+        float max = Mathf.Max(ammoData.minAmount, ammoData.maxAmount);
+
+        int randomAmmoAmount = UnityEngine.Random.Range(ammoData.minAmount, ammoData.maxAmount);
+
+        return Mathf.RoundToInt(randomAmmoAmount);
     }
     /// <summary>
     /// 设置弹药箱模型
