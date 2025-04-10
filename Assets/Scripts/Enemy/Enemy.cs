@@ -10,12 +10,17 @@ public class Enemy : MonoBehaviour
     public float turnSpeed;//转向速度
     public float aggresionRange;//侵略范围
 
+    [Header("Attack data 攻击数据")]
+    public float attackRange;//攻击范围
+    public float attackMoveSpeed;//攻击时移动速度
+
     [Header("Idle data 待机数据")]
     public float idleTime;
 
     [Header("Move data 移动数据")]
     public float moveSpeed;
     public float chaseSpeed;
+    private bool manualMovement;//手动移动
 
     [SerializeField]
     private Transform[] patrolPoint;//巡逻点
@@ -47,13 +52,33 @@ public class Enemy : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, aggresionRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
+    /// <summary>
+    /// 开启手动移动
+    /// </summary>
+    /// <param name="manualMovement"></param>
+    public void ActivateManualMovement(bool manualMovement) => this.manualMovement = manualMovement;
+    /// <summary>
+    /// 获取手动移动状态
+    /// </summary>
+    /// <returns></returns>
+    public bool ManualMovementActive() => manualMovement;
+    /// <summary>
+    /// 动画触发器
+    /// </summary>
     public void AnimationTrigger() => stateMachine.currentState.AnimationTrigger();
     /// <summary>
     /// 玩家是否在侵略范围内
     /// </summary>
     /// <returns></returns>
     public bool PlayerInAggresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
+    /// <summary>
+    /// 玩家是否在攻击范围内
+    /// </summary>
+    /// <returns></returns>
+    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackRange;
     /// <summary>
     /// 获取巡逻目标
     /// </summary>

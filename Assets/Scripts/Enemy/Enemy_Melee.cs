@@ -10,7 +10,12 @@ public class Enemy_Melee : Enemy
     public MoveState_Melee moveState { get; private set; }
     public RecoveryState_Melee recoveryState { get; private set; }
     public ChaseState_Melee chaseState { get; private set; }
+    public AttackState_Melee attackState { get; private set; }
 
+    [SerializeField]
+    private Transform hiddenWeapon;
+    [SerializeField]
+    private Transform pulledWeapon;
     protected override void Awake()
     {
         base.Awake();
@@ -19,6 +24,7 @@ public class Enemy_Melee : Enemy
         moveState = new MoveState_Melee(this, stateMachine, "Move");
         recoveryState = new RecoveryState_Melee(this, stateMachine, "Recovery");
         chaseState = new ChaseState_Melee(this, stateMachine, "Chase");
+        attackState = new AttackState_Melee(this, stateMachine, "Attack");
     }
 
     protected override void Start()
@@ -35,5 +41,13 @@ public class Enemy_Melee : Enemy
         stateMachine.currentState.Update();
 
         Debug.Log(stateMachine.currentState.ToString());
+    }
+    /// <summary>
+    /// 拿出武器
+    /// </summary>
+    public void PullWeapon()
+    {
+        hiddenWeapon.gameObject.SetActive(false);
+        pulledWeapon.gameObject.SetActive(true);
     }
 }
