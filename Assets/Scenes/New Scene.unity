@@ -5569,18 +5569,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1460841c413a0e34abdf0754ccff11c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 5
-  aggresionRange: 6
-  attackRange: 1.5
-  attackMoveSpeed: 3.5
   idleTime: 2
+  aggresionRange: 6
   moveSpeed: 1.5
   chaseSpeed: 4
+  turnSpeed: 5
   patrolPoint:
   - {fileID: 995421871}
   - {fileID: 200113228}
   - {fileID: 2034953594}
   - {fileID: 866930600}
+  attackData:
+    attackName: 
+    attackRange: 1
+    moveSpeed: 0
+    attackIndex: 1
+    animationSpeed: 1.4
+    attackType: 0
+  attackList:
+  - attackName: Sword spin attack
+    attackRange: 1.5
+    moveSpeed: 2.5
+    attackIndex: 0
+    animationSpeed: 1
+    attackType: 1
+  - attackName: Sword slash
+    attackRange: 1
+    moveSpeed: 0
+    attackIndex: 1
+    animationSpeed: 1.5
+    attackType: 0
   hiddenWeapon: {fileID: 1370844241}
   pulledWeapon: {fileID: 1954368336397598263}
 --- !u!4 &1602894309
