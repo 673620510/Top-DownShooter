@@ -21,6 +21,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     [Header("Bullet details 子弹详情")]
     [SerializeField]
+    private float bulletImpactForce = 100;
+    [SerializeField]
     private GameObject bulletPrefab;
     [SerializeField]
     private float bulletSpeed;
@@ -183,7 +185,7 @@ public class PlayerWeaponController : MonoBehaviour
         }
 
         FireSingleBullet();
-
+        TriggerEnemyDodge();
     }
     /// <summary>
     /// 发射单发子弹
@@ -200,7 +202,7 @@ public class PlayerWeaponController : MonoBehaviour
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
-        bulletScript.BulletSetUp(currentWeapon.gunDistance);
+        bulletScript.BulletSetUp(currentWeapon.gunDistance, bulletImpactForce);
 
         Vector3 bulletDirection = currentWeapon.ApplySpread(BulletDirection());
 
@@ -256,6 +258,24 @@ public class PlayerWeaponController : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public Transform GunPoint() => player.weaponVisuals.CurrentWeaponModel().gunPoint;
+    /// <summary>
+    /// 触发敌人闪避
+    /// </summary>
+    private void TriggerEnemyDodge()
+    {
+        Vector3 rayOrigin = GunPoint().position;
+        Vector3 rayDirection = BulletDirection();
+
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, Mathf.Infinity))
+        {
+            Enemy_Melee enemy_Melee = hit.collider.gameObject.GetComponentInParent<Enemy_Melee>();
+
+            if (enemy_Melee != null)
+            {
+                enemy_Melee.ActivateDodgeRoll();
+            }
+        }
+    }
     #region Input Events 输入事件
     /// <summary>
     /// 注册输入事件

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 559f99546337d9a42ba1334d2045aca3
+guid: 61408db2757d8c347a516728000aeb1e
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Attack_WeaponSpin
+      name: Axe throw
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 83
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

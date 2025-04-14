@@ -38,8 +38,6 @@ public class IdleState_Melee : EnemyState
     public override void Exit()
     {
         base.Exit();
-
-        Debug.Log("I exit idle state");
     }
 
 }

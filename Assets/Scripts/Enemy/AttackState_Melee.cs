@@ -52,7 +52,14 @@ public class AttackState_Melee : EnemyState
 
         if (triggerCalled)
         {
-            stateMachine.ChangeState(enemy.chaseState);
+            if (enemy.PlayerInAttackRange())
+            {
+                stateMachine.ChangeState(enemy.recoveryState);
+            }
+            else
+            {
+                stateMachine.ChangeState(enemy.chaseState);
+            }
         }
     }
 
@@ -62,7 +69,9 @@ public class AttackState_Melee : EnemyState
 
         SetupNextAttack();
     }
-
+    /// <summary>
+    /// 设置下一个攻击
+    /// </summary>
     private void SetupNextAttack()
     {
         int recoveryIndex = PlayerClose() ? 1 : 0;
@@ -71,7 +80,11 @@ public class AttackState_Melee : EnemyState
         enemy.attackData = UpdateAttackData();
     }
 
-    private bool PlayerClose() => Vector3.Distance(enemy.transform.position, enemy.player.position) <= 1; 
+    private bool PlayerClose() => Vector3.Distance(enemy.transform.position, enemy.player.position) <= 1;
+    /// <summary>
+    /// 更新攻击数据
+    /// </summary>
+    /// <returns></returns>
     private AttackData UpdateAttackData()
     {
         List<AttackData> validAttacks = new List<AttackData>(enemy.attackList);

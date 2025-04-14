@@ -23,7 +23,6 @@ public class EnemyStateMachine
     /// <param name="newState"></param>
     public void ChangeState(EnemyState newState)
     {
-        Debug.Log("Change" + newState);
         currentState.Exit();
         currentState = newState;
         currentState.Enter();

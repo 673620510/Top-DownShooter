@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,13 +8,16 @@ using UnityEngine.AI;
 //****************************************
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    protected int healthPoints = 20;//生命值
+
     [Header("Idle data 待机数据")]
-    public float idleTime;
+    public float idleTime;//待机时间
     public float aggresionRange;//侵略范围
 
     [Header("Move data 移动数据")]
-    public float moveSpeed;
-    public float chaseSpeed;
+    public float moveSpeed;//移动速度
+    public float chaseSpeed;//追击速度
     public float turnSpeed;//转向速度
     private bool manualMovement;//手动移动
     private bool manualRotation;//手动转向
@@ -48,6 +52,35 @@ public class Enemy : MonoBehaviour
     protected virtual void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, aggresionRange);
+    }
+    /// <summary>
+    /// 受到伤害
+    /// </summary>
+    public virtual void GetHit()
+    {
+        healthPoints--;
+    }
+    /// <summary>
+    /// 受击影响
+    /// </summary>
+    /// <param name="force"></param>
+    /// <param name="hitPoint"></param>
+    /// <param name="rb"></param>
+    public virtual void HitImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
+    {
+        StartCoroutine(HitImpactCourutine(force, hitPoint, rb));
+    }
+    /// <summary>
+    /// 受击影响携程
+    /// </summary>
+    /// <param name="force"></param>
+    /// <param name="hitPoint"></param>
+    /// <param name="rb"></param>
+    /// <returns></returns>
+    private IEnumerator HitImpactCourutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    {
+        yield return new WaitForSeconds(0.1f);
+        rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
     /// <summary>
     /// 开启手动移动

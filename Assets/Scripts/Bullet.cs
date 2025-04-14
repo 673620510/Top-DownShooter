@@ -7,6 +7,8 @@ using UnityEngine;
 //****************************************
 public class Bullet : MonoBehaviour
 {
+    public float impactForce;//冲击力
+
     private BoxCollider cd;
     private Rigidbody rb;
     private MeshRenderer meshRenderer;
@@ -69,8 +71,10 @@ public class Bullet : MonoBehaviour
     /// 子弹设置
     /// </summary>
     /// <param name="flyDistance">飞行距离</param>
-    public void BulletSetUp(float flyDistance)
+    public void BulletSetUp(float flyDistance, float impactForce)
     {
+        this.impactForce = impactForce;
+
         bulletDisabled = false;
         cd.enabled = true;
         meshRenderer.enabled = true;
@@ -85,6 +89,23 @@ public class Bullet : MonoBehaviour
     {
         CreateImpactFX(collision);
         ReturnBulletToPool();
+
+        Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
+        EnemyShield shield = collision.gameObject.GetComponentInParent<EnemyShield>();
+
+        if (shield != null)
+        {
+            shield.ReduceDurability();
+            return;
+        }
+
+        if (enemy != null)
+        {
+            Vector3 force = rb.linearVelocity.normalized * impactForce;
+            Rigidbody hitRigidbody = collision.collider.attachedRigidbody;
+            enemy.GetHit();
+            enemy.HitImpact(force, collision.contacts[0].point, hitRigidbody);
+        }
     }
 
     private void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(gameObject);

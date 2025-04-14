@@ -7,7 +7,7 @@ using UnityEngine;
 public class ChaseState_Melee : EnemyState
 {
     private Enemy_Melee enemy;
-    private float lastTimeUpdatedDistanation;
+    private float lastTimeUpdatedDistanation;//上次更新目标位置的时间
 
     public ChaseState_Melee(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
@@ -16,6 +16,8 @@ public class ChaseState_Melee : EnemyState
 
     public override void Enter()
     {
+        CheckChaseAnimation();
+
         base.Enter();
 
         enemy.agent.speed = enemy.chaseSpeed;
@@ -55,5 +57,15 @@ public class ChaseState_Melee : EnemyState
             return true;
         }
         return false;
+    }
+    /// <summary>
+    /// 检查追击动画
+    /// </summary>
+    private void CheckChaseAnimation()
+    {
+        if (enemy.meleeType == EnemyMelee_Type.Shield && enemy.shieldTransform == null)
+        {
+            enemy.anim.SetFloat("ChaseIndex", 0);
+        }
     }
 }
