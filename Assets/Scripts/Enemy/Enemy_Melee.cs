@@ -87,6 +87,11 @@ public class Enemy_Melee : Enemy
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, attackData.attackRange);
     }
+    public void TriggerAbility()
+    {
+        moveSpeed = moveSpeed * 0.6f;
+        pulledWeapon.gameObject.SetActive(false);
+    }
     /// <summary>
     /// 初始化敌人类型
     /// </summary>
