@@ -34,15 +34,22 @@ public class DeadState_Melee : EnemyState
         base.Update();
 
         //可选，敌人死亡后，禁用碰撞体
-        //if (stateTimer < 0 && interactionDisabled == false)
-        //{
-        //    interactionDisabled = true;
-        //    ragdoll.RagdollActive(false);
-        //    ragdoll.CollidersActive(false);
-        //}
+        //DisableInteractionIfShould();
     }
     public override void Exit()
     {
         base.Exit();
+    }
+    /// <summary>
+    /// 禁用碰撞体
+    /// </summary>
+    private void DisableInteractionIfShould()
+    {
+        if (stateTimer < 0 && interactionDisabled == false)
+        {
+            interactionDisabled = true;
+            ragdoll.RagdollActive(false);
+            ragdoll.CollidersActive(false);
+        }
     }
 }

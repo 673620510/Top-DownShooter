@@ -91,7 +91,7 @@ public class Bullet : MonoBehaviour
         ReturnBulletToPool();
 
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-        EnemyShield shield = collision.gameObject.GetComponentInParent<EnemyShield>();
+        Enemy_Shield shield = collision.gameObject.GetComponentInParent<Enemy_Shield>();
 
         if (shield != null)
         {
@@ -104,7 +104,7 @@ public class Bullet : MonoBehaviour
             Vector3 force = rb.linearVelocity.normalized * impactForce;
             Rigidbody hitRigidbody = collision.collider.attachedRigidbody;
             enemy.GetHit();
-            enemy.HitImpact(force, collision.contacts[0].point, hitRigidbody);
+            enemy.DeathImpact(force, collision.contacts[0].point, hitRigidbody);
         }
     }
 

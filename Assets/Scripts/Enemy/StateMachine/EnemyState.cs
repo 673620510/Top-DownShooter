@@ -38,6 +38,7 @@ public class EnemyState
     }
 
     public void AnimationTrigger() => triggerCalled = true;
+    public virtual void AbilityTrigger() { }
 
     /// <summary>
     /// 获取下一个路径点

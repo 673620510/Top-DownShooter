@@ -4,7 +4,7 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：敌人盾牌类
 //****************************************
-public class EnemyShield : MonoBehaviour
+public class Enemy_Shield : MonoBehaviour
 {
     private Enemy_Melee enemy;
 

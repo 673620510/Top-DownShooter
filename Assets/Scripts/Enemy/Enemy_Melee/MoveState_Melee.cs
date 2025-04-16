@@ -29,13 +29,7 @@ public class MoveState_Melee : EnemyState
     {
         base.Update();
 
-        if (enemy.PlayerInAggresionRange())
-        {
-            stateMachine.ChangeState(enemy.recoveryState);
-            return;
-        }
-
-        enemy.transform.rotation = enemy.FaceTarget(GetNextPatthPoint());
+        enemy.FaceTarget(GetNextPatthPoint());
 
         if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance + .05f && !enemy.agent.pathPending)//agent.pathpending表示是否正在计算路径
         {
@@ -46,7 +40,5 @@ public class MoveState_Melee : EnemyState
     public override void Exit()
     {
         base.Exit();
-
-        Debug.Log("I exit move state");
     }
 }

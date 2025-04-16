@@ -21,7 +21,7 @@ public class AttackState_Melee : EnemyState
     {
         base.Enter();
 
-        enemy.PullWeapon();
+        enemy.EnableWeaponModel(true);
         attackMoveSpeed = enemy.attackData.moveSpeed;
         enemy.anim.SetFloat("AttackAnimationSpeed", enemy.attackData.animationSpeed);
         enemy.anim.SetFloat("AttackIndex", enemy.attackData.attackIndex);
@@ -40,7 +40,7 @@ public class AttackState_Melee : EnemyState
 
         if (enemy.ManualRotationActive())
         {
-            enemy.transform.rotation = enemy.FaceTarget(enemy.player.position);
+            enemy.FaceTarget(enemy.player.position);
             attackDirection = enemy.transform.position + (enemy.transform.forward * MAX_ATTACK_DISTANCE);
         }
 

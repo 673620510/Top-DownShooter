@@ -23,9 +23,11 @@ public class Enemy : MonoBehaviour
     private bool manualRotation;//手动转向
 
     [SerializeField]
-    private Transform[] patrolPoint;//巡逻点
+    private Transform[] patrolPoints;//巡逻点
+    private Vector3[] patrolPointsPosition;//巡逻点数组
     private int currentpatrolIndex;//当前巡逻点
-    
+
+    public bool inBattleMode { get; private set; }//是否处于战斗状态
     public Transform player { get; private set; }
     public Animator anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
@@ -54,34 +56,70 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, aggresionRange);
     }
     /// <summary>
+    /// 面向目标
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public void FaceTarget(Vector3 target)
+    {
+        Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
+        Vector3 currentEulerAngels = transform.rotation.eulerAngles;
+        float yRotation = Mathf.LerpAngle(currentEulerAngels.y, targetRotation.eulerAngles.y, turnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(currentEulerAngels.x, yRotation, currentEulerAngels.z);
+    }
+    /// <summary>
+    /// 是否应进入战斗模式
+    /// </summary>
+    /// <returns></returns>
+    protected bool ShouldEnterBattleMode()
+    {
+        bool inAggresionRange = Vector3.Distance(transform.position, player.position) < aggresionRange;
+
+        if (inAggresionRange && !inBattleMode)
+        {
+            EnterBattleMode();
+            return true;
+        }
+        return false;
+    }
+    /// <summary>
+    /// 进入战斗模式
+    /// </summary>
+    public virtual void EnterBattleMode()
+    {
+        inBattleMode = true;
+    }
+    /// <summary>
     /// 受到伤害
     /// </summary>
     public virtual void GetHit()
     {
+        EnterBattleMode();
         healthPoints--;
     }
     /// <summary>
-    /// 受击影响
+    /// 死亡影响
     /// </summary>
     /// <param name="force"></param>
     /// <param name="hitPoint"></param>
     /// <param name="rb"></param>
-    public virtual void HitImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
+    public virtual void DeathImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
     {
-        StartCoroutine(HitImpactCourutine(force, hitPoint, rb));
+        StartCoroutine(DeathImpactCourutine(force, hitPoint, rb));
     }
     /// <summary>
-    /// 受击影响携程
+    /// 死亡影响携程
     /// </summary>
     /// <param name="force"></param>
     /// <param name="hitPoint"></param>
     /// <param name="rb"></param>
     /// <returns></returns>
-    private IEnumerator HitImpactCourutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
+    private IEnumerator DeathImpactCourutine(Vector3 force, Vector3 hitPoint, Rigidbody rb)
     {
         yield return new WaitForSeconds(0.1f);
         rb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse);
     }
+    #region Animation events 动画事件
     /// <summary>
     /// 开启手动移动
     /// </summary>
@@ -107,21 +145,25 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void AnimationTrigger() => stateMachine.currentState.AnimationTrigger();
     /// <summary>
-    /// 玩家是否在侵略范围内
+    /// 特殊能力触发器
     /// </summary>
-    /// <returns></returns>
-    public bool PlayerInAggresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
+    public virtual void AbilityTrigger()
+    {
+        stateMachine.currentState.AbilityTrigger();
+    }
+    #endregion
+    #region patrol logic 巡逻逻辑
     /// <summary>
     /// 获取巡逻目标
     /// </summary>
     /// <returns></returns>
     public Vector3 GetPatrolDestination()
     {
-        Vector3 destination = patrolPoint[currentpatrolIndex].transform.position;
+        Vector3 destination = patrolPointsPosition[currentpatrolIndex];
 
         currentpatrolIndex++;
 
-        if (currentpatrolIndex >= patrolPoint.Length) currentpatrolIndex = 0;
+        if (currentpatrolIndex >= patrolPoints.Length) currentpatrolIndex = 0;
 
         return destination;
     }
@@ -130,21 +172,13 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void InitializePatrolPoints()
     {
-        foreach (Transform t in patrolPoint)
+        patrolPointsPosition = new Vector3[patrolPoints.Length];
+
+        for (int i = 0; i < patrolPoints.Length; i++)
         {
-            t.parent = null;
+            patrolPointsPosition[i] = patrolPoints[i].position;
+            patrolPoints[i].gameObject.SetActive(false);
         }
     }
-    /// <summary>
-    /// 面向目标
-    /// </summary>
-    /// <param name="target"></param>
-    /// <returns></returns>
-    public Quaternion FaceTarget(Vector3 target)
-    {
-        Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
-        Vector3 currentEulerAngels = transform.rotation.eulerAngles;
-        float yRotation = Mathf.LerpAngle(currentEulerAngels.y, targetRotation.eulerAngles.y, turnSpeed * Time.deltaTime);
-        return Quaternion.Euler(currentEulerAngels.x, yRotation, currentEulerAngels.z);
-    }
+    #endregion
 }
