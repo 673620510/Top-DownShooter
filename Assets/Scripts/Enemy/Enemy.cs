@@ -32,11 +32,13 @@ public class Enemy : MonoBehaviour
     public Animator anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
+    public Enemy_Visuals visuals { get; private set; }//敌人视觉效果类
 
     protected virtual void Awake()
     {
         stateMachine = new EnemyStateMachine();
 
+        visuals = GetComponent<Enemy_Visuals>();//获取敌人视觉效果类
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         player = GameObject.Find("Player").GetComponent<Transform>();
@@ -49,7 +51,10 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Update()
     {
-        
+        if (ShouldEnterBattleMode())
+        {
+            EnterBattleMode();
+        }
     }
     protected virtual void OnDrawGizmos()
     {
@@ -59,7 +64,6 @@ public class Enemy : MonoBehaviour
     /// 面向目标
     /// </summary>
     /// <param name="target"></param>
-    /// <returns></returns>
     public void FaceTarget(Vector3 target)
     {
         Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);

@@ -7,7 +7,7 @@ using UnityEngine;
 //****************************************
 public class Bullet : MonoBehaviour
 {
-    public float impactForce;//冲击力
+    private float impactForce;//冲击力
 
     private BoxCollider cd;
     private Rigidbody rb;
@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
     private float flyDistance;//飞行射程
     private bool bulletDisabled;//子弹是否处于禁用状态
 
-    private void Awake()
+    protected virtual void Awake()
     {
         cd = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         trailRenderer = GetComponent<TrailRenderer>();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         FadeTrailIfNeeded();
         DisableBulletIfNeeded();
@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// 必要时回收子弹进对象池
     /// </summary>
-    private void ReturnTOPoolIfNeeded()
+    protected void ReturnTOPoolIfNeeded()
     {
         if (trailRenderer.time < 0) ReturnBulletToPool();
     }
@@ -46,7 +46,7 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// 必要时禁用子弹
     /// </summary>
-    private void DisableBulletIfNeeded()
+    protected void DisableBulletIfNeeded()
     {
         if (Vector3.Distance(startPosition, transform.position) > flyDistance && !bulletDisabled)
         {
@@ -59,7 +59,7 @@ public class Bullet : MonoBehaviour
     /// <summary>
     /// 必要时淡化弹道轨迹
     /// </summary>
-    private void FadeTrailIfNeeded()
+    protected void FadeTrailIfNeeded()
     {
         if (Vector3.Distance(startPosition, transform.position) > flyDistance - 1.5f)
         {
@@ -71,7 +71,7 @@ public class Bullet : MonoBehaviour
     /// 子弹设置
     /// </summary>
     /// <param name="flyDistance">飞行距离</param>
-    public void BulletSetUp(float flyDistance, float impactForce)
+    public void BulletSetUp(float flyDistance = 100, float impactForce = 100)
     {
         this.impactForce = impactForce;
 
@@ -85,7 +85,7 @@ public class Bullet : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    protected virtual void OnCollisionEnter(Collision collision)
     {
         CreateImpactFX(collision);
         ReturnBulletToPool();
@@ -108,13 +108,13 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    private void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(gameObject);
+    protected void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(gameObject);
 
     /// <summary>
     /// 生成受击特效
     /// </summary>
     /// <param name="collision"></param>
-    private void CreateImpactFX(Collision collision)
+    protected void CreateImpactFX(Collision collision)
     {
         //同时接触多个点位时，只获取第一个接触点生成受击特效
         if (collision.contacts.Length > 0)

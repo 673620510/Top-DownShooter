@@ -21,7 +21,10 @@ public class AttackState_Melee : EnemyState
     {
         base.Enter();
 
+        enemy.UpdateAttackData();
         enemy.EnableWeaponModel(true);
+        enemy.visuals.EnableWeaponTrail(true);
+
         attackMoveSpeed = enemy.attackData.moveSpeed;
         enemy.anim.SetFloat("AttackAnimationSpeed", enemy.attackData.animationSpeed);
         enemy.anim.SetFloat("AttackIndex", enemy.attackData.attackIndex);
@@ -68,6 +71,8 @@ public class AttackState_Melee : EnemyState
         base.Exit();
 
         SetupNextAttack();
+
+        enemy.visuals.EnableWeaponTrail(false);
     }
     /// <summary>
     /// 设置下一个攻击
@@ -85,9 +90,9 @@ public class AttackState_Melee : EnemyState
     /// 更新攻击数据
     /// </summary>
     /// <returns></returns>
-    private AttackData UpdateAttackData()
+    private AttackData_EnemyMelee UpdateAttackData()
     {
-        List<AttackData> validAttacks = new List<AttackData>(enemy.attackList);
+        List<AttackData_EnemyMelee> validAttacks = new List<AttackData_EnemyMelee>(enemy.attackList);
 
         if (PlayerClose())
         {

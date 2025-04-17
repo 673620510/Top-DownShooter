@@ -8,15 +8,19 @@ using UnityEngine;
 public enum Enemy_MeleeWeaponType
 {
     OneHand,//单手武器
-    Throw//投掷武器
+    Throw,//投掷武器
+    Unarmed//无武器
+}
+public enum Enemy_RangeWeaponType
+{
+    Pistol,//手枪
+    Revolver,//左轮
+    Shotgun,//霰弹枪
+    AutoRifle,//自动步枪
+    Rifle//步枪
 }
 public class Enemy_Visuals : MonoBehaviour
 {
-    [Header("Weapon model 武器模型")]
-    [SerializeField]
-    private Enemy_WeaponModel[] weaponModels;//武器模型
-    [SerializeField]
-    private Enemy_MeleeWeaponType weaponType;//武器类型
     public GameObject currentWeaponModel { get; private set; }//当前武器模型
 
     [Header("Corruption visuals 腐化视觉效果")]
@@ -31,19 +35,18 @@ public class Enemy_Visuals : MonoBehaviour
     [SerializeField]
     private SkinnedMeshRenderer skinnedMeshRenderer;//渲染器
 
-    private void Awake()
-    {
-        weaponModels = GetComponentsInChildren<Enemy_WeaponModel>(true);
-
-        CollectCorruptionCrystals();
-    }
-
-
     private void Start()
     {
         //InvokeRepeating(nameof(SetupLook), 0, 1.5f);//每秒调用一次        
     }
-    public void SetupWeaponType(Enemy_MeleeWeaponType type) => weaponType = type;
+    /// <summary>
+    /// 启用武器拖尾
+    /// </summary>
+    /// <param name="enable"></param>
+    public void EnableWeaponTrail(bool enable)
+    {
+        currentWeaponModel.GetComponent<Enemy_WeaponModel>()?.EnableTrailEffect(enable);
+    }
     /// <summary>
     /// 设置外观
     /// </summary>
@@ -52,6 +55,7 @@ public class Enemy_Visuals : MonoBehaviour
         SetupRandomColor();
         SetupRandomWeapon();
         SetupRandomCorrution();
+        EnableWeaponTrail(false);
     }
     /// <summary>
     /// 设置随机腐化水晶
@@ -59,6 +63,7 @@ public class Enemy_Visuals : MonoBehaviour
     private void SetupRandomCorrution()
     {
         List<int> avalibleIndexs = new List<int>();
+        corruptionCrystals = CollectCorruptionCrystals();
 
         for (int i = 0; i < corruptionCrystals.Length; i++)
         {
@@ -83,26 +88,20 @@ public class Enemy_Visuals : MonoBehaviour
     /// </summary>
     private void SetupRandomWeapon()
     {
-        foreach (var weaponModel in weaponModels)
-        {
-            weaponModel.gameObject.SetActive(false);
-        }
+        bool thisEnemyIsMelee = GetComponent<Enemy_Melee>() != null;
+        bool thisEnemyIsRange = GetComponent<Enemy_Range>() != null;
 
-        List<Enemy_WeaponModel> filteredWeaponModels = new List<Enemy_WeaponModel>();
+        if (thisEnemyIsMelee) currentWeaponModel = FindMeleeWeaponModel();
 
-        foreach (var weaponmodel in weaponModels)
-        {
-            if (weaponmodel.weaponType == weaponType)
-            {
-                filteredWeaponModels.Add(weaponmodel);
-            }
-        }
+        if (thisEnemyIsRange) currentWeaponModel = FindRangeWeaponModel();
 
-        int randomIndex = Random.Range(0, filteredWeaponModels.Count);
+        if (currentWeaponModel == null) return;
 
-        currentWeaponModel = filteredWeaponModels[randomIndex].gameObject;
         currentWeaponModel.SetActive(true);
+
+        OverrideAnimatorControllerIfCan();
     }
+
     /// <summary>
     /// 设置随机颜色
     /// </summary>
@@ -116,17 +115,62 @@ public class Enemy_Visuals : MonoBehaviour
 
         skinnedMeshRenderer.material = newMat;
     }
+    private GameObject FindRangeWeaponModel()
+    {
+        Enemy_RangeWeaponModel[] weaponModels = GetComponentsInChildren<Enemy_RangeWeaponModel>(true);
+        Enemy_RangeWeaponType weaponType = GetComponent<Enemy_Range>().weaponType;
+
+        foreach (var weaponModel in weaponModels)
+        {
+            if (weaponModel.weaponType == weaponType)
+            {
+                return weaponModel.gameObject;
+            }
+        }
+        return null;
+    }
+
+    private GameObject FindMeleeWeaponModel()
+    {
+        Enemy_WeaponModel[] weaponModels = GetComponentsInChildren<Enemy_WeaponModel>(true);
+        Enemy_MeleeWeaponType weaponType = GetComponent<Enemy_Melee>().weaponType;
+        List<Enemy_WeaponModel> filteredWeaponModels = new List<Enemy_WeaponModel>();
+
+        foreach (var weaponmodel in weaponModels)
+        {
+            if (weaponmodel.weaponType == weaponType)
+            {
+                filteredWeaponModels.Add(weaponmodel);
+            }
+        }
+
+        int randomIndex = Random.Range(0, filteredWeaponModels.Count);
+
+        return currentWeaponModel = filteredWeaponModels[randomIndex].gameObject;
+    }
+
     /// <summary>
     /// 获取角色身上所有腐化水晶
     /// </summary>
-    private void CollectCorruptionCrystals()
+    private GameObject[] CollectCorruptionCrystals()
     {
         Enemy_CorruptionCrystal[] crystalComponents = GetComponentsInChildren<Enemy_CorruptionCrystal>(true);
-        corruptionCrystals = new GameObject[crystalComponents.Length];
+        GameObject[] corruptionCrystals = new GameObject[crystalComponents.Length];
 
         for (int i = 0; i < crystalComponents.Length; i++)
         {
             corruptionCrystals[i] = crystalComponents[i].gameObject;
+        }
+        return corruptionCrystals;
+    }
+
+    private void OverrideAnimatorControllerIfCan()
+    {
+        AnimatorOverrideController overrideController = currentWeaponModel.GetComponent<Enemy_WeaponModel>()?.overrideController;
+
+        if (overrideController != null)
+        {
+            GetComponentInChildren<Animator>().runtimeAnimatorController = overrideController;
         }
     }
 }

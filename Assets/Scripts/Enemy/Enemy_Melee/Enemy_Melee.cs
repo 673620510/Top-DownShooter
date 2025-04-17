@@ -7,7 +7,7 @@ using UnityEngine;
 //功能说明：近战敌人类
 //****************************************
 [Serializable]
-public struct AttackData
+public struct AttackData_EnemyMelee
 {
     public string attackName;//攻击名称
     public float attackRange;//攻击范围
@@ -31,8 +31,6 @@ public enum EnemyMelee_Type
 }
 public class Enemy_Melee : Enemy
 {
-    private Enemy_Visuals visuals;//敌人视觉效果类
-
     #region States 全部状态
     public IdleState_Melee idleState { get; private set; }
     public MoveState_Melee moveState { get; private set; }
@@ -45,6 +43,7 @@ public class Enemy_Melee : Enemy
 
     [Header("Enemy Setting 敌人设置")]
     public EnemyMelee_Type meleeType;//敌人类型
+    public Enemy_MeleeWeaponType weaponType;//武器类型
     public Transform shieldTransform;//盾牌位置
     public float dodgeCooldown;//翻滚冷却时间
     private float lastTimeDodge = -10;//上次翻滚时间
@@ -58,14 +57,12 @@ public class Enemy_Melee : Enemy
     public Transform axeStartPoint;//斧头投掷起始位置
 
     [Header("Attack Data 攻击数据")]
-    public AttackData attackData;//攻击数据
-    public List<AttackData> attackList;//攻击列表
+    public AttackData_EnemyMelee attackData;//攻击数据
+    public List<AttackData_EnemyMelee> attackList;//攻击列表
 
     protected override void Awake()
     {
         base.Awake();
-
-        visuals = GetComponent<Enemy_Visuals>();//获取敌人视觉效果类
 
         idleState = new IdleState_Melee(this, stateMachine, "Idle");
         moveState = new MoveState_Melee(this, stateMachine, "Move");
@@ -82,9 +79,11 @@ public class Enemy_Melee : Enemy
 
         stateMachine.Initialize(idleState);
 
-        InitializeSpeciality();
+        InitializePerk();
 
         visuals.SetupLook();
+
+        UpdateAttackData();
     }
 
     protected override void Update()
@@ -92,11 +91,6 @@ public class Enemy_Melee : Enemy
         base.Update();
 
         stateMachine.currentState.Update();
-
-        if (ShouldEnterBattleMode())
-        {
-            EnterBattleMode();
-        }
     }
     protected override void OnDrawGizmos()
     {
@@ -121,20 +115,38 @@ public class Enemy_Melee : Enemy
         EnableWeaponModel(false);
     }
     /// <summary>
-    /// 初始化敌人类型
+    /// 更新攻击数据
     /// </summary>
-    private void InitializeSpeciality()
+    public void UpdateAttackData()
+    {
+        Enemy_WeaponModel currentWeapon = visuals.currentWeaponModel.GetComponent<Enemy_WeaponModel>();
+
+        if (currentWeapon.weaponData != null)
+        {
+            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
+            turnSpeed = currentWeapon.weaponData.turnSpeed;
+        }
+    }
+    /// <summary>
+    /// 初始化特殊类型
+    /// </summary>
+    private void InitializePerk()
     {
         if (meleeType == EnemyMelee_Type.AxeThrow)
         {
-            visuals.SetupWeaponType(Enemy_MeleeWeaponType.Throw);
+            weaponType = Enemy_MeleeWeaponType.Throw;
         }
 
         if (meleeType == EnemyMelee_Type.Shield)
         {
             anim.SetFloat("ChaseIndex", 1);
             shieldTransform.gameObject.SetActive(true);
-            visuals.SetupWeaponType(Enemy_MeleeWeaponType.OneHand);
+            weaponType = Enemy_MeleeWeaponType.OneHand;
+        }
+
+        if (meleeType == EnemyMelee_Type.Dodge)
+        {
+            weaponType = Enemy_MeleeWeaponType.Unarmed;
         }
     }
     /// <summary>
@@ -157,11 +169,6 @@ public class Enemy_Melee : Enemy
     {
         visuals.currentWeaponModel.gameObject.SetActive(true);
     }
-    /// <summary>
-    /// 玩家是否在攻击范围内
-    /// </summary>
-    /// <returns></returns>
-    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackData.attackRange;
     /// <summary>
     /// 触发翻滚
     /// </summary>
@@ -214,4 +221,9 @@ public class Enemy_Melee : Enemy
         Debug.LogWarning("Animation clip not found: " + clipName);
         return 0;
     }
+    /// <summary>
+    /// 玩家是否在攻击范围内
+    /// </summary>
+    /// <returns></returns>
+    public bool PlayerInAttackRange() => Vector3.Distance(transform.position, player.position) < attackData.attackRange;
 }
