@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EnemyStateMachine
 {
-    public EnemyState currentState { get; private set; }
+    public EnemyState currentState { get; private set; }//当前状态
     /// <summary>
     /// 初始化状态
     /// </summary>

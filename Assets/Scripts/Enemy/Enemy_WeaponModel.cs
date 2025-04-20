@@ -7,7 +7,7 @@ using UnityEngine;
 public class Enemy_WeaponModel : MonoBehaviour
 {
     public Enemy_MeleeWeaponType weaponType;//武器类型
-    public AnimatorOverrideController overrideController;
+    public AnimatorOverrideController overrideController;//动画覆盖控制器
     public Enemy_MeleeWeaponData weaponData;//武器数据
 
     [SerializeField]

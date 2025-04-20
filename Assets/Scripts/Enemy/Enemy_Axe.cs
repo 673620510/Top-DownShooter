@@ -7,16 +7,16 @@ using UnityEngine;
 public class Enemy_Axe : MonoBehaviour
 {
     [SerializeField]
-    private GameObject impactFx;
+    private GameObject impactFx;//命中特效
     [SerializeField]
     private Rigidbody rb;
     [SerializeField]
-    private Transform axeVisual;
+    private Transform axeVisual;//斧头视觉效果
 
-    private Vector3 direction;
+    private Vector3 direction;//投掷方向
     private Transform player;
-    private float flySpeed;
-    private float rotationSpeed;
+    private float flySpeed;//飞行速度
+    private float rotationSpeed;//旋转速度
     private float timer = 1;
 
     private void Update()
@@ -46,6 +46,12 @@ public class Enemy_Axe : MonoBehaviour
             ObjectPool.instance.ReturnObject(newFx, 1);
         }
     }
+    /// <summary>
+    /// 斧头设置
+    /// </summary>
+    /// <param name="flySpeed"></param>
+    /// <param name="player"></param>
+    /// <param name="timer"></param>
     public void AxeSetup(float flySpeed, Transform player, float timer)
     {
         rotationSpeed = 1600;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：远程敌人移动状态类
 //****************************************
 public class MoveState_Range : EnemyState
 {
@@ -17,7 +17,7 @@ public class MoveState_Range : EnemyState
     {
         base.Enter();
 
-        enemy.agent.speed = enemy.moveSpeed;
+        enemy.agent.speed = enemy.walkSpeed;
 
         destination = enemy.GetPatrolDestination();
         enemy.agent.SetDestination(destination);

@@ -9,7 +9,7 @@ public class DeadState_Melee : EnemyState
     private Enemy_Melee enemy;
     private Enemy_Ragdoll ragdoll;
 
-    private bool interactionDisabled;
+    private bool interactionDisabled;//是否禁用碰撞体
 
     public DeadState_Melee(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {

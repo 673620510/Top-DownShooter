@@ -84,7 +84,10 @@ public class AttackState_Melee : EnemyState
         enemy.anim.SetFloat("RecoveryIndex", recoveryIndex);
         enemy.attackData = UpdateAttackData();
     }
-
+    /// <summary>
+    /// 判断玩家是否在攻击范围内
+    /// </summary>
+    /// <returns></returns>
     private bool PlayerClose() => Vector3.Distance(enemy.transform.position, enemy.player.position) <= 1;
     /// <summary>
     /// 更新攻击数据

@@ -3,14 +3,14 @@ using UnityEngine;
 public class Pickup_Weapon : Interactable
 {
     [SerializeField] 
-    private Weapon_Data weaponData;
+    private Weapon_Data weaponData;//武器数据
     [SerializeField]
-    private Weapon weapon;
+    private Weapon weapon;//武器
 
     [SerializeField]
-    private BackupWeaponModel[] models;
+    private BackupWeaponModel[] models;//武器模型
 
-    private bool oldWeapon;
+    private bool oldWeapon;//是否旧武器
 
     private void Start()
     {

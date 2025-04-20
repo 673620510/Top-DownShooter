@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 //****************************************
 //创建人：逸龙
@@ -34,6 +35,16 @@ public class Enemy_Visuals : MonoBehaviour
     private Texture[] colorTextures;//颜色贴图
     [SerializeField]
     private SkinnedMeshRenderer skinnedMeshRenderer;//渲染器
+
+    [Header("Rig references 绑定参考")]
+    [SerializeField]
+    private Transform leftHandIK;//左手IK
+    [SerializeField]
+    private Transform leftElbowIK;//左手肘部IK
+    [SerializeField]
+    private TwoBoneIKConstraint leftHandIKConstraint;//左手IK约束
+    [SerializeField]
+    private MultiAimConstraint weaponAim;//武器瞄准约束
 
     private void Start()
     {
@@ -115,6 +126,10 @@ public class Enemy_Visuals : MonoBehaviour
 
         skinnedMeshRenderer.material = newMat;
     }
+    /// <summary>
+    /// 查找远程武器模型
+    /// </summary>
+    /// <returns></returns>
     private GameObject FindRangeWeaponModel()
     {
         Enemy_RangeWeaponModel[] weaponModels = GetComponentsInChildren<Enemy_RangeWeaponModel>(true);
@@ -124,12 +139,17 @@ public class Enemy_Visuals : MonoBehaviour
         {
             if (weaponModel.weaponType == weaponType)
             {
+                SwitchAnimationLayer((int)(weaponModel.weaponHoldType));
+                SetupLeftHandIK(weaponModel.leftHandTarget, weaponModel.leftElbowTarget);
                 return weaponModel.gameObject;
             }
         }
         return null;
     }
-
+    /// <summary>
+    /// 查找近战武器模型
+    /// </summary>
+    /// <returns></returns>
     private GameObject FindMeleeWeaponModel()
     {
         Enemy_WeaponModel[] weaponModels = GetComponentsInChildren<Enemy_WeaponModel>(true);
@@ -163,7 +183,9 @@ public class Enemy_Visuals : MonoBehaviour
         }
         return corruptionCrystals;
     }
-
+    /// <summary>
+    /// 覆盖动画控制器
+    /// </summary>
     private void OverrideAnimatorControllerIfCan()
     {
         AnimatorOverrideController overrideController = currentWeaponModel.GetComponent<Enemy_WeaponModel>()?.overrideController;
@@ -172,5 +194,41 @@ public class Enemy_Visuals : MonoBehaviour
         {
             GetComponentInChildren<Animator>().runtimeAnimatorController = overrideController;
         }
+    }
+    /// <summary>
+    /// 切换动画层级
+    /// </summary>
+    /// <param name="layerIndex"></param>
+    private void SwitchAnimationLayer(int layerIndex)
+    {
+        Animator anim = GetComponentInChildren<Animator>();
+        for (int i = 1; i < anim.layerCount; i++)
+        {
+            anim.SetLayerWeight(i, 0);
+        }
+        anim.SetLayerWeight(layerIndex, 1);
+    }
+    /// <summary>
+    /// 启用或禁用IK
+    /// </summary>
+    /// <param name="enable"></param>
+    public void EnableIK(bool enableLeftHand, bool enableAim)
+    {
+        //rig.weight = enable ? 1 : 0;
+        leftHandIKConstraint.weight = enableLeftHand ? 1 : 0;
+        weaponAim.weight = enableAim ? 1 : 0;
+    }
+    /// <summary>
+    /// 设置左手IK
+    /// </summary>
+    /// <param name="leftHandTarget"></param>
+    /// <param name="leftElbowTarget"></param>
+    private void  SetupLeftHandIK(Transform leftHandTarget, Transform leftElbowTarget)
+    {
+        leftHandIK.localPosition = leftHandTarget.localPosition;
+        leftHandIK.localRotation = leftHandTarget.localRotation;
+
+        leftElbowIK.localPosition = leftElbowTarget.localPosition;
+        leftElbowIK.localRotation = leftElbowTarget.localRotation;
     }
 }

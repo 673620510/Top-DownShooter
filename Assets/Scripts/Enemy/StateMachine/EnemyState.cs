@@ -7,13 +7,13 @@ using UnityEngine.AI;
 //****************************************
 public class EnemyState
 {
-    protected Enemy enemyBase;
-    protected EnemyStateMachine stateMachine;
+    protected Enemy enemyBase;//敌人基类
+    protected EnemyStateMachine stateMachine;//状态机
 
-    protected string animBoolName;
-    protected float stateTimer;
+    protected string animBoolName;//动画参数名称
+    protected float stateTimer;//状态计时器
 
-    protected bool triggerCalled;
+    protected bool triggerCalled;//是否触发完动画事件
 
     public EnemyState(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName)
     {
@@ -21,23 +21,36 @@ public class EnemyState
         this.stateMachine = stateMachine;
         this.animBoolName = animBoolName;
     }
-
+    /// <summary>
+    /// 进入状态
+    /// </summary>
     public virtual void Enter()
     {
         enemyBase.anim.SetBool(animBoolName, true);
 
         triggerCalled = false;
     }
+    /// <summary>
+    /// 更新状态
+    /// </summary>
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
     }
+    /// <summary>
+    /// 退出状态
+    /// </summary>
     public virtual void Exit()
     {
         enemyBase.anim.SetBool(animBoolName, false);
     }
-
+    /// <summary>
+    /// 动画事件触发
+    /// </summary>
     public void AnimationTrigger() => triggerCalled = true;
+    /// <summary>
+    /// 特殊能力触发
+    /// </summary>
     public virtual void AbilityTrigger() { }
 
     /// <summary>

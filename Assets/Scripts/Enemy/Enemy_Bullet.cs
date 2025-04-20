@@ -2,7 +2,7 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：敌人子弹类
 //****************************************
 public class Enemy_Bullet : Bullet
 {
@@ -12,10 +12,5 @@ public class Enemy_Bullet : Bullet
         ReturnBulletToPool();
 
         Player player = collision.gameObject.GetComponentInParent<Player>();
-
-        if (player != null)
-        {
-            
-        }
     }
 }

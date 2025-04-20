@@ -6,8 +6,8 @@ using UnityEngine;
 /// </summary>
 public enum AmmoBoxType
 {
-    smallBox,
-    bigBox
+    smallBox,//小弹药箱
+    bigBox//大弹药箱
 }
 
 [Serializable]
@@ -15,9 +15,9 @@ public struct AmmoData//弹药数据
 {
     public WeaponType weaponType;//武器类型
     [Range(10, 100)]
-    public int minAmount;
+    public int minAmount;//最小弹药数量
     [Range(10, 100)]
-    public int maxAmount;
+    public int maxAmount;//最大弹药数量
 }
 
 public class Pickup_Ammo : Interactable
@@ -37,7 +37,6 @@ public class Pickup_Ammo : Interactable
     {
         SetupBoxModel();
     }
-
     public override void Interaction()
     {
         base.Interaction();
@@ -54,6 +53,11 @@ public class Pickup_Ammo : Interactable
 
         ObjectPool.instance.ReturnObject(gameObject);
     }
+    /// <summary>
+    /// 获取弹药数量
+    /// </summary>
+    /// <param name="ammoData"></param>
+    /// <returns></returns>
     private int GetBulltetAmount(AmmoData ammoData)
     {
         float min = Mathf.Min(ammoData.minAmount, ammoData.maxAmount);

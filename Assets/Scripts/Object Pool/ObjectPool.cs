@@ -16,9 +16,9 @@ public class ObjectPool : MonoBehaviour
 
     [Header("To Initialize")]
     [SerializeField]
-    private GameObject weaponPickup;
+    private GameObject weaponPickup;//武器拾取物体
     [SerializeField]
-    private GameObject ammoPickup;
+    private GameObject ammoPickup;//弹药拾取物体
     private void Awake()
     {
         if (instance == null)

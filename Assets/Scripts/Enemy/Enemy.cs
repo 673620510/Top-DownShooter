@@ -16,8 +16,8 @@ public class Enemy : MonoBehaviour
     public float aggresionRange;//侵略范围
 
     [Header("Move data 移动数据")]
-    public float moveSpeed;//移动速度
-    public float chaseSpeed;//追击速度
+    public float walkSpeed = 1.5f;//移动速度
+    public float runSpeed = 3;//追击速度\
     public float turnSpeed;//转向速度
     private bool manualMovement;//手动移动
     private bool manualRotation;//手动转向
@@ -77,9 +77,7 @@ public class Enemy : MonoBehaviour
     /// <returns></returns>
     protected bool ShouldEnterBattleMode()
     {
-        bool inAggresionRange = Vector3.Distance(transform.position, player.position) < aggresionRange;
-
-        if (inAggresionRange && !inBattleMode)
+        if (IsPlayerInAgrresionRange() && !inBattleMode)
         {
             EnterBattleMode();
             return true;
@@ -185,4 +183,5 @@ public class Enemy : MonoBehaviour
         }
     }
     #endregion
+    public bool IsPlayerInAgrresionRange() => Vector3.Distance(transform.position, player.position) < aggresionRange;
 }
