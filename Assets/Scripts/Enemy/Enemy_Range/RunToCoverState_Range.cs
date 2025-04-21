@@ -9,6 +9,7 @@ public class RunToCoverState_Range : EnemyState
     private Enemy_Range enemy;
     private Vector3 destination;
 
+    public float lastTimeTookCover { get; private set; }//上次掩体时间
     public RunToCoverState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Range;
@@ -42,5 +43,7 @@ public class RunToCoverState_Range : EnemyState
     public override void Exit()
     {
         base.Exit();
+
+        lastTimeTookCover = Time.time;
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine;
 //****************************************
 public class Player : MonoBehaviour
 {
+    public Transform playerBody;
+
     public PlayerControls controls {  get; private set; }
     public PlayerAim aim {  get; private set; }
     public PlayerMovement movement { get; private set; }

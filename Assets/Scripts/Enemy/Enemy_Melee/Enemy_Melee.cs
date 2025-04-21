@@ -130,7 +130,7 @@ public class Enemy_Melee : Enemy
     /// <summary>
     /// 初始化特殊类型
     /// </summary>
-    private void InitializePerk()
+    protected override void InitializePerk()
     {
         if (meleeType == EnemyMelee_Type.AxeThrow)
         {

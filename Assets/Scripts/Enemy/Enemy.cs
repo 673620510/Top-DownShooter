@@ -60,6 +60,7 @@ public class Enemy : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, aggresionRange);
     }
+    protected virtual void InitializePerk() { }
     /// <summary>
     /// 面向目标
     /// </summary>

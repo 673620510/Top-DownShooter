@@ -11,17 +11,30 @@ public enum CoverPerk
     CanTakeCover,//可以使用掩体
     CanTakeAndChangeCover,//可以使用和更换掩体
 }
+public enum UnStoppablePerk
+{
+    Unavalible,//不可用
+    Unstoppable,//不可阻挡
+}
 public class Enemy_Range : Enemy
 {
     [Header("Enemy perks 敌人特性")]
     public CoverPerk coverPerk;//掩体特性
+    public UnStoppablePerk unStoppablePerk;//不可阻挡特性
+
+    [Header("Advance perks 进攻特性")]
+    public float advanceSpeed;//进攻速度
+    public float advanceStoppingDistance;//进攻停止距离
+    public float advanceDuration = 2.5f;//进攻时间
 
     [Header("Cover System 保护系统")]
+    public float minCoverTime = 2;//最小停留时间
     public float safeDistance;//安全距离
     public CoverPoint currentCover{ get; private set; }//当前掩体
     public CoverPoint lastCover{ get; private set; }//上一个掩体
 
     [Header("Weapon details 武器细节")]
+    public float attackDelay;//攻击延迟
     public Enemy_RangeWeaponType weaponType;//武器类型
     public Enemy_RangeWeaponData weaponData;//武器数据
     
@@ -29,6 +42,13 @@ public class Enemy_Range : Enemy
     public Transform gunPoint;//枪口
     public Transform weaponHolder;//武器架
     public GameObject bulletPrefab;//子弹预制体
+
+    [Header("Aim details")]
+    public float slowAim = 4;//慢速瞄准
+    public float fastAim = 20;//快速瞄准
+    public Transform aim;
+    public Transform playerBody;
+    public LayerMask whatToIgnore;//忽略层
 
     [SerializeField]
     List<Enemy_RangeWeaponData> avalibleWeaponData;//可用武器数据
@@ -54,6 +74,11 @@ public class Enemy_Range : Enemy
     protected override void Start()
     {
         base.Start();
+
+        playerBody = player.GetComponent<Player>().playerBody;
+        aim.parent = null;
+
+        InitializePerk();
 
         stateMachine.Initialize(idleState);
         visuals.SetupLook();
@@ -88,6 +113,18 @@ public class Enemy_Range : Enemy
         else
         {
             stateMachine.ChangeState(battleState);
+        }
+    }
+    protected override void InitializePerk()
+    {
+        if (IsUnStoppable())
+        {
+            advanceSpeed = 1;
+            anim.SetFloat("AdvanceAnimindex", 1);
+        }
+        else
+        {
+            anim.SetFloat("AdvanceAnimindex", 0);
         }
     }
     #region Cover System 掩体系统
@@ -170,7 +207,7 @@ public class Enemy_Range : Enemy
     public void FireSingleBullet()
     {
         anim.SetTrigger("Shoot");
-        Vector3 bulletDirection = (player.position + Vector3.up - gunPoint.position).normalized;
+        Vector3 bulletDirection = (aim.position - gunPoint.position).normalized;
 
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
         newBullet.transform.position = gunPoint.position;
@@ -211,4 +248,40 @@ public class Enemy_Range : Enemy
 
         gunPoint = visuals.currentWeaponModel.GetComponent<Enemy_RangeWeaponModel>().gunPoint;
     }
+    #region Enemy's aim region
+    public void UpdateAimPosition()
+    {
+        float aimSpeed = AimOnPlayer() ? fastAim : slowAim;
+        aim.position = Vector3.MoveTowards(aim.position, playerBody.position, aimSpeed * Time.deltaTime);
+    }
+    public bool AimOnPlayer()
+    {
+        float distanceAimToPlayer = Vector3.Distance(aim.position, player.position);
+
+        return distanceAimToPlayer < 2;
+    }
+    /// <summary>
+    /// 检查是否能看到玩家
+    /// </summary>
+    /// <returns></returns>
+    public bool IsSeeingPlayer()
+    {
+        Vector3 myPosition = transform.position + Vector3.up;
+        Vector3 directionToPlayer = playerBody.position - myPosition;
+
+        if (Physics.Raycast(myPosition, directionToPlayer, out RaycastHit hit, Mathf.Infinity, ~whatToIgnore))
+        {
+            Debug.DrawRay(myPosition, directionToPlayer, Color.red);
+            Debug.Log("Hit: " + hit.transform);
+            Debug.Log("player: " + player);
+            if (hit.transform == player)
+            {
+                UpdateAimPosition();
+                return true;
+            }
+        }
+        return false;
+    }
+    #endregion
+    public bool IsUnStoppable() => unStoppablePerk == UnStoppablePerk.Unstoppable;
 }
