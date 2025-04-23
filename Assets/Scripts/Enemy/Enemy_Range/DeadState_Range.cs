@@ -2,21 +2,21 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：近战敌人死亡状态类
+//功能说明：
 //****************************************
-public class DeadState_Melee : EnemyState
+public class DeadState_Range : EnemyState
 {
-    private Enemy_Melee enemy;
-
+    private Enemy_Range enemy;
     private bool interactionDisabled;//是否禁用碰撞体
-
-    public DeadState_Melee(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+    public DeadState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
-        enemy = enemyBase as Enemy_Melee;
+        enemy = enemyBase as Enemy_Range;
     }
+
     public override void Enter()
     {
         base.Enter();
+
 
         interactionDisabled = false;
 
@@ -27,13 +27,14 @@ public class DeadState_Melee : EnemyState
 
         stateTimer = 1.5f;
     }
+
     public override void Update()
     {
         base.Update();
 
-        //可选，敌人死亡后，禁用碰撞体
-        //DisableInteractionIfShould();
+        DisableInteractionIfShould();
     }
+
     public override void Exit()
     {
         base.Exit();

@@ -16,11 +16,27 @@ public enum UnStoppablePerk
     Unavalible,//不可用
     Unstoppable,//不可阻挡
 }
+public enum GrenadePerk
+{
+    Unavalible,//不可用
+    CanThrowGrenade,//可以投掷手雷
+}
 public class Enemy_Range : Enemy
 {
     [Header("Enemy perks 敌人特性")]
     public CoverPerk coverPerk;//掩体特性
     public UnStoppablePerk unStoppablePerk;//不可阻挡特性
+    public GrenadePerk grendPerk;//手雷特性
+
+    [Header("Grenade perks 手雷特性")]
+    public GameObject grenadePrefab;//手雷预制体
+    public float impactPower;//爆炸冲击力
+    public float explosionTimer = .75f;//爆炸时间
+    public float timeToTarget = 1.2f;//手雷到达目标点时间
+    public float grenadeCooldown;//手雷冷却时间
+    private float lastTimeGrenadeThrown = -10;//上次投掷手雷时间
+    [SerializeField]
+    private Transform grenadeStartPoint;//手雷起始点
 
     [Header("Advance perks 进攻特性")]
     public float advanceSpeed;//进攻速度
@@ -58,6 +74,8 @@ public class Enemy_Range : Enemy
     public BattleState_Range battleState { get; private set; }
     public RunToCoverState_Range runToCoverState { get; private set; }
     public AdvancePlayer_Range advancePlayerState { get; private set; }
+    public ThrowGrenadeState_Range throwGrenadeState { get; private set; }
+    public DeadState_Range deadState { get; private set; }
     #endregion
 
     protected override void Awake()
@@ -69,6 +87,8 @@ public class Enemy_Range : Enemy
         battleState = new BattleState_Range(this, stateMachine, "Battle");
         runToCoverState = new RunToCoverState_Range(this, stateMachine, "Run");
         advancePlayerState = new AdvancePlayer_Range(this, stateMachine, "Advance");
+        throwGrenadeState = new ThrowGrenadeState_Range(this, stateMachine, "ThrowGrenade");
+        deadState = new DeadState_Range(this, stateMachine, "Idle");
     }
 
     protected override void Start()
@@ -100,6 +120,15 @@ public class Enemy_Range : Enemy
             Gizmos.DrawLine(transform.position, player.transform.position);
         }
     }
+    public override void GetHit()
+    {
+        base.GetHit();
+
+        if (healthPoints <= 0 && stateMachine.currentState != deadState)
+        {
+            stateMachine.ChangeState(deadState);
+        }
+    }
     public override void EnterBattleMode()
     {
         if (inBattleMode) return;
@@ -126,6 +155,24 @@ public class Enemy_Range : Enemy
         {
             anim.SetFloat("AdvanceAnimindex", 0);
         }
+    }
+    public bool CanThrowGrenade()
+    {
+        if (grendPerk == GrenadePerk.Unavalible) return false;
+
+        if (Vector3.Distance(player.position, transform.position) < safeDistance) return false;
+
+        if (Time.time > grenadeCooldown + lastTimeGrenadeThrown) return true;
+
+        return false;
+    }
+    public void ThrowGrenade()
+    {
+        lastTimeGrenadeThrown = Time.time;
+        GameObject newGrenade = ObjectPool.instance.GetObject(grenadePrefab);
+        newGrenade.transform.position = grenadeStartPoint.position;
+        Enemy_Grenade newGrenadeScript = newGrenade.GetComponent<Enemy_Grenade>();
+        newGrenadeScript.SetupGrenade(player.position, timeToTarget, explosionTimer, impactPower);
     }
     #region Cover System 掩体系统
     /// <summary>

@@ -33,11 +33,13 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent agent { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
     public Enemy_Visuals visuals { get; private set; }//敌人视觉效果类
+    public Enemy_Ragdoll ragdoll { get; private set; }//敌人刚体类
 
     protected virtual void Awake()
     {
         stateMachine = new EnemyStateMachine();
 
+        ragdoll = GetComponent<Enemy_Ragdoll>();
         visuals = GetComponent<Enemy_Visuals>();//获取敌人视觉效果类
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();

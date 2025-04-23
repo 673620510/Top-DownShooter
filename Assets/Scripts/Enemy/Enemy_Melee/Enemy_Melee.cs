@@ -112,7 +112,7 @@ public class Enemy_Melee : Enemy
         base.AbilityTrigger();
 
         walkSpeed = walkSpeed * 0.6f;
-        EnableWeaponModel(false);
+        visuals.EnableWeaponModel(false);
     }
     /// <summary>
     /// 更新攻击数据
@@ -156,19 +156,12 @@ public class Enemy_Melee : Enemy
     {
         base.GetHit();
 
-        if (healthPoints <= 0)
+        if (healthPoints <= 0 && stateMachine.currentState != deadState)
         {
             stateMachine.ChangeState(deadState);
         }
     }
-    /// <summary>
-    /// 显示武器模型
-    /// </summary>
-    /// <param name="active"></param>
-    public void EnableWeaponModel(bool active)
-    {
-        visuals.currentWeaponModel.gameObject.SetActive(true);
-    }
+
     /// <summary>
     /// 触发翻滚
     /// </summary>

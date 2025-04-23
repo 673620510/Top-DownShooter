@@ -44,11 +44,28 @@ public class Enemy_Visuals : MonoBehaviour
     [SerializeField]
     private TwoBoneIKConstraint leftHandIKConstraint;//左手IK约束
     [SerializeField]
-    private MultiAimConstraint weaponAim;//武器瞄准约束
+    private MultiAimConstraint weaponAimConstraint;//武器瞄准约束
 
-    private void Start()
+    private float leftHandTargetWeight = 0;//左手目标权重
+    private float weaponAimTargetWeight = 0;//武器瞄准目标权重
+    private float rigChangeRate;//IK权重变化速率
+
+    private void Update()
     {
-        //InvokeRepeating(nameof(SetupLook), 0, 1.5f);//每秒调用一次        
+        leftHandIKConstraint.weight = AbjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
+        weaponAimConstraint.weight = AbjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
+    }
+    /// <summary>
+    /// 显示武器模型
+    /// </summary>
+    /// <param name="active"></param>
+    public void EnableWeaponModel(bool active)
+    {
+        currentWeaponModel.gameObject.SetActive(active);
+    }
+    public void EnableSeconnderyWeaponModel(bool active)
+    {
+        FindSeconderyWeaponModel()?.SetActive(active);
     }
     /// <summary>
     /// 启用武器拖尾
@@ -183,6 +200,19 @@ public class Enemy_Visuals : MonoBehaviour
         }
         return corruptionCrystals;
     }
+    private GameObject FindSeconderyWeaponModel()
+    {
+        Enemy_SeconderyRangeWeaponModel[] weaponModels = GetComponentsInChildren<Enemy_SeconderyRangeWeaponModel>(true);
+        Enemy_RangeWeaponType weaponType = GetComponentInParent<Enemy_Range>().weaponType;
+        foreach (var weaponModel in weaponModels)
+        {
+            if (weaponModel.weaponType == weaponType)
+            {
+                return weaponModel.gameObject;
+            }
+        }
+        return null;
+    }
     /// <summary>
     /// 覆盖动画控制器
     /// </summary>
@@ -209,14 +239,17 @@ public class Enemy_Visuals : MonoBehaviour
         anim.SetLayerWeight(layerIndex, 1);
     }
     /// <summary>
-    /// 启用或禁用IK
+    /// 启用IK
     /// </summary>
-    /// <param name="enable"></param>
-    public void EnableIK(bool enableLeftHand, bool enableAim)
+    /// <param name="enableLeftHand"></param>
+    /// <param name="enableAim"></param>
+    /// <param name="changeRate"></param>
+    public void EnableIK(bool enableLeftHand, bool enableAim, float changeRate = 10)
     {
+        rigChangeRate = changeRate;
         //rig.weight = enable ? 1 : 0;
-        leftHandIKConstraint.weight = enableLeftHand ? 1 : 0;
-        weaponAim.weight = enableAim ? 1 : 0;
+        leftHandTargetWeight = enableLeftHand ? 1 : 0;
+        weaponAimTargetWeight = enableAim ? 1 : 0;
     }
     /// <summary>
     /// 设置左手IK
@@ -230,5 +263,16 @@ public class Enemy_Visuals : MonoBehaviour
 
         leftElbowIK.localPosition = leftElbowTarget.localPosition;
         leftElbowIK.localRotation = leftElbowTarget.localRotation;
+    }
+    private float AbjustIKWeight(float currentWeight, float targetWeight)
+    {
+        if (Mathf.Abs(currentWeight - targetWeight) > 0.05f)
+        {
+            return Mathf.Lerp(currentWeight, targetWeight, rigChangeRate * Time.deltaTime);
+        }
+        else
+        {
+            return targetWeight;
+        }
     }
 }
