@@ -169,9 +169,14 @@ public class Enemy_Range : Enemy
     public void ThrowGrenade()
     {
         lastTimeGrenadeThrown = Time.time;
-        GameObject newGrenade = ObjectPool.instance.GetObject(grenadePrefab);
-        newGrenade.transform.position = grenadeStartPoint.position;
+        visuals.EnableGrenadeModel(false);
+        GameObject newGrenade = ObjectPool.instance.GetObject(grenadePrefab,grenadeStartPoint);
         Enemy_Grenade newGrenadeScript = newGrenade.GetComponent<Enemy_Grenade>();
+        if (stateMachine.currentState == deadState)
+        {
+            newGrenadeScript.SetupGrenade(transform.position, 1, explosionTimer, impactPower);
+            return;
+        }
         newGrenadeScript.SetupGrenade(player.position, timeToTarget, explosionTimer, impactPower);
     }
     #region Cover System 掩体系统
@@ -256,8 +261,7 @@ public class Enemy_Range : Enemy
         anim.SetTrigger("Shoot");
         Vector3 bulletDirection = (aim.position - gunPoint.position).normalized;
 
-        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab);
-        newBullet.transform.position = gunPoint.position;
+        GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, gunPoint);
         newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
 
         newBullet.GetComponent<Bullet>().BulletSetUp();

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 //****************************************
 //创建人：逸龙
@@ -79,6 +77,7 @@ public class Bullet : MonoBehaviour
         cd.enabled = true;
         meshRenderer.enabled = true;
 
+        trailRenderer.Clear();
         trailRenderer.time = .25f;
         startPosition = transform.position;
         this.flyDistance = flyDistance + .5f;//加上0.5的射线尾端长度（PlayerAim.laserTipLenght）
@@ -87,7 +86,7 @@ public class Bullet : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        CreateImpactFX(collision);
+        CreateImpactFX();
         ReturnBulletToPool();
 
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
@@ -114,19 +113,9 @@ public class Bullet : MonoBehaviour
     /// 生成受击特效
     /// </summary>
     /// <param name="collision"></param>
-    protected void CreateImpactFX(Collision collision)
+    protected void CreateImpactFX()
     {
-        //同时接触多个点位时，只获取第一个接触点生成受击特效
-        if (collision.contacts.Length > 0)
-        {
-            ContactPoint contact = collision.contacts[0];
-
-            GameObject newImpactFX = ObjectPool.instance.GetObject(bulletImpactFX);
-
-            newImpactFX.transform.position = contact.point;
-            newImpactFX.transform.rotation = Quaternion.LookRotation(contact.normal);
-
-            ObjectPool.instance.ReturnObject(newImpactFX, 1);
-        }
+        GameObject newImpactFX = ObjectPool.instance.GetObject(bulletImpactFX, transform);
+        ObjectPool.instance.ReturnObject(newImpactFX, 1);
     }
 }

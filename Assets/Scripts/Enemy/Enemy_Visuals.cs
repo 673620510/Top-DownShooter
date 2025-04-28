@@ -23,6 +23,7 @@ public enum Enemy_RangeWeaponType
 public class Enemy_Visuals : MonoBehaviour
 {
     public GameObject currentWeaponModel { get; private set; }//当前武器模型
+    public GameObject grenadeModel;//手雷模型
 
     [Header("Corruption visuals 腐化视觉效果")]
     [SerializeField]
@@ -55,6 +56,7 @@ public class Enemy_Visuals : MonoBehaviour
         leftHandIKConstraint.weight = AbjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
         weaponAimConstraint.weight = AbjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
     }
+    public void EnableGrenadeModel(bool active) => grenadeModel.SetActive(active);
     /// <summary>
     /// 显示武器模型
     /// </summary>

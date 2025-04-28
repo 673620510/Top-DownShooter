@@ -113,9 +113,9 @@ public class BattleState_Range : EnemyState
     private bool IsPlayerInClearSight()
     {
         Vector3 directionToPlayer = enemy.player.position - enemy.transform.position;
-        if (Physics.Raycast(enemy.transform.position,directionToPlayer,out RaycastHit hit))
+        if (Physics.Raycast(enemy.transform.position, directionToPlayer, out RaycastHit hit))
         {
-            return hit.collider.gameObject.GetComponentInParent<Player>();
+            return hit.transform.parent == enemy.player;
         }
         return false;
     }
@@ -131,13 +131,12 @@ public class BattleState_Range : EnemyState
         if (coverCheckTimer < 0)
         {
             coverCheckTimer = .5f;
-        }
-
-        if (ReadyToChangeCover())
-        {
-            if (enemy.CanGetCover())
+            if (ReadyToChangeCover() && ReadyToLeaveCover())
             {
-                stateMachine.ChangeState(enemy.runToCoverState);
+                if (enemy.CanGetCover())
+                {
+                    stateMachine.ChangeState(enemy.runToCoverState);
+                }
             }
         }
     }

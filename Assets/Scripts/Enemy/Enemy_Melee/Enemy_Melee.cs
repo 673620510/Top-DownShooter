@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 //****************************************
 //创建人：逸龙
@@ -180,6 +181,12 @@ public class Enemy_Melee : Enemy
             lastTimeDodge = Time.time;
             anim.SetTrigger("Dodge");
         }
+    }
+    public void ThrowAxe()
+    {
+        GameObject newAxe = ObjectPool.instance.GetObject(axePrefab, axeStartPoint);
+
+        newAxe.GetComponent<Enemy_Axe>().AxeSetup(axeFlySpeed, player, axeAimTimer);
     }
     /// <summary>
     /// 是否可以投掷斧头

@@ -36,15 +36,16 @@ public class ObjectPool : MonoBehaviour
     /// </summary>
     /// <param name="poolName">对象池名称</param>
     /// <returns></returns>
-    public GameObject GetObject(GameObject prefab)
+    public GameObject GetObject(GameObject prefab, Transform target)
     {
         if (!poolDictionary.ContainsKey(prefab)) InitializeNewPool(prefab);
 
         if (poolDictionary[prefab].Count == 0) CreateNewObject(prefab);
 
         GameObject objectToGet = poolDictionary[prefab].Dequeue();
-        objectToGet.SetActive(true);
+        objectToGet.transform.position = target.position;
         objectToGet.transform.parent = null;
+        objectToGet.SetActive(true);
 
         return objectToGet;
     }
