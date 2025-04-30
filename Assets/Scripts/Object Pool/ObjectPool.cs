@@ -49,6 +49,11 @@ public class ObjectPool : MonoBehaviour
 
         return objectToGet;
     }
+    /// <summary>
+    /// 延迟回收对象
+    /// </summary>
+    /// <param name="objectToReturn"></param>
+    /// <param name="delay"></param>
     public void ReturnObject(GameObject objectToReturn, float delay = 0) => StartCoroutine(DelayReturn(delay, objectToReturn));
     /// <summary>
     /// 延迟回收

@@ -35,7 +35,13 @@ public class Enemy_AnimationEvents : MonoBehaviour
     /// 特殊能力事件
     /// </summary>
     public void AbilityEvent() => enemy.AbilityTrigger();
+    /// <summary>
+    /// 改变IK状态
+    /// </summary>
     public void EnableIK() => enemy.visuals.EnableIK(true, true, 1f);
+    /// <summary>
+    /// 改变武器模型状态
+    /// </summary>
     public void EnableWeaponModel()
     {
         enemy.visuals.EnableWeaponModel(true);

@@ -56,6 +56,10 @@ public class Enemy_Visuals : MonoBehaviour
         leftHandIKConstraint.weight = AbjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
         weaponAimConstraint.weight = AbjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
     }
+    /// <summary>
+    /// 改变手雷模型的显示状态
+    /// </summary>
+    /// <param name="active"></param>
     public void EnableGrenadeModel(bool active) => grenadeModel.SetActive(active);
     /// <summary>
     /// 显示武器模型
@@ -65,6 +69,10 @@ public class Enemy_Visuals : MonoBehaviour
     {
         currentWeaponModel.gameObject.SetActive(active);
     }
+    /// <summary>
+    /// 改变备用武器模型的显示状态
+    /// </summary>
+    /// <param name="active"></param>
     public void EnableSeconnderyWeaponModel(bool active)
     {
         FindSeconderyWeaponModel()?.SetActive(active);
@@ -202,6 +210,10 @@ public class Enemy_Visuals : MonoBehaviour
         }
         return corruptionCrystals;
     }
+    /// <summary>
+    /// 查找备用武器模型
+    /// </summary>
+    /// <returns></returns>
     private GameObject FindSeconderyWeaponModel()
     {
         Enemy_SeconderyRangeWeaponModel[] weaponModels = GetComponentsInChildren<Enemy_SeconderyRangeWeaponModel>(true);
@@ -266,6 +278,12 @@ public class Enemy_Visuals : MonoBehaviour
         leftElbowIK.localPosition = leftElbowTarget.localPosition;
         leftElbowIK.localRotation = leftElbowTarget.localRotation;
     }
+    /// <summary>
+    /// 调整IK权重
+    /// </summary>
+    /// <param name="currentWeight"></param>
+    /// <param name="targetWeight"></param>
+    /// <returns></returns>
     private float AbjustIKWeight(float currentWeight, float targetWeight)
     {
         if (Mathf.Abs(currentWeight - targetWeight) > 0.05f)

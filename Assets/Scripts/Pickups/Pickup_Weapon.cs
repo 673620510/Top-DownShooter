@@ -18,6 +18,12 @@ public class Pickup_Weapon : Interactable
 
         SetupGameObject();
     }
+    public override void Interaction()
+    {
+        weaponController.PickupWeapon(weapon);
+
+        ObjectPool.instance.ReturnObject(gameObject);
+    }
     /// <summary>
     /// 设置拾取武器
     /// </summary>
@@ -55,11 +61,5 @@ public class Pickup_Weapon : Interactable
                 UpdateMeshAndMaterial(model.GetComponent<MeshRenderer>());
             }
         }
-    }
-    public override void Interaction()
-    {
-        weaponController.PickupWeapon(weapon);
-
-        ObjectPool.instance.ReturnObject(gameObject);
     }
 }

@@ -3,12 +3,12 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：敌人手雷类
 //****************************************
 public class Enemy_Grenade : MonoBehaviour
 {
     [SerializeField]
-    private GameObject explosionFX;
+    private GameObject explosionFX;//爆炸特效
     [SerializeField]
     private float impactRadius;//爆炸半径
     [SerializeField]
@@ -33,6 +33,9 @@ public class Enemy_Grenade : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, impactRadius);
     }
+    /// <summary>
+    /// 爆炸
+    /// </summary>
     private void Explode()
     {
         GameObject newFX = ObjectPool.instance.GetObject(explosionFX, transform);
@@ -51,7 +54,13 @@ public class Enemy_Grenade : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// 设置手雷
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="timeToTarget"></param>
+    /// <param name="countdown"></param>
+    /// <param name="impactPower"></param>
     public void SetupGrenade(Vector3 target, float timeToTarget, float countdown, float impactPower)
     {
         rb.linearVelocity = CalculateLaunchVelocity(target, timeToTarget);

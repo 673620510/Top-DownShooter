@@ -34,7 +34,9 @@ public class CameraManager : MonoBehaviour
     {
         UpdateCameraDistance();
     }
-
+    /// <summary>
+    /// 更新相机距离
+    /// </summary>
     private void UpdateCameraDistance()
     {
         if (!canChangeCameraDistance) return;

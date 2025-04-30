@@ -84,12 +84,20 @@ public class BattleState_Range : EnemyState
     {
         base.Exit();
     }
+    /// <summary>
+    /// 是否需要向玩家推进
+    /// </summary>
+    /// <returns></returns>
     private bool MustAdvancePlayer()
     {
         if (enemy.IsUnStoppable()) return false;
 
         return !enemy.IsPlayerInAgrresionRange() && ReadyToLeaveCover();
     }
+    /// <summary>
+    /// 是否准备无敌行走
+    /// </summary>
+    /// <returns></returns>
     private bool UnStoppableWalkReady()
     {
         float distanceToPlayer = Vector3.Distance(enemy.transform.position, enemy.player.position);
@@ -151,6 +159,10 @@ public class BattleState_Range : EnemyState
 
         return inDanger && advanceTimeIsOver;
     }
+    /// <summary>
+    /// 是否准备离开掩体
+    /// </summary>
+    /// <returns></returns>
     private bool ReadyToLeaveCover()
     {
         return Time.time > enemy.minCoverTime + enemy.runToCoverState.lastTimeTookCover;

@@ -156,6 +156,10 @@ public class Enemy_Range : Enemy
             anim.SetFloat("AdvanceAnimindex", 0);
         }
     }
+    /// <summary>
+    /// 检查是否可以投掷手雷
+    /// </summary>
+    /// <returns></returns>
     public bool CanThrowGrenade()
     {
         if (grendPerk == GrenadePerk.Unavalible) return false;
@@ -166,6 +170,9 @@ public class Enemy_Range : Enemy
 
         return false;
     }
+    /// <summary>
+    /// 投掷手雷
+    /// </summary>
     public void ThrowGrenade()
     {
         lastTimeGrenadeThrown = Time.time;
@@ -300,11 +307,18 @@ public class Enemy_Range : Enemy
         gunPoint = visuals.currentWeaponModel.GetComponent<Enemy_RangeWeaponModel>().gunPoint;
     }
     #region Enemy's aim region
+    /// <summary>
+    /// 更新瞄准位置
+    /// </summary>
     public void UpdateAimPosition()
     {
         float aimSpeed = AimOnPlayer() ? fastAim : slowAim;
         aim.position = Vector3.MoveTowards(aim.position, playerBody.position, aimSpeed * Time.deltaTime);
     }
+    /// <summary>
+    /// 检查是否瞄准玩家
+    /// </summary>
+    /// <returns></returns>
     public bool AimOnPlayer()
     {
         float distanceAimToPlayer = Vector3.Distance(aim.position, player.position);
@@ -334,5 +348,9 @@ public class Enemy_Range : Enemy
         return false;
     }
     #endregion
+    /// <summary>
+    /// 检查是否在攻击范围内
+    /// </summary>
+    /// <returns></returns>
     public bool IsUnStoppable() => unStoppablePerk == UnStoppablePerk.Unstoppable;
 }

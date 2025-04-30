@@ -6,6 +6,7 @@ using UnityEngine.AI;
 //创建人：逸龙
 //功能说明：敌人类
 //****************************************
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
@@ -62,6 +63,9 @@ public class Enemy : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, aggresionRange);
     }
+    /// <summary>
+    /// 初始化敌人特性
+    /// </summary>
     protected virtual void InitializePerk() { }
     /// <summary>
     /// 面向目标

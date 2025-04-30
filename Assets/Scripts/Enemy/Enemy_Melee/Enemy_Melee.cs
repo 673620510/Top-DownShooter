@@ -115,22 +115,6 @@ public class Enemy_Melee : Enemy
         walkSpeed = walkSpeed * 0.6f;
         visuals.EnableWeaponModel(false);
     }
-    /// <summary>
-    /// 更新攻击数据
-    /// </summary>
-    public void UpdateAttackData()
-    {
-        Enemy_WeaponModel currentWeapon = visuals.currentWeaponModel.GetComponent<Enemy_WeaponModel>();
-
-        if (currentWeapon.weaponData != null)
-        {
-            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
-            turnSpeed = currentWeapon.weaponData.turnSpeed;
-        }
-    }
-    /// <summary>
-    /// 初始化特殊类型
-    /// </summary>
     protected override void InitializePerk()
     {
         if (meleeType == EnemyMelee_Type.AxeThrow)
@@ -148,6 +132,19 @@ public class Enemy_Melee : Enemy
         if (meleeType == EnemyMelee_Type.Dodge)
         {
             weaponType = Enemy_MeleeWeaponType.Unarmed;
+        }
+    }
+    /// <summary>
+    /// 更新攻击数据
+    /// </summary>
+    public void UpdateAttackData()
+    {
+        Enemy_WeaponModel currentWeapon = visuals.currentWeaponModel.GetComponent<Enemy_WeaponModel>();
+
+        if (currentWeapon.weaponData != null)
+        {
+            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
+            turnSpeed = currentWeapon.weaponData.turnSpeed;
         }
     }
     /// <summary>
@@ -182,6 +179,9 @@ public class Enemy_Melee : Enemy
             anim.SetTrigger("Dodge");
         }
     }
+    /// <summary>
+    /// 投掷斧头
+    /// </summary>
     public void ThrowAxe()
     {
         GameObject newAxe = ObjectPool.instance.GetObject(axePrefab, axeStartPoint);
