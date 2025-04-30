@@ -25,12 +25,12 @@ public class Enemy_RangeWeaponData : ScriptableObject
     /// 获取子弹数量
     /// </summary>
     /// <returns></returns>
-    public int GetBulletsPerAttack() => Random.Range(minBulletsPerAttack, maxBulletsPerAttack);
+    public int GetBulletsPerAttack() => Random.Range(minBulletsPerAttack, maxBulletsPerAttack + 1);
     /// <summary>
     /// 获取武器冷却时间
     /// </summary>
     /// <returns></returns>
-    public float GetWeaponCooldown() => Random.Range(minWeaponCooldown, maxWeaponCooldown);
+    public float GetWeaponCooldown() => Random.Range(minWeaponCooldown, maxWeaponCooldown + 1);
     /// <summary>
     /// 应用武器扩撒
     /// </summary>

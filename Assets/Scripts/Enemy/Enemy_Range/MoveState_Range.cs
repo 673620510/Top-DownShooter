@@ -29,7 +29,7 @@ public class MoveState_Range : EnemyState
 
         enemy.FaceTarget(GetNextPatthPoint());
 
-        if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance + .05f)
+        if (enemy.agent.remainingDistance <= enemy.agent.stoppingDistance + .05f && !enemy.agent.pathPending)//agent.pathpending表示是否正在计算路径
         {
             stateMachine.ChangeState(enemy.idleState);
         }
