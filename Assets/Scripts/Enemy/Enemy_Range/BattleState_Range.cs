@@ -123,7 +123,10 @@ public class BattleState_Range : EnemyState
         Vector3 directionToPlayer = enemy.player.position - enemy.transform.position;
         if (Physics.Raycast(enemy.transform.position, directionToPlayer, out RaycastHit hit))
         {
-            return hit.transform.parent == enemy.player;
+            if (hit.transform == enemy.player || hit.transform.parent == enemy.player)
+            {
+                return true;   
+            }
         }
         return false;
     }

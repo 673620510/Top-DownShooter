@@ -688,6 +688,10 @@ MonoBehaviour:
   attackRange: 1.5
   jumpAttackCooldown: 5
   travelTimeToTarger: 1
+  minJumpDistanceRequired: 5
+  whatToIngore:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!195 &157799785
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3381,7 +3385,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.2
   m_Height: 1.3

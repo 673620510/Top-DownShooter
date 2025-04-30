@@ -11,6 +11,10 @@ public class Enemy_Boss : Enemy
     public float jumpAttackCooldown = 10;//跳跃攻击冷却时间
     private float lastTimeJumped;
     public float travelTimeToTarger = 1;//跳跃攻击到达目标的时间
+    public float minJumpDistanceRequired;
+    [Space]
+    [SerializeField]
+    private LayerMask whatToIngore;
     public IdleState_Boss idleState { get; private set; }
     public MoveState_Boss moveState { get; private set; }
     public AttackState_Boss attackState { get; private set; }
@@ -59,10 +63,42 @@ public class Enemy_Boss : Enemy
         base.OnDrawGizmos();
 
         Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        if (player != null)
+        {
+            Vector3 myPos = transform.position + new Vector3(0, 1.5f, 0);
+            Vector3 playerPos = player.position + Vector3.up;
+
+            Gizmos.color = Color.yellow;
+
+            Gizmos.DrawLine(myPos, playerPos);
+        }
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, minJumpDistanceRequired);
+    }
+    public bool IsPlayerInClearSight()
+    {
+        Vector3 myPos = transform.position + new Vector3(0, 1.5f, 0);
+        Vector3 playerPos = player.position + Vector3.up;
+        Vector3 directionToPlayer = (playerPos - myPos).normalized;
+
+        if (Physics.Raycast(myPos, directionToPlayer, out RaycastHit hit, 100, ~whatToIngore))
+        {
+            if (hit.transform == player || hit.transform.parent == player)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     public bool CanDoJumpAttack()
     {
-        if (Time.time > lastTimeJumped + jumpAttackCooldown)
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer < minJumpDistanceRequired) return false;
+
+        if (Time.time > lastTimeJumped + jumpAttackCooldown && IsPlayerInClearSight())
         {
             lastTimeJumped = Time.time;
             return true;

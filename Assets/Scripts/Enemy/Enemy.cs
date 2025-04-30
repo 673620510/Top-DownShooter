@@ -71,10 +71,14 @@ public class Enemy : MonoBehaviour
     /// 面向目标
     /// </summary>
     /// <param name="target"></param>
-    public void FaceTarget(Vector3 target)
+    public void FaceTarget(Vector3 target, float turnSpeed = 0)
     {
         Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
         Vector3 currentEulerAngels = transform.rotation.eulerAngles;
+        if (turnSpeed == 0)
+        {
+            turnSpeed = this.turnSpeed;
+        }
         float yRotation = Mathf.LerpAngle(currentEulerAngels.y, targetRotation.eulerAngles.y, turnSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Euler(currentEulerAngels.x, yRotation, currentEulerAngels.z);
     }
