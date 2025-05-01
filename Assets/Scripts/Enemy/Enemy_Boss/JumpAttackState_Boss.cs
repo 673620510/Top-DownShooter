@@ -51,5 +51,7 @@ public class JumpAttackState_Boss : EnemyState
     public override void Exit()
     {
         base.Exit();
+
+        enemy.SetJumpAttackOnCooldown();
     }
 }

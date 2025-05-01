@@ -6,7 +6,16 @@ using UnityEngine;
 //****************************************
 public class Enemy_Boss : Enemy
 {
+    [Header("Boss details")]
+    public float actionCooldown = 10;//动作冷却时间
     public float attackRange;//攻击范围
+    [Header("Ability")]
+    public ParticleSystem flamethrower;//喷火特效
+    public float abilityCooldown;//技能冷却时间
+    private float lastTimeUsedAbility;//上次使用技能的时间
+    public float flamethrowDuration;//喷火持续时间
+    public bool flamethrowActive { get; private set; }//喷火是否激活
+
     [Header("Jump attack")]
     public float jumpAttackCooldown = 10;//跳跃攻击冷却时间
     private float lastTimeJumped;
@@ -19,14 +28,20 @@ public class Enemy_Boss : Enemy
     public MoveState_Boss moveState { get; private set; }
     public AttackState_Boss attackState { get; private set; }
     public JumpAttackState_Boss jumpAttackState { get; private set; }
+    public AbilityState_Boss abilityState { get; private set; }
+
+    public Enemy_BossVisuals bossVisuals { get; private set; }
     protected override void Awake()
     {
         base.Awake();
+
+        bossVisuals = GetComponent<Enemy_BossVisuals>();
 
         idleState = new IdleState_Boss(this, stateMachine, "Idle");
         moveState = new MoveState_Boss(this, stateMachine, "Move");
         attackState = new AttackState_Boss(this, stateMachine, "Attack");
         jumpAttackState = new JumpAttackState_Boss(this, stateMachine, "JumpAttack");
+        abilityState = new AbilityState_Boss(this, stateMachine, "Ability");
     }
 
     protected override void Start()
@@ -39,6 +54,11 @@ public class Enemy_Boss : Enemy
     protected override void Update()
     {
         base.Update();
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            stateMachine.ChangeState(abilityState);
+        }
 
         stateMachine.currentState.Update();
 
@@ -77,6 +97,34 @@ public class Enemy_Boss : Enemy
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, minJumpDistanceRequired);
     }
+    public void ActivateFlamethrower(bool activate)
+    {
+        flamethrowActive = activate;
+        if (!activate)
+        {
+            flamethrower.Stop();
+            anim.SetTrigger("StopFlamethrower");
+            return;
+        }
+        var mainModule = flamethrower.main;
+        var extraModule = flamethrower.transform.GetChild(0).GetComponent<ParticleSystem>().main;
+
+        mainModule.duration = flamethrowDuration;
+        extraModule.duration = flamethrowDuration;
+
+        flamethrower.Clear();
+        flamethrower.Play();
+
+    }
+    public bool CanDoAbility()
+    {
+        if (Time.time > lastTimeUsedAbility + abilityCooldown)
+        {
+            return true;
+        }
+        return false;
+    }
+    public void SetAbilityOnCooldown() => lastTimeUsedAbility = Time.time;
     public bool IsPlayerInClearSight()
     {
         Vector3 myPos = transform.position + new Vector3(0, 1.5f, 0);
@@ -100,11 +148,11 @@ public class Enemy_Boss : Enemy
 
         if (Time.time > lastTimeJumped + jumpAttackCooldown && IsPlayerInClearSight())
         {
-            lastTimeJumped = Time.time;
             return true;
         }
         return false;
     }
+    public void SetJumpAttackOnCooldown() => lastTimeJumped = Time.time;
     /// <summary>
     /// 玩家是否在攻击范围内
     /// </summary>

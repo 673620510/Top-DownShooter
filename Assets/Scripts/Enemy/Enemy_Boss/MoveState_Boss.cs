@@ -8,6 +8,11 @@ public class MoveState_Boss : EnemyState
 {
     private Enemy_Boss enemy;
     private Vector3 destination;
+
+    private float actionTimer;
+    private float timeBeforeSpeedUp = 15;
+
+    private bool speedUpActivated;
     public MoveState_Boss(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Boss;
@@ -17,28 +22,35 @@ public class MoveState_Boss : EnemyState
     {
         base.Enter();
 
-        enemy.agent.speed = enemy.walkSpeed;
+        SpeedReset();
         enemy.agent.isStopped = false;
 
         destination = enemy.GetPatrolDestination();
         enemy.agent.SetDestination(destination);
+
+        actionTimer = enemy.actionCooldown;
     }
 
     public override void Update()
     {
         base.Update();
 
+        actionTimer -= Time.deltaTime;
         enemy.FaceTarget(GetNextPatthPoint());
 
         if (enemy.inBattleMode)
         {
-            Vector3 playerPos = enemy.player.position;
+            if (ShouldSpeedUp())
+            {
+                SpeedUp();
+            }
 
+            Vector3 playerPos = enemy.player.position;
             enemy.agent.SetDestination(playerPos);
 
-            if (enemy.CanDoJumpAttack())
+            if (actionTimer < 0)
             {
-                stateMachine.ChangeState(enemy.jumpAttackState);
+                PerformRandomAction();
             }
             else if (enemy.PlayerInAttackRange())
             {
@@ -57,5 +69,48 @@ public class MoveState_Boss : EnemyState
     public override void Exit()
     {
         base.Exit();
+    }
+
+    private void SpeedUp()
+    {
+        enemy.agent.speed = enemy.runSpeed;
+        enemy.anim.SetFloat("MoveAnimIndex", 1);
+        speedUpActivated = true;
+    }
+
+    private void SpeedReset()
+    {
+        speedUpActivated = false;
+        enemy.anim.SetFloat("MoveAnimIndex", 0);
+        enemy.agent.speed = enemy.walkSpeed;
+    }
+    private void PerformRandomAction()
+    {
+        actionTimer = enemy.actionCooldown;
+
+        if (Random.Range(0, 2) == 0)
+        {
+            if (enemy.CanDoAbility())
+            {
+                stateMachine.ChangeState(enemy.abilityState);
+            }
+        }
+        else
+        {
+            if (enemy.CanDoJumpAttack())
+            {
+                stateMachine.ChangeState(enemy.jumpAttackState);
+            }
+        }
+    }
+    private bool ShouldSpeedUp()
+    {
+        if (speedUpActivated) return false;
+
+        if (Time.time > enemy.attackState.lastTimeAttacked + timeBeforeSpeedUp)
+        {
+            return true;
+        }
+        return false;
     }
 }
