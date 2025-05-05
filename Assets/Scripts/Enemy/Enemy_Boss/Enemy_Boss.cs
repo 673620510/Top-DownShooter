@@ -4,17 +4,30 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：
 //****************************************
+public enum BossWeaponType
+{
+    Flamethrower,
+    Hummer
+}
 public class Enemy_Boss : Enemy
 {
     [Header("Boss details")]
+    public BossWeaponType bossWeaponType;
     public float actionCooldown = 10;//动作冷却时间
     public float attackRange;//攻击范围
+
     [Header("Ability")]
-    public ParticleSystem flamethrower;//喷火特效
+    public float minAbilityDistance;//技能最小距离
     public float abilityCooldown;//技能冷却时间
     private float lastTimeUsedAbility;//上次使用技能的时间
+
+    [Header("Flamethrower")]
+    public ParticleSystem flamethrower;//喷火特效
     public float flamethrowDuration;//喷火持续时间
     public bool flamethrowActive { get; private set; }//喷火是否激活
+
+    [Header("Hummer")]
+    public GameObject activationPrefab;//锤子特效预制体
 
     [Header("Jump attack")]
     public float jumpAttackCooldown = 10;//跳跃攻击冷却时间
@@ -24,16 +37,19 @@ public class Enemy_Boss : Enemy
     [Space]
     public float impactRadius = 2.5f;//冲击半径
     public float impactPower = 5;//冲击力
+    public Transform impactPoint;
     [SerializeField]
     private float upforceMultiplier = 10;//向上的冲击力
     [Space]
     [SerializeField]
     private LayerMask whatToIngore;
+
     public IdleState_Boss idleState { get; private set; }
     public MoveState_Boss moveState { get; private set; }
     public AttackState_Boss attackState { get; private set; }
     public JumpAttackState_Boss jumpAttackState { get; private set; }
     public AbilityState_Boss abilityState { get; private set; }
+    public DeadState_Boss deadState { get; private set; }
 
     public Enemy_BossVisuals bossVisuals { get; private set; }
     protected override void Awake()
@@ -47,6 +63,7 @@ public class Enemy_Boss : Enemy
         attackState = new AttackState_Boss(this, stateMachine, "Attack");
         jumpAttackState = new JumpAttackState_Boss(this, stateMachine, "JumpAttack");
         abilityState = new AbilityState_Boss(this, stateMachine, "Ability");
+        deadState = new DeadState_Boss(this, stateMachine, "Idle");
     }
 
     protected override void Start()
@@ -74,6 +91,8 @@ public class Enemy_Boss : Enemy
     }
     public override void EnterBattleMode()
     {
+        if (inBattleMode) return;
+
         base.EnterBattleMode();
 
         stateMachine.ChangeState(moveState);
@@ -82,7 +101,15 @@ public class Enemy_Boss : Enemy
     {
         base.InitializePerk();
     }
+    public override void GetHit()
+    {
+        base.GetHit();
 
+        if (healthPoints <= 0 && stateMachine.currentState != deadState)
+        {
+            stateMachine.ChangeState(deadState);
+        }
+    }
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
@@ -104,10 +131,18 @@ public class Enemy_Boss : Enemy
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, impactRadius);
+
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, minAbilityDistance);
     }
     public void JumpImpact()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, impactRadius);
+        Transform impactPoint = this.impactPoint;
+        if (impactPoint != null)
+        {
+            impactPoint = transform;
+        }
+        Collider[] colliders = Physics.OverlapSphere(impactPoint.position, impactRadius);
         foreach (Collider hit in colliders)
         {
             Rigidbody rb = hit.GetComponent<Rigidbody>();
@@ -137,9 +172,19 @@ public class Enemy_Boss : Enemy
         flamethrower.Play();
 
     }
+    public void ActivateHummer()
+    {
+        GameObject newActivation = ObjectPool.instance.GetObject(activationPrefab, impactPoint);
+
+        ObjectPool.instance.ReturnObject(newActivation, 1);
+    }
     public bool CanDoAbility()
     {
-        if (Time.time > lastTimeUsedAbility + abilityCooldown)
+        bool playerWithinDistance = Vector3.Distance(transform.position, player.position) < minAbilityDistance;
+
+        if (!playerWithinDistance) return false;
+
+        if (Time.time > lastTimeUsedAbility + abilityCooldown && playerWithinDistance)
         {
             return true;
         }

@@ -9,6 +9,8 @@ public class Enemy_BossVisuals : MonoBehaviour
     private Enemy_Boss enemy;
 
     [SerializeField]
+    private float landingOffset = 1;
+    [SerializeField]
     private ParticleSystem landindZoneFX;
     [SerializeField]
     private GameObject[] weaponTrails;
@@ -49,7 +51,9 @@ public class Enemy_BossVisuals : MonoBehaviour
     }
     public void PlaceLandindZone(Vector3 target)
     {
-        landindZoneFX.transform.position = target;
+        Vector3 dir = target - transform.position;
+        Vector3 offset = dir.normalized * landingOffset;
+        landindZoneFX.transform.position = target + offset;
         landindZoneFX.Clear();
 
         var mainModule = landindZoneFX.main;

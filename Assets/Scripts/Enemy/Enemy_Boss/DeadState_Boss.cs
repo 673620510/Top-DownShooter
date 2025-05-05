@@ -4,23 +4,21 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：
 //****************************************
-public class DeadState_Range : EnemyState
+public class DeadState_Boss : EnemyState
 {
-    private Enemy_Range enemy;
-    private bool interactionDisabled;//是否禁用碰撞体
-    public DeadState_Range(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
+    private Enemy_Boss enemy;
+    private bool interactionDisabled;
+    public DeadState_Boss(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
-        enemy = enemyBase as Enemy_Range;
+        enemy = enemyBase as Enemy_Boss;
     }
 
     public override void Enter()
     {
         base.Enter();
 
-        if (!enemy.throwGrenadeState.finishedThrowingGrenade)
-        {
-            enemy.ThrowGrenade();
-        }
+        enemy.abilityState.DisableFlamethrower();
+
         interactionDisabled = false;
 
         enemy.anim.enabled = false;
@@ -35,7 +33,8 @@ public class DeadState_Range : EnemyState
     {
         base.Update();
 
-        DisableInteractionIfShould();
+        //可选，敌人死亡后，禁用碰撞体
+        //DisableInteractionIfShould();
     }
 
     public override void Exit()
