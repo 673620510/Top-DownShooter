@@ -10,6 +10,8 @@ public class Enemy_BossVisuals : MonoBehaviour
 
     [SerializeField]
     private ParticleSystem landindZoneFX;
+    [SerializeField]
+    private GameObject[] weaponTrails;
 
     [Header("Batteries")]
     [SerializeField]
@@ -25,17 +27,35 @@ public class Enemy_BossVisuals : MonoBehaviour
     private void Awake()
     {
         enemy = GetComponent<Enemy_Boss>();
+        landindZoneFX.transform.parent = null;
+        landindZoneFX.Stop();
         ResetBatteries();
     }
     private void Update()
     {
         UpdateBatteriesScale();
     }
+    public void EnableWeaponTrail(bool active)
+    {
+        if (weaponTrails.Length <= 0)
+        {
+            Debug.LogWarning("No weapon trails found.");
+            return;
+        }
+        foreach (var Trail in weaponTrails)
+        {
+            Trail.gameObject.SetActive(active);
+        }
+    }
     public void PlaceLandindZone(Vector3 target)
     {
         landindZoneFX.transform.position = target;
-        landindZoneFX.transform.parent = null;
         landindZoneFX.Clear();
+
+        var mainModule = landindZoneFX.main;
+        mainModule.startLifetime = enemy.travelTimeToTarger * 2;
+
+        landindZoneFX.Play();
     }
     private void UpdateBatteriesScale()
     {

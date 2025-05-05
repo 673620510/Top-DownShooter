@@ -22,6 +22,11 @@ public class Enemy_Boss : Enemy
     public float travelTimeToTarger = 1;//跳跃攻击到达目标的时间
     public float minJumpDistanceRequired;
     [Space]
+    public float impactRadius = 2.5f;//冲击半径
+    public float impactPower = 5;//冲击力
+    [SerializeField]
+    private float upforceMultiplier = 10;//向上的冲击力
+    [Space]
     [SerializeField]
     private LayerMask whatToIngore;
     public IdleState_Boss idleState { get; private set; }
@@ -96,6 +101,22 @@ public class Enemy_Boss : Enemy
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, minJumpDistanceRequired);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, impactRadius);
+    }
+    public void JumpImpact()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, impactRadius);
+        foreach (Collider hit in colliders)
+        {
+            Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.AddExplosionForce(impactPower, transform.position, impactRadius, upforceMultiplier, ForceMode.Impulse);
+            }
+        }
     }
     public void ActivateFlamethrower(bool activate)
     {
