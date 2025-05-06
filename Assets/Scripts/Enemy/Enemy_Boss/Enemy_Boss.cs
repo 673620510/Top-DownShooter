@@ -2,8 +2,11 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：Boss类
 //****************************************
+/// <summary>
+/// Boss武器类型
+/// </summary>
 public enum BossWeaponType
 {
     Flamethrower,
@@ -12,7 +15,7 @@ public enum BossWeaponType
 public class Enemy_Boss : Enemy
 {
     [Header("Boss details")]
-    public BossWeaponType bossWeaponType;
+    public BossWeaponType bossWeaponType;//武器类型
     public float actionCooldown = 10;//动作冷却时间
     public float attackRange;//攻击范围
 
@@ -31,18 +34,18 @@ public class Enemy_Boss : Enemy
 
     [Header("Jump attack")]
     public float jumpAttackCooldown = 10;//跳跃攻击冷却时间
-    private float lastTimeJumped;
+    private float lastTimeJumped;//上次跳跃攻击的时间
     public float travelTimeToTarger = 1;//跳跃攻击到达目标的时间
-    public float minJumpDistanceRequired;
+    public float minJumpDistanceRequired;//跳跃攻击的最小距离
     [Space]
     public float impactRadius = 2.5f;//冲击半径
     public float impactPower = 5;//冲击力
-    public Transform impactPoint;
+    public Transform impactPoint;//冲击点
     [SerializeField]
     private float upforceMultiplier = 10;//向上的冲击力
     [Space]
     [SerializeField]
-    private LayerMask whatToIngore;
+    private LayerMask whatToIngore;//忽略的层
 
     public IdleState_Boss idleState { get; private set; }
     public MoveState_Boss moveState { get; private set; }
@@ -135,6 +138,9 @@ public class Enemy_Boss : Enemy
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, minAbilityDistance);
     }
+    /// <summary>
+    /// 施加跳跃冲击力
+    /// </summary>
     public void JumpImpact()
     {
         Transform impactPoint = this.impactPoint;
@@ -153,6 +159,10 @@ public class Enemy_Boss : Enemy
             }
         }
     }
+    /// <summary>
+    /// 喷火器激活状态
+    /// </summary>
+    /// <param name="activate"></param>
     public void ActivateFlamethrower(bool activate)
     {
         flamethrowActive = activate;
@@ -172,12 +182,19 @@ public class Enemy_Boss : Enemy
         flamethrower.Play();
 
     }
+    /// <summary>
+    /// 锤子激活状态
+    /// </summary>
     public void ActivateHummer()
     {
         GameObject newActivation = ObjectPool.instance.GetObject(activationPrefab, impactPoint);
 
         ObjectPool.instance.ReturnObject(newActivation, 1);
     }
+    /// <summary>
+    /// 是否可以施加技能
+    /// </summary>
+    /// <returns></returns>
     public bool CanDoAbility()
     {
         bool playerWithinDistance = Vector3.Distance(transform.position, player.position) < minAbilityDistance;
@@ -190,7 +207,14 @@ public class Enemy_Boss : Enemy
         }
         return false;
     }
+    /// <summary>
+    /// 设置技能冷却时间
+    /// </summary>
     public void SetAbilityOnCooldown() => lastTimeUsedAbility = Time.time;
+    /// <summary>
+    /// 玩家是否在视线范围内
+    /// </summary>
+    /// <returns></returns>
     public bool IsPlayerInClearSight()
     {
         Vector3 myPos = transform.position + new Vector3(0, 1.5f, 0);
@@ -206,6 +230,10 @@ public class Enemy_Boss : Enemy
         }
         return false;
     }
+    /// <summary>
+    /// 是否可以施加跳跃攻击
+    /// </summary>
+    /// <returns></returns>
     public bool CanDoJumpAttack()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -218,6 +246,9 @@ public class Enemy_Boss : Enemy
         }
         return false;
     }
+    /// <summary>
+    /// 设置跳跃攻击冷却时间
+    /// </summary>
     public void SetJumpAttackOnCooldown() => lastTimeJumped = Time.time;
     /// <summary>
     /// 玩家是否在攻击范围内

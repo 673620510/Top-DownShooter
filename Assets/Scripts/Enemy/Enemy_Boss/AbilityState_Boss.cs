@@ -2,7 +2,7 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：Boss特殊能力类
 //****************************************
 public class AbilityState_Boss : EnemyState
 {
@@ -37,8 +37,6 @@ public class AbilityState_Boss : EnemyState
         }
     }
 
-    private bool ShouldDisableFlamethrower() => stateTimer < 0;
-
     public override void Exit()
     {
         base.Exit();
@@ -46,7 +44,6 @@ public class AbilityState_Boss : EnemyState
         enemy.SetAbilityOnCooldown();
         enemy.bossVisuals.ResetBatteries();
     }
-
     public override void AbilityTrigger()
     {
         base.AbilityTrigger();
@@ -62,6 +59,14 @@ public class AbilityState_Boss : EnemyState
             enemy.ActivateHummer();
         }
     }
+    /// <summary>
+    /// 是否禁用喷火器
+    /// </summary>
+    /// <returns></returns>
+    private bool ShouldDisableFlamethrower() => stateTimer < 0;
+    /// <summary>
+    /// 禁用喷火器
+    /// </summary>
     public void DisableFlamethrower()
     {
         if (enemy.bossWeaponType != BossWeaponType.Flamethrower) return;

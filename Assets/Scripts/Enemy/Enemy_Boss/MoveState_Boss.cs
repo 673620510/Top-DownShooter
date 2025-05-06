@@ -2,17 +2,17 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：Boss移动状态类
 //****************************************
 public class MoveState_Boss : EnemyState
 {
     private Enemy_Boss enemy;
-    private Vector3 destination;
+    private Vector3 destination;//目标点
 
-    private float actionTimer;
-    private float timeBeforeSpeedUp = 15;
+    private float actionTimer;//动作计时器
+    private float timeBeforeSpeedUp = 15;//速度提升时间
 
-    private bool speedUpActivated;
+    private bool speedUpActivated;//速度提升激活状态
     public MoveState_Boss(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Boss;
@@ -70,20 +70,27 @@ public class MoveState_Boss : EnemyState
     {
         base.Exit();
     }
-
+    /// <summary>
+    /// 速度提升
+    /// </summary>
     private void SpeedUp()
     {
         enemy.agent.speed = enemy.runSpeed;
         enemy.anim.SetFloat("MoveAnimIndex", 1);
         speedUpActivated = true;
     }
-
+    /// <summary>
+    /// 速度重置
+    /// </summary>
     private void SpeedReset()
     {
         speedUpActivated = false;
         enemy.anim.SetFloat("MoveAnimIndex", 0);
         enemy.agent.speed = enemy.walkSpeed;
     }
+    /// <summary>
+    /// 获取随机行动
+    /// </summary>
     private void PerformRandomAction()
     {
         actionTimer = enemy.actionCooldown;
@@ -105,7 +112,9 @@ public class MoveState_Boss : EnemyState
             }
         }
     }
-
+    /// <summary>
+    /// 尝试使用技能
+    /// </summary>
     private void TryAbility()
     {
         if (enemy.CanDoAbility())
@@ -113,7 +122,10 @@ public class MoveState_Boss : EnemyState
             stateMachine.ChangeState(enemy.abilityState);
         }
     }
-
+    /// <summary>
+    /// 是否加速
+    /// </summary>
+    /// <returns></returns>
     private bool ShouldSpeedUp()
     {
         if (speedUpActivated) return false;

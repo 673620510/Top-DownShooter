@@ -8,13 +8,13 @@ using UnityEngine;
 //****************************************
 public class Cover : MonoBehaviour
 {
-    private BoxCollider coverCollider;
+    private BoxCollider coverCollider;//掩体碰撞器
 
     private Transform playerTransform;
 
     [Header("Cover point 掩体点位")]
     [SerializeField]
-    private GameObject coverPointPrefab;
+    private GameObject coverPointPrefab;//掩体点预制体
     [SerializeField]
     private List<CoverPoint> coverPoints = new List<CoverPoint>();
     [SerializeField]
@@ -24,7 +24,7 @@ public class Cover : MonoBehaviour
     [SerializeField]
     private float zOffset = 1;
     [SerializeField]
-    private float offset = 0.2f;
+    private float offset = 0.2f;//掩体点偏移量
 
     private void Awake()
     {

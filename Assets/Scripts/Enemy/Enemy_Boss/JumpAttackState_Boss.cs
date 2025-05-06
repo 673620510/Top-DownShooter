@@ -2,14 +2,14 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：Boss跳跃攻击状态类
 //****************************************
 public class JumpAttackState_Boss : EnemyState
 {
     private Enemy_Boss enemy;
-    private Vector3 lastPlayerPos;
+    private Vector3 lastPlayerPos;//上次玩家位置
 
-    private float jumpAttatckMovementSpeed;
+    private float jumpAttatckMovementSpeed;//跳跃攻击移动速度
     public JumpAttackState_Boss(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Boss;

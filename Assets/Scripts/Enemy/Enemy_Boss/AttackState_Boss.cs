@@ -2,7 +2,7 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：Boss攻击状态类
 //****************************************
 public class AttackState_Boss : EnemyState
 {

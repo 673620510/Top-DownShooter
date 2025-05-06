@@ -2,12 +2,12 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：Boss死亡状态类
 //****************************************
 public class DeadState_Boss : EnemyState
 {
     private Enemy_Boss enemy;
-    private bool interactionDisabled;
+    private bool interactionDisabled;//是否禁用碰撞体
     public DeadState_Boss(Enemy enemyBase, EnemyStateMachine stateMachine, string animBoolName) : base(enemyBase, stateMachine, animBoolName)
     {
         enemy = enemyBase as Enemy_Boss;
