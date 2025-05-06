@@ -48,6 +48,9 @@ public class Enemy_AnimationEvents : MonoBehaviour
         enemy.visuals.EnableWeaponModel(true);
         enemy.visuals.EnableSeconnderyWeaponModel(false);
     }
+    /// <summary>
+    /// Boss跳跃冲击力
+    /// </summary>
     public void BossJumpImpact()
     {
         if (enemyBoss == null)

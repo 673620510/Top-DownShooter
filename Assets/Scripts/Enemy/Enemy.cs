@@ -9,8 +9,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    protected int healthPoints = 20;//生命值
+    public int healthPoints = 20;//生命值
 
     [Header("Idle data 待机数据")]
     public float idleTime;//待机时间
@@ -108,7 +107,6 @@ public class Enemy : MonoBehaviour
     public virtual void GetHit()
     {
         EnterBattleMode();
-        healthPoints--;
     }
     /// <summary>
     /// 死亡影响
