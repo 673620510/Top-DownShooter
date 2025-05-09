@@ -773,6 +773,9 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   trailEffects:
   - {fileID: 3365717202514387224}
+  damagePoints:
+  - {fileID: 1973720941848765079}
+  attackRadius: 0.3
 --- !u!1 &803366109760573204
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,6 +912,9 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   trailEffects:
   - {fileID: 2587613348533365159}
+  damagePoints:
+  - {fileID: 1601154920076831272}
+  attackRadius: 0.3
 --- !u!1 &932633948898014337
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,6 +2328,9 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   trailEffects:
   - {fileID: 4365668450422806943}
+  damagePoints:
+  - {fileID: 667804985508715024}
+  attackRadius: 0.3
 --- !u!1 &3167395854024625501
 GameObject:
   m_ObjectHideFlags: 0
@@ -2749,6 +2758,12 @@ MonoBehaviour:
   - {fileID: 7794588073936063758}
   - {fileID: 3331583398903208152}
   - {fileID: 3150323692029914972}
+  damagePoints:
+  - {fileID: 6305535372682095707}
+  - {fileID: 6483650493277736577}
+  - {fileID: 2012357212056935255}
+  - {fileID: 2191370651269278931}
+  attackRadius: 0.3
 --- !u!1 &4136924232711375454
 GameObject:
   m_ObjectHideFlags: 0
@@ -5254,6 +5269,9 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   trailEffects:
   - {fileID: 5358104179981066485}
+  damagePoints:
+  - {fileID: 9190353802188891002}
+  attackRadius: 0.3
 --- !u!1 &7696969098564317362
 GameObject:
   m_ObjectHideFlags: 0
@@ -5406,6 +5424,9 @@ MonoBehaviour:
   whatIsAlly:
     serializedVersion: 2
     m_Bits: 2048
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 256
   healthPoints: 20
   idleTime: 20
   aggresionRange: 1
@@ -5447,6 +5468,7 @@ MonoBehaviour:
     attackIndex: 1
     animationSpeed: 1.5
     attackType: 0
+  meleeAttackFX: {fileID: 2820927177577686666, guid: 5866de5779216e74c84c006d79cd8ef7, type: 3}
 --- !u!195 &577153421380762041
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6252,6 +6274,9 @@ MonoBehaviour:
   weaponData: {fileID: 0}
   trailEffects:
   - {fileID: 5724165447783494397}
+  damagePoints:
+  - {fileID: 8836396094450348402}
+  attackRadius: 0.3
 --- !u!1 &9192640599424345528
 GameObject:
   m_ObjectHideFlags: 0
@@ -6321,7 +6346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.015
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6408,7 +6433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.026
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6653,7 +6678,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.044
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6724,7 +6749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.08
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6807,7 +6832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.039
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3686326133258214428, guid: 5aa7525ec9878fc409361be303fb6f18, type: 3}
       propertyPath: m_LocalRotation.w

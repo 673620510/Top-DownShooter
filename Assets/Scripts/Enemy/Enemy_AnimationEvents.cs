@@ -7,10 +7,13 @@ using UnityEngine;
 public class Enemy_AnimationEvents : MonoBehaviour
 {
     private Enemy enemy;
+    private Enemy_Melee enemyMelee;
     private Enemy_Boss enemyBoss;
     private void Start()
     {
         enemy = GetComponentInParent<Enemy>();
+        enemyMelee = GetComponentInParent<Enemy_Melee>();
+        enemyBoss = GetComponentInParent<Enemy_Boss>();
     }
     /// <summary>
     /// 动画触发器
@@ -51,12 +54,7 @@ public class Enemy_AnimationEvents : MonoBehaviour
     /// <summary>
     /// Boss跳跃冲击力
     /// </summary>
-    public void BossJumpImpact()
-    {
-        if (enemyBoss == null)
-        {
-            enemyBoss.GetComponentInParent<Enemy_Boss>();
-        }
-        enemyBoss?.JumpImpact();
-    }
+    public void BossJumpImpact() => enemyBoss.JumpImpact();
+    public void BeginMeleeAttackCheck() => enemyMelee?.EnableAttackCheck(true);
+    public void FinishMeleeAttackCheck() => enemyMelee?.EnableAttackCheck(false);
 }

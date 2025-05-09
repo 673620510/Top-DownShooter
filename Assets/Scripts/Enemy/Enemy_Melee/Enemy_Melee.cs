@@ -65,6 +65,11 @@ public class Enemy_Melee : Enemy
     [Header("Attack Data 攻击数据")]
     public AttackData_EnemyMelee attackData;//攻击数据
     public List<AttackData_EnemyMelee> attackList;//攻击列表
+    private Enemy_WeaponModel currentWeapon;
+    private bool isAttackReady;
+    [Space]
+    [SerializeField]
+    private GameObject meleeAttackFX;
 
     protected override void Awake()
     {
@@ -97,6 +102,8 @@ public class Enemy_Melee : Enemy
         base.Update();
 
         stateMachine.currentState.Update();
+
+        AttackCheck();
     }
     protected override void OnDrawGizmos()
     {
@@ -139,19 +146,6 @@ public class Enemy_Melee : Enemy
             weaponType = Enemy_MeleeWeaponType.Unarmed;
         }
     }
-    /// <summary>
-    /// 更新攻击数据
-    /// </summary>
-    public void UpdateAttackData()
-    {
-        Enemy_WeaponModel currentWeapon = visuals.currentWeaponModel.GetComponent<Enemy_WeaponModel>();
-
-        if (currentWeapon.weaponData != null)
-        {
-            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
-            turnSpeed = currentWeapon.weaponData.turnSpeed;
-        }
-    }
     public override void Die()
     {
         base.Die();
@@ -159,6 +153,42 @@ public class Enemy_Melee : Enemy
         if (stateMachine.currentState != deadState)
         {
             stateMachine.ChangeState(deadState);
+        }
+    }
+    public void AttackCheck()
+    {
+        if (!isAttackReady) return;
+
+        foreach (Transform attackPoint in currentWeapon.damagePoints)
+        {
+            Collider[] detectedHits = Physics.OverlapSphere(attackPoint.position, currentWeapon.attackRadius, whatIsPlayer);
+
+            for (int i = 0;i < detectedHits.Length; i++)
+            {
+                IDamagable damagable = detectedHits[i].GetComponent<IDamagable>();
+                if (damagable != null)
+                {
+                    damagable.TakeDamage();
+                    isAttackReady = false;
+                    GameObject newAttackFX = ObjectPool.instance.GetObject(meleeAttackFX, attackPoint);
+                    ObjectPool.instance.ReturnObject(newAttackFX, 1f);
+                    return;
+                }
+            }
+        }
+    }
+    public void EnableAttackCheck(bool enable) => isAttackReady = enable;
+    /// <summary>
+    /// 更新攻击数据
+    /// </summary>
+    public void UpdateAttackData()
+    {
+        currentWeapon = visuals.currentWeaponModel.GetComponent<Enemy_WeaponModel>();
+
+        if (currentWeapon.weaponData != null)
+        {
+            attackList = new List<AttackData_EnemyMelee>(currentWeapon.weaponData.attackData);
+            turnSpeed = currentWeapon.weaponData.turnSpeed;
         }
     }
     /// <summary>

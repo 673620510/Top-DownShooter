@@ -51,13 +51,18 @@ public class Enemy_Grenade : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, impactRadius);
         foreach (Collider hit in colliders)
         {
-            if (!IsTargetValid(hit)) continue;
+            IDamagable damagable = hit.GetComponent<IDamagable>();
 
-            GameObject rootEntity = hit.transform.root.gameObject;
-            if (!uniqueEntities.Add(rootEntity)) continue;//哈希表中添加相同的对象会返回false
+            if (damagable != null)
+            {
+                if (!IsTargetValid(hit)) continue;
 
-            ApplyDamageTo(hit);
+                GameObject rootEntity = hit.transform.root.gameObject;
 
+                if (!uniqueEntities.Add(rootEntity)) continue;//哈希表中添加相同的对象会返回false
+
+                damagable.TakeDamage();
+            }
             ApplyPhysicalForceTo(hit);
         }
     }
@@ -70,12 +75,6 @@ public class Enemy_Grenade : MonoBehaviour
         {
             rb.AddExplosionForce(impactPower, transform.position, impactRadius, upwardMultiplier, ForceMode.Impulse);
         }
-    }
-
-    private static void ApplyDamageTo(Collider hit)
-    {
-        IDamagable damagable = hit.GetComponent<IDamagable>();
-        damagable?.TakeDamage();
     }
 
     private void PlayExplosionFX()
