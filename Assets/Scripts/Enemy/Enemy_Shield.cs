@@ -4,7 +4,7 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：敌人盾牌类
 //****************************************
-public class Enemy_Shield : MonoBehaviour
+public class Enemy_Shield : MonoBehaviour, IDamagable
 {
     private Enemy_Melee enemy;
 
@@ -14,6 +14,8 @@ public class Enemy_Shield : MonoBehaviour
     private void Awake()
     {
         enemy = GetComponentInParent<Enemy_Melee>();
+
+        durability = enemy.shieldDurability;
     }
     /// <summary>
     /// 减少耐久度
@@ -23,8 +25,13 @@ public class Enemy_Shield : MonoBehaviour
         durability--;
         if (durability <= 0)
         {
-            //enemy.anim.SetFloat("ChaseIndex", 0);//恢复原来动画
-            Destroy(gameObject);
+            enemy.anim.SetFloat("ChaseIndex", 0);//恢复原来动画
+            gameObject.SetActive(false);//隐藏盾牌
         }
+    }
+
+    public void TakeDamage()
+    {
+        ReduceDurability();
     }
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：敌人布娃娃类
+//功能说明：布娃娃类
 //****************************************
-public class Enemy_Ragdoll : MonoBehaviour
+public class Ragdoll : MonoBehaviour
 {
     [SerializeField]
     private Transform ragdollParent;//布娃娃父物体

@@ -53,8 +53,14 @@ public class Enemy_Visuals : MonoBehaviour
 
     private void Update()
     {
-        leftHandIKConstraint.weight = AbjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
-        weaponAimConstraint.weight = AbjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
+        if (leftHandIKConstraint != null)
+        {
+            leftHandIKConstraint.weight = AbjustIKWeight(leftHandIKConstraint.weight, leftHandTargetWeight);
+        }
+        if (weaponAimConstraint != null)
+        {
+            weaponAimConstraint.weight = AbjustIKWeight(weaponAimConstraint.weight, weaponAimTargetWeight);
+        }
     }
     /// <summary>
     /// 改变手雷模型的显示状态

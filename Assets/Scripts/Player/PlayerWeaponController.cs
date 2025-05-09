@@ -8,6 +8,8 @@ using UnityEngine;
 //****************************************
 public class PlayerWeaponController : MonoBehaviour
 {
+    [SerializeField]
+    private LayerMask whatIsAlly;//友军层级遮罩
     private Player player;
 
     private const float REFERNCE_BULLET_SPEED = 20;//参考子弹速度
@@ -201,7 +203,7 @@ public class PlayerWeaponController : MonoBehaviour
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
         Bullet bulletScript = newBullet.GetComponent<Bullet>();
-        bulletScript.BulletSetUp(currentWeapon.gunDistance, bulletImpactForce);
+        bulletScript.BulletSetUp(whatIsAlly, currentWeapon.gunDistance, bulletImpactForce);
 
         Vector3 bulletDirection = currentWeapon.ApplySpread(BulletDirection());
 

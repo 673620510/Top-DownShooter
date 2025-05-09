@@ -4,19 +4,21 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：
 //****************************************
-public class Enemy_HitBox : HitBox
+public class Player_HitBox : HitBox
 {
-    private Enemy enemy;
+    Player player;
     protected override void Awake()
     {
         base.Awake();
 
-        enemy = GetComponentInParent<Enemy>();
+        player = GetComponentInParent<Player>();
     }
+
     public override void TakeDamage()
     {
         base.TakeDamage();
 
-        enemy.GetHit();
+        Debug.Log("Player HitBox TakeDamage");
+        player.health.ReduceHealth();
     }
 }

@@ -19,6 +19,10 @@ public class Enemy_Axe : MonoBehaviour
     private float rotationSpeed;//旋转速度
     private float timer = 1;
 
+    private void FixedUpdate()
+    {
+        rb.linearVelocity = direction.normalized * flySpeed;
+    }
     private void Update()
     {
         axeVisual.Rotate(Vector3.right * rotationSpeed * Time.deltaTime);
@@ -29,21 +33,16 @@ public class Enemy_Axe : MonoBehaviour
             direction = player.position + Vector3.up - transform.position;
         }
 
-        rb.linearVelocity = direction.normalized * flySpeed;
         transform.forward = rb.linearVelocity;
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        Bullet bullet = other.GetComponent<Bullet>();
-        Player player = other.GetComponent<Player>();
+        IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
+        damagable?.TakeDamage();
+        GameObject newFx = ObjectPool.instance.GetObject(impactFx, transform);
 
-        if (bullet != null || player != null)
-        {
-            GameObject newFx = ObjectPool.instance.GetObject(impactFx, transform);
-
-            ObjectPool.instance.ReturnObject(gameObject);
-            ObjectPool.instance.ReturnObject(newFx, 1);
-        }
+        ObjectPool.instance.ReturnObject(gameObject);
+        ObjectPool.instance.ReturnObject(newFx, 1);
     }
     /// <summary>
     /// 斧头设置

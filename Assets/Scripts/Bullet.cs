@@ -19,6 +19,8 @@ public class Bullet : MonoBehaviour
     private float flyDistance;//飞行射程
     private bool bulletDisabled;//子弹是否处于禁用状态
 
+    private LayerMask allyLayerMask;//友军层级遮罩
+
     protected virtual void Awake()
     {
         cd = GetComponent<BoxCollider>();
@@ -69,8 +71,9 @@ public class Bullet : MonoBehaviour
     /// 子弹设置
     /// </summary>
     /// <param name="flyDistance">飞行距离</param>
-    public void BulletSetUp(float flyDistance = 100, float impactForce = 100)
+    public void BulletSetUp(LayerMask allyLayerMask, float flyDistance = 100, float impactForce = 100)
     {
+        this.allyLayerMask = allyLayerMask;
         this.impactForce = impactForce;
 
         bulletDisabled = false;
@@ -86,28 +89,39 @@ public class Bullet : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
+        if (!FriendlyFar())
+        {
+            if ((allyLayerMask.value & (1 << collision.gameObject.layer)) > 0)
+            {
+                ReturnBulletToPool(10);
+                return;
+            }
+        }
+
         CreateImpactFX();
         ReturnBulletToPool();
 
+        IDamagable damageable = collision.gameObject.GetComponent<IDamagable>();
+        damageable?.TakeDamage();
+
+        ApplyBulletImpactToEnemy(collision);
+    }
+
+    private void ApplyBulletImpactToEnemy(Collision collision)
+    {
         Enemy enemy = collision.gameObject.GetComponentInParent<Enemy>();
-        Enemy_Shield shield = collision.gameObject.GetComponentInParent<Enemy_Shield>();
-
-        if (shield != null)
-        {
-            shield.ReduceDurability();
-            return;
-        }
-
         if (enemy != null)
         {
             Vector3 force = rb.linearVelocity.normalized * impactForce;
             Rigidbody hitRigidbody = collision.collider.attachedRigidbody;
-            enemy.GetHit();
-            enemy.DeathImpact(force, collision.contacts[0].point, hitRigidbody);
+            enemy.BulletImpact(force, collision.contacts[0].point, hitRigidbody);
         }
     }
 
-    protected void ReturnBulletToPool() => ObjectPool.instance.ReturnObject(gameObject);
+    /// <summary>
+    /// 回收子弹进对象池
+    /// </summary>
+    protected void ReturnBulletToPool(float delay = 0) => ObjectPool.instance.ReturnObject(gameObject, delay);
 
     /// <summary>
     /// 生成受击特效
@@ -118,4 +132,5 @@ public class Bullet : MonoBehaviour
         GameObject newImpactFX = ObjectPool.instance.GetObject(bulletImpactFX, transform);
         ObjectPool.instance.ReturnObject(newImpactFX, 1);
     }
+    private bool FriendlyFar() => GameManager.instance.friendlyFire;
 }

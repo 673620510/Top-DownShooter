@@ -120,11 +120,11 @@ public class Enemy_Range : Enemy
             Gizmos.DrawLine(transform.position, player.transform.position);
         }
     }
-    public override void GetHit()
+    public override void Die()
     {
-        base.GetHit();
+        base.Die();
 
-        if (healthPoints <= 0 && stateMachine.currentState != deadState)
+        if (stateMachine.currentState != deadState)
         {
             stateMachine.ChangeState(deadState);
         }
@@ -181,10 +181,10 @@ public class Enemy_Range : Enemy
         Enemy_Grenade newGrenadeScript = newGrenade.GetComponent<Enemy_Grenade>();
         if (stateMachine.currentState == deadState)
         {
-            newGrenadeScript.SetupGrenade(transform.position, 1, explosionTimer, impactPower);
+            newGrenadeScript.SetupGrenade(whatIsAlly, transform.position, 1, explosionTimer, impactPower);
             return;
         }
-        newGrenadeScript.SetupGrenade(player.position, timeToTarget, explosionTimer, impactPower);
+        newGrenadeScript.SetupGrenade(whatIsAlly, player.position, timeToTarget, explosionTimer, impactPower);
     }
     #region Cover System 掩体系统
     /// <summary>
@@ -271,7 +271,7 @@ public class Enemy_Range : Enemy
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, gunPoint);
         newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
 
-        newBullet.GetComponent<Bullet>().BulletSetUp();
+        newBullet.GetComponent<Bullet>().BulletSetUp(whatIsAlly);
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 
@@ -349,7 +349,7 @@ public class Enemy_Range : Enemy
     }
     #endregion
     /// <summary>
-    /// 检查是否在攻击范围内
+    /// 检查是否不可阻挡
     /// </summary>
     /// <returns></returns>
     public bool IsUnStoppable() => unStoppablePerk == UnStoppablePerk.Unstoppable;

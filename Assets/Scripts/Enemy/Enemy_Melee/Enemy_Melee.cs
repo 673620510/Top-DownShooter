@@ -45,7 +45,12 @@ public class Enemy_Melee : Enemy
     [Header("Enemy Setting 敌人设置")]
     public EnemyMelee_Type meleeType;//敌人类型
     public Enemy_MeleeWeaponType weaponType;//武器类型
+
+    [Header("Shield 盾牌")]
+    public int shieldDurability;//盾牌耐久度
     public Transform shieldTransform;//盾牌位置
+
+    [Header("Dodge 翻滚")]
     public float dodgeCooldown;//翻滚冷却时间
     private float lastTimeDodge = -10;//上次翻滚时间
 
@@ -147,19 +152,15 @@ public class Enemy_Melee : Enemy
             turnSpeed = currentWeapon.weaponData.turnSpeed;
         }
     }
-    /// <summary>
-    /// 受到伤害
-    /// </summary>
-    public override void GetHit()
+    public override void Die()
     {
-        base.GetHit();
+        base.Die();
 
-        if (healthPoints <= 0 && stateMachine.currentState != deadState)
+        if (stateMachine.currentState != deadState)
         {
             stateMachine.ChangeState(deadState);
         }
     }
-
     /// <summary>
     /// 触发翻滚
     /// </summary>

@@ -9,6 +9,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
+    public LayerMask whatIsAlly;//友军层级遮罩
     public int healthPoints = 20;//生命值
 
     [Header("Idle data 待机数据")]
@@ -33,13 +34,15 @@ public class Enemy : MonoBehaviour
     public NavMeshAgent agent { get; private set; }
     public EnemyStateMachine stateMachine { get; private set; }
     public Enemy_Visuals visuals { get; private set; }//敌人视觉效果类
-    public Enemy_Ragdoll ragdoll { get; private set; }//敌人刚体类
+    public Ragdoll ragdoll { get; private set; }//敌人刚体类
+    public Enemy_Health health { get; private set; }//敌人生命类
 
     protected virtual void Awake()
     {
         stateMachine = new EnemyStateMachine();
 
-        ragdoll = GetComponent<Enemy_Ragdoll>();
+        health = GetComponent<Enemy_Health>();
+        ragdoll = GetComponent<Ragdoll>();
         visuals = GetComponent<Enemy_Visuals>();//获取敌人视觉效果类
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
@@ -106,7 +109,16 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public virtual void GetHit()
     {
+        health.ReduceHealth();
+        if (health.ShouldDie())
+        {
+            Die();
+        }
         EnterBattleMode();
+    }
+    public virtual void Die()
+    {
+
     }
     /// <summary>
     /// 死亡影响
@@ -114,9 +126,12 @@ public class Enemy : MonoBehaviour
     /// <param name="force"></param>
     /// <param name="hitPoint"></param>
     /// <param name="rb"></param>
-    public virtual void DeathImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
+    public virtual void BulletImpact(Vector3 force,Vector3 hitPoint,Rigidbody rb)
     {
-        StartCoroutine(DeathImpactCourutine(force, hitPoint, rb));
+        if (health.ShouldDie())
+        {
+            StartCoroutine(DeathImpactCourutine(force, hitPoint, rb));
+        }
     }
     /// <summary>
     /// 死亡影响携程

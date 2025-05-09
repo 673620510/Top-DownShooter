@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6631500714594108669}
   - component: {fileID: 4991058378163473031}
   - component: {fileID: 5897613226699908945}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Weapon_Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4289269605749018293}
   - component: {fileID: 7927554493754619808}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5647055433448886988}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 5093702716094671246}
   - component: {fileID: 7327448136889596325}
   - component: {fileID: 5201247278631097797}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Enemy's_Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +317,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -349,7 +349,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &5201247278631097797
 MonoBehaviour:
   m_ObjectHideFlags: 0
