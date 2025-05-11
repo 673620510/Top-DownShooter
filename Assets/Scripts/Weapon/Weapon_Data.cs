@@ -4,6 +4,8 @@ using UnityEngine;
 public class Weapon_Data : ScriptableObject//Unity提供的数据配置存储基类
 {
     public string weaponName;//武器名称
+    [Header("Bullet info")]
+    public int bulletDamage;//子弹伤害
 
     [Header("Magazine details 弹夹详情")]
     public int bulletsInMagazine;//当前枪支弹药量
@@ -33,7 +35,7 @@ public class Weapon_Data : ScriptableObject//Unity提供的数据配置存储基
     public float reloadSpeed = 1;//换弹速度
     [Range(1f, 3f)]
     public float equipmentSpeed = 1;//更换装备速度
-    [Range(4, 8)]
+    [Range(4, 25)]
     public float gunDistance = 4;//武器射程
     [Range(4, 8)]
     public float cameraDistance = 6;//相机距离

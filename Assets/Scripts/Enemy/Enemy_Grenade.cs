@@ -20,6 +20,8 @@ public class Enemy_Grenade : MonoBehaviour
 
     private LayerMask allyLayerMask;
     private bool canExplode = true;
+
+    private int grenadeDamage;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -61,7 +63,7 @@ public class Enemy_Grenade : MonoBehaviour
 
                 if (!uniqueEntities.Add(rootEntity)) continue;//哈希表中添加相同的对象会返回false
 
-                damagable.TakeDamage();
+                damagable.TakeDamage(grenadeDamage);
             }
             ApplyPhysicalForceTo(hit);
         }
@@ -92,10 +94,11 @@ public class Enemy_Grenade : MonoBehaviour
     /// <param name="timeToTarget"></param>
     /// <param name="countdown"></param>
     /// <param name="impactPower"></param>
-    public void SetupGrenade(LayerMask allyLayerMask, Vector3 target, float timeToTarget, float countdown, float impactPower)
+    public void SetupGrenade(LayerMask allyLayerMask, Vector3 target, float timeToTarget, float countdown, float impactPower, int grenadeDamage)
     {
         canExplode = true;
 
+        this.grenadeDamage = grenadeDamage;
         this.allyLayerMask = allyLayerMask;
         rb.linearVelocity = CalculateLaunchVelocity(target, timeToTarget);
         timer = countdown + timeToTarget;

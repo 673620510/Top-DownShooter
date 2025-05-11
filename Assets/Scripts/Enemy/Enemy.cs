@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     private int currentpatrolIndex;//当前巡逻点
 
     public bool inBattleMode { get; private set; }//是否处于战斗状态
+    protected bool isMeleeAttackReady;//是否准备攻击
     public Transform player { get; private set; }
     public Animator anim { get; private set; }
     public NavMeshAgent agent { get; private set; }
@@ -109,9 +110,9 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// 受到伤害
     /// </summary>
-    public virtual void GetHit()
+    public virtual void GetHit(int damage)
     {
-        health.ReduceHealth();
+        health.ReduceHealth(damage);
         if (health.ShouldDie())
         {
             Die();
@@ -122,6 +123,29 @@ public class Enemy : MonoBehaviour
     {
 
     }
+    public virtual void MeleeAttackCheck(Transform[] damagePoints, float attackCheckRadius, GameObject fx, int damage)
+    {
+        if (!isMeleeAttackReady) return;
+
+        foreach (Transform attackPoint in damagePoints)
+        {
+            Collider[] detectedHits = Physics.OverlapSphere(attackPoint.position, attackCheckRadius, whatIsPlayer);
+
+            for (int i = 0; i < detectedHits.Length; i++)
+            {
+                IDamagable damagable = detectedHits[i].GetComponent<IDamagable>();
+                if (damagable != null)
+                {
+                    damagable.TakeDamage(damage);
+                    isMeleeAttackReady = false;
+                    GameObject newAttackFX = ObjectPool.instance.GetObject(fx, attackPoint);
+                    ObjectPool.instance.ReturnObject(newAttackFX, 1f);
+                    return;
+                }
+            }
+        }
+    }
+    public void EnableMeleeAttackCheck(bool enable) => isMeleeAttackReady = enable;
     /// <summary>
     /// 死亡影响
     /// </summary>

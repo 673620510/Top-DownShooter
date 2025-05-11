@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 //****************************************
@@ -25,14 +26,20 @@ public class Enemy_Boss : Enemy
     private float lastTimeUsedAbility;//上次使用技能的时间
 
     [Header("Flamethrower")]
+    public int flameDamage;//喷火伤害
+    public float flameDamageCooldown;
     public ParticleSystem flamethrower;//喷火特效
     public float flamethrowDuration;//喷火持续时间
     public bool flamethrowActive { get; private set; }//喷火是否激活
 
     [Header("Hummer")]
+    public int hummerActiveDamage;//锤子激活伤害
     public GameObject activationPrefab;//锤子特效预制体
+    [SerializeField]
+    private float hummerCheckRadius;
 
     [Header("Jump attack")]
+    public int jumpAttackDamage;//跳跃攻击伤害
     public float jumpAttackCooldown = 10;//跳跃攻击冷却时间
     private float lastTimeJumped;//上次跳跃攻击的时间
     public float travelTimeToTarger = 1;//跳跃攻击到达目标的时间
@@ -46,6 +53,16 @@ public class Enemy_Boss : Enemy
     [Space]
     [SerializeField]
     private LayerMask whatToIngore;//忽略的层
+
+    [Header("Attack")]
+    [SerializeField]
+    private int meleeAttackDamage;//近战攻击伤害
+    [SerializeField]
+    private Transform[] damagePoints;
+    [SerializeField]
+    private float attackCheckRadius;
+    [SerializeField]
+    private GameObject meleeAttackFX;//近战攻击特效
 
     public IdleState_Boss idleState { get; private set; }
     public MoveState_Boss moveState { get; private set; }
@@ -91,6 +108,8 @@ public class Enemy_Boss : Enemy
         {
             EnterBattleMode();
         }
+
+        MeleeAttackCheck(damagePoints, attackCheckRadius, meleeAttackFX, meleeAttackDamage);
     }
     public override void EnterBattleMode()
     {
@@ -137,6 +156,16 @@ public class Enemy_Boss : Enemy
 
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, minAbilityDistance);
+
+        if (damagePoints.Length > 0)
+        {
+            foreach (var damagePoint in damagePoints)
+            {
+                Gizmos.DrawWireSphere(damagePoint.position, attackCheckRadius);
+            }
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(damagePoints[0].position, hummerCheckRadius);
+        }
     }
     /// <summary>
     /// 施加跳跃冲击力
@@ -148,17 +177,37 @@ public class Enemy_Boss : Enemy
         {
             impactPoint = transform;
         }
-        Collider[] colliders = Physics.OverlapSphere(impactPoint.position, impactRadius);
+        MassDamage(impactPoint.position, impactRadius, jumpAttackDamage);
+    }
+    private void MassDamage(Vector3 impactPoint, float impactRadius, int damage)
+    {
+        HashSet<GameObject> uniqueEntities = new HashSet<GameObject>();
+        Collider[] colliders = Physics.OverlapSphere(impactPoint, impactRadius, ~whatIsAlly);
         foreach (Collider hit in colliders)
         {
-            Rigidbody rb = hit.GetComponent<Rigidbody>();
-
-            if (rb != null)
+            IDamagable damagable = hit.GetComponent<IDamagable>();
+            if (damagable != null)
             {
-                rb.AddExplosionForce(impactPower, transform.position, impactRadius, upforceMultiplier, ForceMode.Impulse);
+                GameObject rootEntity = hit.transform.root.gameObject;
+
+                if (!uniqueEntities.Add(rootEntity)) continue;
+
+                damagable.TakeDamage(damage);
             }
+            ApplyPhysicalForceTo(impactPoint, impactRadius, hit);
         }
     }
+
+    private void ApplyPhysicalForceTo(Vector3 impactPoint, float impactRadius, Collider hit)
+    {
+        Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.AddExplosionForce(impactPower, impactPoint, impactRadius, upforceMultiplier, ForceMode.Impulse);
+        }
+    }
+
     /// <summary>
     /// 喷火器激活状态
     /// </summary>
@@ -190,6 +239,8 @@ public class Enemy_Boss : Enemy
         GameObject newActivation = ObjectPool.instance.GetObject(activationPrefab, impactPoint);
 
         ObjectPool.instance.ReturnObject(newActivation, 1);
+
+        MassDamage(damagePoints[0].position, hummerCheckRadius, hummerActiveDamage);
     }
     /// <summary>
     /// 是否可以施加技能

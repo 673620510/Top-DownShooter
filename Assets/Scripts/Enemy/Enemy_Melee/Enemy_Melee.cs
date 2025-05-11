@@ -10,6 +10,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 [Serializable]
 public struct AttackData_EnemyMelee
 {
+    public int attackDamage;//攻击伤害
     public string attackName;//攻击名称
     public float attackRange;//攻击范围
     public float moveSpeed;//攻击移动速度
@@ -55,6 +56,7 @@ public class Enemy_Melee : Enemy
     private float lastTimeDodge = -10;//上次翻滚时间
 
     [Header("Axe throw Ability 斧头投掷能力")]
+    public int axeDamage;//斧头伤害
     public GameObject axePrefab;//斧头预制体
     public float axeFlySpeed;//斧头飞行速度
     public float axeAimTimer;//瞄准时间
@@ -103,7 +105,7 @@ public class Enemy_Melee : Enemy
 
         stateMachine.currentState.Update();
 
-        AttackCheck();
+        MeleeAttackCheck(currentWeapon.damagePoints, currentWeapon.attackRadius, meleeAttackFX, attackData.attackDamage);
     }
     protected override void OnDrawGizmos()
     {
@@ -155,29 +157,6 @@ public class Enemy_Melee : Enemy
             stateMachine.ChangeState(deadState);
         }
     }
-    public void AttackCheck()
-    {
-        if (!isAttackReady) return;
-
-        foreach (Transform attackPoint in currentWeapon.damagePoints)
-        {
-            Collider[] detectedHits = Physics.OverlapSphere(attackPoint.position, currentWeapon.attackRadius, whatIsPlayer);
-
-            for (int i = 0;i < detectedHits.Length; i++)
-            {
-                IDamagable damagable = detectedHits[i].GetComponent<IDamagable>();
-                if (damagable != null)
-                {
-                    damagable.TakeDamage();
-                    isAttackReady = false;
-                    GameObject newAttackFX = ObjectPool.instance.GetObject(meleeAttackFX, attackPoint);
-                    ObjectPool.instance.ReturnObject(newAttackFX, 1f);
-                    return;
-                }
-            }
-        }
-    }
-    public void EnableAttackCheck(bool enable) => isAttackReady = enable;
     /// <summary>
     /// 更新攻击数据
     /// </summary>
@@ -217,7 +196,7 @@ public class Enemy_Melee : Enemy
     {
         GameObject newAxe = ObjectPool.instance.GetObject(axePrefab, axeStartPoint);
 
-        newAxe.GetComponent<Enemy_Axe>().AxeSetup(axeFlySpeed, player, axeAimTimer);
+        newAxe.GetComponent<Enemy_Axe>().AxeSetup(axeFlySpeed, player, axeAimTimer, axeDamage);
     }
     /// <summary>
     /// 是否可以投掷斧头

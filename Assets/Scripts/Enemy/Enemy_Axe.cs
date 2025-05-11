@@ -19,6 +19,8 @@ public class Enemy_Axe : MonoBehaviour
     private float rotationSpeed;//旋转速度
     private float timer = 1;
 
+    private int damage;
+
     private void FixedUpdate()
     {
         rb.linearVelocity = direction.normalized * flySpeed;
@@ -38,7 +40,7 @@ public class Enemy_Axe : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         IDamagable damagable = collision.gameObject.GetComponent<IDamagable>();
-        damagable?.TakeDamage();
+        damagable?.TakeDamage(damage);
         GameObject newFx = ObjectPool.instance.GetObject(impactFx, transform);
 
         ObjectPool.instance.ReturnObject(gameObject);
@@ -50,10 +52,11 @@ public class Enemy_Axe : MonoBehaviour
     /// <param name="flySpeed"></param>
     /// <param name="player"></param>
     /// <param name="timer"></param>
-    public void AxeSetup(float flySpeed, Transform player, float timer)
+    public void AxeSetup(float flySpeed, Transform player, float timer, int damage)
     {
         rotationSpeed = 1600;
 
+        this.damage = damage;
         this.flySpeed = flySpeed;
         this.player = player;
         this.timer = timer;

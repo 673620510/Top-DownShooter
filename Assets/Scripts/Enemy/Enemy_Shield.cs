@@ -20,9 +20,9 @@ public class Enemy_Shield : MonoBehaviour, IDamagable
     /// <summary>
     /// 减少耐久度
     /// </summary>
-    public void ReduceDurability()
+    public void ReduceDurability(int damage)
     {
-        durability--;
+        durability -= damage;
         if (durability <= 0)
         {
             enemy.anim.SetFloat("ChaseIndex", 0);//恢复原来动画
@@ -30,8 +30,8 @@ public class Enemy_Shield : MonoBehaviour, IDamagable
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int damage)
     {
-        ReduceDurability();
+        ReduceDurability(damage);
     }
 }

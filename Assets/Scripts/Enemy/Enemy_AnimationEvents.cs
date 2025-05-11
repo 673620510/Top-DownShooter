@@ -55,6 +55,6 @@ public class Enemy_AnimationEvents : MonoBehaviour
     /// Boss跳跃冲击力
     /// </summary>
     public void BossJumpImpact() => enemyBoss.JumpImpact();
-    public void BeginMeleeAttackCheck() => enemyMelee?.EnableAttackCheck(true);
-    public void FinishMeleeAttackCheck() => enemyMelee?.EnableAttackCheck(false);
+    public void BeginMeleeAttackCheck() => enemy?.EnableMeleeAttackCheck(true);
+    public void FinishMeleeAttackCheck() => enemy?.EnableMeleeAttackCheck(false);
 }

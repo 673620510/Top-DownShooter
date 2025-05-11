@@ -29,6 +29,7 @@ public class Enemy_Range : Enemy
     public GrenadePerk grendPerk;//手雷特性
 
     [Header("Grenade perks 手雷特性")]
+    public int grenadeDamage;//手雷伤害
     public GameObject grenadePrefab;//手雷预制体
     public float impactPower;//爆炸冲击力
     public float explosionTimer = .75f;//爆炸时间
@@ -181,10 +182,10 @@ public class Enemy_Range : Enemy
         Enemy_Grenade newGrenadeScript = newGrenade.GetComponent<Enemy_Grenade>();
         if (stateMachine.currentState == deadState)
         {
-            newGrenadeScript.SetupGrenade(whatIsAlly, transform.position, 1, explosionTimer, impactPower);
+            newGrenadeScript.SetupGrenade(whatIsAlly, transform.position, 1, explosionTimer, impactPower, grenadeDamage);
             return;
         }
-        newGrenadeScript.SetupGrenade(whatIsAlly, player.position, timeToTarget, explosionTimer, impactPower);
+        newGrenadeScript.SetupGrenade(whatIsAlly, player.position, timeToTarget, explosionTimer, impactPower, grenadeDamage);
     }
     #region Cover System 掩体系统
     /// <summary>
@@ -271,7 +272,7 @@ public class Enemy_Range : Enemy
         GameObject newBullet = ObjectPool.instance.GetObject(bulletPrefab, gunPoint);
         newBullet.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
 
-        newBullet.GetComponent<Bullet>().BulletSetUp(whatIsAlly);
+        newBullet.GetComponent<Bullet>().BulletSetUp(whatIsAlly, weaponData.bulletDamage);
 
         Rigidbody rbNewBullet = newBullet.GetComponent<Rigidbody>();
 

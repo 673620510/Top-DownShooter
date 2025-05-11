@@ -18,6 +18,8 @@ public class Enemy_RangeWeaponData : ScriptableObject
     public float maxWeaponCooldown = 3;//最大武器冷却时间
 
     [Header("Bullet details 子弹详情")]
+    public int bulletDamage;
+    [Space]
     public float bulletSpeed = 20;//子弹速度
     public float weaponSpread = .1f;//扩撒范围
 

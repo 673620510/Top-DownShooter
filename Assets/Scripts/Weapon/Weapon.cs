@@ -27,6 +27,7 @@ public enum ShootType
 public class Weapon
 {
     public WeaponType weaponType;//武器类型
+    public int bulletDamage;//子弹伤害
     #region Regular mode variables 常规模式变量
     public ShootType shootType;//射击类型
     public int bulletsPerShot{ get; private set; }//每次开火子弹数量
@@ -69,6 +70,7 @@ public class Weapon
     public Weapon_Data weaponData{  get; private set; }
     public Weapon(Weapon_Data weaponData)
     {
+        bulletDamage = weaponData.bulletDamage;
         bulletsInMagazine = weaponData.bulletsInMagazine;
         magazineCapacity = weaponData.magazineCapacity;
         totalReserveAmmo = weaponData.totalReserveAmmo;
@@ -110,7 +112,7 @@ public class Weapon
 
         float randomizedValue = Random.Range(-currentSpread, currentSpread);
 
-        Quaternion spreadRotation = Quaternion.Euler(randomizedValue, randomizedValue, randomizedValue);
+        Quaternion spreadRotation = Quaternion.Euler(randomizedValue, randomizedValue / 2, randomizedValue);
 
          return spreadRotation * originalDirection;
     }

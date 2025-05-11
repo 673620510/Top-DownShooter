@@ -5379,11 +5379,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4663666474944521439}
+  - component: {fileID: 7018229978323425578}
   - component: {fileID: 4856030008803635350}
   - component: {fileID: 577153421380762041}
   - component: {fileID: 8459579199190637647}
   - component: {fileID: 7402945480247993902}
-  - component: {fileID: 7018229978323425578}
   m_Layer: 11
   m_Name: Enemy_Melee
   m_TagString: Untagged
@@ -5409,6 +5409,20 @@ Transform:
   - {fileID: 2694662618225986642}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7018229978323425578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228790042101161885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a030d4e479582864d8a1de8c58177c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
 --- !u!114 &4856030008803635350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5431,7 +5445,7 @@ MonoBehaviour:
   idleTime: 20
   aggresionRange: 1
   walkSpeed: 1.5
-  runSpeed: 3
+  runSpeed: 4
   turnSpeed: 5
   patrolPoints:
   - {fileID: 6393965926515885280}
@@ -5443,12 +5457,14 @@ MonoBehaviour:
   shieldDurability: 20
   shieldTransform: {fileID: 5933889071837555844}
   dodgeCooldown: 5
+  axeDamage: 0
   axePrefab: {fileID: 6095374060077767602, guid: 457ac1b21ecb63f4a9e977ca722666ae, type: 3}
   axeFlySpeed: 6
   axeAimTimer: 1
   axeThrowCooldown: 5
   axeStartPoint: {fileID: 2694662618225986642}
   attackData:
+    attackDamage: 0
     attackName: 
     attackRange: 1.5
     moveSpeed: 0
@@ -5456,13 +5472,15 @@ MonoBehaviour:
     animationSpeed: 1.4
     attackType: 0
   attackList:
-  - attackName: Sword spin attack
+  - attackDamage: 25
+    attackName: Sword spin attack
     attackRange: 1.5
     moveSpeed: 2.5
     attackIndex: 0
     animationSpeed: 1
     attackType: 1
-  - attackName: Sword slash
+  - attackDamage: 21
+    attackName: Sword slash
     attackRange: 1
     moveSpeed: 0
     attackIndex: 1
@@ -5529,20 +5547,6 @@ MonoBehaviour:
   leftElbowIK: {fileID: 0}
   leftHandIKConstraint: {fileID: 0}
   weaponAimConstraint: {fileID: 0}
---- !u!114 &7018229978323425578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8228790042101161885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a030d4e479582864d8a1de8c58177c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 20
-  currentHealth: 0
 --- !u!1 &8242105528629081811
 GameObject:
   m_ObjectHideFlags: 0

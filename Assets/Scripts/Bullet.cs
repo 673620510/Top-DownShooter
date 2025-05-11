@@ -5,6 +5,7 @@ using UnityEngine;
 //****************************************
 public class Bullet : MonoBehaviour
 {
+    private int bulletDamage;//子弹伤害
     private float impactForce;//冲击力
 
     private BoxCollider cd;
@@ -71,10 +72,11 @@ public class Bullet : MonoBehaviour
     /// 子弹设置
     /// </summary>
     /// <param name="flyDistance">飞行距离</param>
-    public void BulletSetUp(LayerMask allyLayerMask, float flyDistance = 100, float impactForce = 100)
+    public void BulletSetUp(LayerMask allyLayerMask, int damage, float flyDistance = 100, float impactForce = 100)
     {
         this.allyLayerMask = allyLayerMask;
         this.impactForce = impactForce;
+        this.bulletDamage = damage;
 
         bulletDisabled = false;
         cd.enabled = true;
@@ -102,7 +104,7 @@ public class Bullet : MonoBehaviour
         ReturnBulletToPool();
 
         IDamagable damageable = collision.gameObject.GetComponent<IDamagable>();
-        damageable?.TakeDamage();
+        damageable?.TakeDamage(bulletDamage);
 
         ApplyBulletImpactToEnemy(collision);
     }
