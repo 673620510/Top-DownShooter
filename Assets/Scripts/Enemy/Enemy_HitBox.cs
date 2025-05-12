@@ -17,6 +17,8 @@ public class Enemy_HitBox : HitBox
     {
         base.TakeDamage(damage);
 
-        enemy.GetHit(damage);
+        int newDamage = Mathf.RoundToInt(damage * damageMultiplier);
+
+        enemy.GetHit(newDamage);
     }
 }

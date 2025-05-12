@@ -6,9 +6,11 @@ using UnityEngine;
 //****************************************
 public class HitBox : MonoBehaviour, IDamagable
 {
+    [SerializeField]
+    protected float damageMultiplier = 1;//伤害倍数
     protected virtual void Awake()
     {
-        // Initialize the hitbox if needed
+        
     }
     public virtual void TakeDamage(int damage)
     {

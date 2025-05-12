@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 玩家交互类
 /// </summary>
-public class PlayerInteraction : MonoBehaviour
+public class Player_Interaction : MonoBehaviour
 {
     private List<Interactable> interactables = new List<Interactable>();//可交互列表
 

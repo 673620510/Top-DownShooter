@@ -10201,6 +10201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &1271098969683068763
 GameObject:
   m_ObjectHideFlags: 0
@@ -10902,6 +10903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1.5
 --- !u!1 &2612312632941414377
 GameObject:
   m_ObjectHideFlags: 0
@@ -11047,6 +11049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &2695189102897348394
 GameObject:
   m_ObjectHideFlags: 0
@@ -11189,6 +11192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &2704399556901652024
 GameObject:
   m_ObjectHideFlags: 0
@@ -11354,6 +11358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &2844273373110728243
 GameObject:
   m_ObjectHideFlags: 0
@@ -16903,6 +16908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &3700117235792838895
 GameObject:
   m_ObjectHideFlags: 0
@@ -17230,6 +17236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &4060171406732895817
 GameObject:
   m_ObjectHideFlags: 0
@@ -17366,10 +17373,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6476660697247608768}
   - component: {fileID: 8960386308207136204}
+  - component: {fileID: 5668504377162500525}
   - component: {fileID: 5910113098993419875}
   - component: {fileID: 6265820001606272680}
   - component: {fileID: 842887247997081527}
-  - component: {fileID: 5668504377162500525}
   m_Layer: 11
   m_Name: Enemy_Boss_Hummer
   m_TagString: Untagged
@@ -17418,6 +17425,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &5668504377162500525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4898849142506206003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a030d4e479582864d8a1de8c58177c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 2000
+  currentHealth: 0
 --- !u!114 &5910113098993419875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17440,7 +17461,7 @@ MonoBehaviour:
   idleTime: 3
   aggresionRange: 15
   walkSpeed: 1.25
-  runSpeed: 3
+  runSpeed: 4
   turnSpeed: 8
   patrolPoints:
   - {fileID: 2437225523176384867}
@@ -17452,21 +17473,25 @@ MonoBehaviour:
   attackRange: 1.6
   minAbilityDistance: 3
   abilityCooldown: 1
+  flameDamage: 0
   flameDamageCooldown: 0
   flamethrower: {fileID: 1890292366651153342}
   flamethrowDuration: 3
+  hummerActiveDamage: 0
   activationPrefab: {fileID: 2965222256817593503, guid: a164e676dbbd6e54587237e619372c98, type: 3}
   hummerCheckRadius: 1.25
+  jumpAttackDamage: 25
   jumpAttackCooldown: 5
-  travelTimeToTarger: 1
+  travelTimeToTarger: 0.6
   minJumpDistanceRequired: 5
   impactRadius: 2.5
-  impactPower: 7
+  impactPower: 15
   impactPoint: {fileID: 3527206248967467485}
-  upforceMultiplier: 5
+  upforceMultiplier: 10
   whatToIngore:
     serializedVersion: 2
     m_Bits: 2048
+  meleeAttackDamage: 40
   damagePoints:
   - {fileID: 8296201099525834433}
   attackCheckRadius: 0.6
@@ -17502,20 +17527,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ragdollParent: {fileID: 3096634407968677032}
---- !u!114 &5668504377162500525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4898849142506206003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a030d4e479582864d8a1de8c58177c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 0
 --- !u!1 &4915624224146906478
 GameObject:
   m_ObjectHideFlags: 0
@@ -18024,6 +18035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &6170423047389883434
 GameObject:
   m_ObjectHideFlags: 0
@@ -18373,6 +18385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &6497945455628650561
 GameObject:
   m_ObjectHideFlags: 0
@@ -19442,6 +19455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &8704054239494303801
 GameObject:
   m_ObjectHideFlags: 0
@@ -19769,6 +19783,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &9218563375932194115
 GameObject:
   m_ObjectHideFlags: 0

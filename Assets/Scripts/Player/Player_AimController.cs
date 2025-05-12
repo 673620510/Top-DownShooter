@@ -6,7 +6,7 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：玩家准心类
 //****************************************
-public class PlayerAim : MonoBehaviour
+public class Player_AimController : MonoBehaviour
 {
     private Player player;
     private PlayerControls controls;

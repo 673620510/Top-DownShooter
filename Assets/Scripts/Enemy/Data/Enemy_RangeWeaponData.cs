@@ -42,7 +42,7 @@ public class Enemy_RangeWeaponData : ScriptableObject
     {
         float randomizedValue = Random.Range(-weaponSpread, weaponSpread);
 
-        Quaternion spreadRotation = Quaternion.Euler(randomizedValue, randomizedValue, randomizedValue);
+        Quaternion spreadRotation = Quaternion.Euler(randomizedValue, randomizedValue / 2, randomizedValue);
 
         return spreadRotation * originalDirection;
     }

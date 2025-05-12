@@ -6,7 +6,7 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：玩家武器控制器
 //****************************************
-public class PlayerWeaponController : MonoBehaviour
+public class Player_WeaponController : MonoBehaviour
 {
     [SerializeField]
     private LayerMask whatIsAlly;//友军层级遮罩

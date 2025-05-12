@@ -323,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &543290461321394923
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,6 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &557251523389995376
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,6 +1320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &1845395951272221638
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &2094585525632665159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3238,6 +3242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &5042579754463692038
 GameObject:
   m_ObjectHideFlags: 0
@@ -3810,6 +3815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &5809071004048697353
 GameObject:
   m_ObjectHideFlags: 0
@@ -4578,6 +4584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &7049298535344138191
 GameObject:
   m_ObjectHideFlags: 0
@@ -4787,6 +4794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &7164798209516692089
 GameObject:
   m_ObjectHideFlags: 0
@@ -4931,6 +4939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &7262885545068033882
 GameObject:
   m_ObjectHideFlags: 0
@@ -5452,16 +5461,16 @@ MonoBehaviour:
   - {fileID: 800949316189231087}
   - {fileID: 3066766564130234144}
   - {fileID: 1891091532407665602}
-  meleeType: 0
+  meleeType: 3
   weaponType: 0
-  shieldDurability: 20
+  shieldDurability: 400
   shieldTransform: {fileID: 5933889071837555844}
   dodgeCooldown: 5
-  axeDamage: 0
+  axeDamage: 70
   axePrefab: {fileID: 6095374060077767602, guid: 457ac1b21ecb63f4a9e977ca722666ae, type: 3}
   axeFlySpeed: 6
-  axeAimTimer: 1
-  axeThrowCooldown: 5
+  axeAimTimer: 1.25
+  axeThrowCooldown: 10
   axeStartPoint: {fileID: 2694662618225986642}
   attackData:
     attackDamage: 0
@@ -5475,7 +5484,7 @@ MonoBehaviour:
   - attackDamage: 25
     attackName: Sword spin attack
     attackRange: 1.5
-    moveSpeed: 2.5
+    moveSpeed: 3.5
     attackIndex: 0
     animationSpeed: 1
     attackType: 1
@@ -5484,7 +5493,7 @@ MonoBehaviour:
     attackRange: 1
     moveSpeed: 0
     attackIndex: 1
-    animationSpeed: 1.5
+    animationSpeed: 1.7
     attackType: 0
   meleeAttackFX: {fileID: 2820927177577686666, guid: 5866de5779216e74c84c006d79cd8ef7, type: 3}
 --- !u!195 &577153421380762041
@@ -5947,6 +5956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageMultiplier: 1
 --- !u!1 &8650623783009544975
 GameObject:
   m_ObjectHideFlags: 0
@@ -5956,6 +5966,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 20563738023688568}
+  - component: {fileID: 6294291891364009948}
   m_Layer: 11
   m_Name: mixamorig:Neck
   m_TagString: Untagged
@@ -5979,6 +5990,19 @@ Transform:
   - {fileID: 4685398017267350989}
   m_Father: {fileID: 9000233413003318343}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6294291891364009948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8650623783009544975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb03e89d0a856314ba71dd6ec12ebe15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageMultiplier: 1.5
 --- !u!1 &8682337676114833006
 GameObject:
   m_ObjectHideFlags: 0

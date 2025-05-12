@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 //创建人：逸龙
 //功能说明：玩家移动类
 //****************************************
-public class PlayerMovement : MonoBehaviour
+public class Player_Movement : MonoBehaviour
 {
     private Player player;
 

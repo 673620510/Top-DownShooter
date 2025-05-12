@@ -6,7 +6,7 @@ using UnityEngine.Animations.Rigging;
 //创建人：逸龙
 //功能说明：玩家武器视图类
 //****************************************
-public class PlayerWeaponVisuals : MonoBehaviour
+public class Player_WeaponVisuals : MonoBehaviour
 {
     private Player player;
     private Animator anim;

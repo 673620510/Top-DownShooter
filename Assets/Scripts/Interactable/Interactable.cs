@@ -4,7 +4,7 @@ using UnityEngine;
 /// </summary>
 public class Interactable : MonoBehaviour
 {
-    protected PlayerWeaponController weaponController;
+    protected Player_WeaponController weaponController;
     protected MeshRenderer mesh;//网格
     [SerializeField]
     private Material highlightMaterial;//高亮材质
@@ -49,9 +49,9 @@ public class Interactable : MonoBehaviour
     }
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (weaponController == null) weaponController = other.GetComponent<PlayerWeaponController>();
+        if (weaponController == null) weaponController = other.GetComponent<Player_WeaponController>();
 
-        PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
+        Player_Interaction playerInteraction = other.GetComponent<Player_Interaction>();
 
         if (playerInteraction == null) return;
 
@@ -60,7 +60,7 @@ public class Interactable : MonoBehaviour
     }
     protected virtual void OnTriggerExit(Collider other)
     {
-        PlayerInteraction playerInteraction = other.GetComponent<PlayerInteraction>();
+        Player_Interaction playerInteraction = other.GetComponent<Player_Interaction>();
 
         if (playerInteraction == null) return;
 

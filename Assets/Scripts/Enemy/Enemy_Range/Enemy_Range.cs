@@ -340,7 +340,7 @@ public class Enemy_Range : Enemy
             Debug.DrawRay(myPosition, directionToPlayer, Color.red);
             Debug.Log("Hit: " + hit.transform);
             Debug.Log("player: " + player);
-            if (hit.transform == player)
+            if (hit.transform.root == player.root)
             {
                 UpdateAimPosition();
                 return true;

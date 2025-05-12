@@ -5,14 +5,14 @@ using UnityEngine;
 //创建人：逸龙
 //功能说明：玩家动画事件类
 //****************************************
-public class PlayerAnimationEvent : MonoBehaviour
+public class Player_AnimationEvent : MonoBehaviour
 {
-    private PlayerWeaponVisuals visualController;
-    private PlayerWeaponController weaponController;
+    private Player_WeaponVisuals visualController;
+    private Player_WeaponController weaponController;
     private void Start()
     {
-        visualController = GetComponentInParent<PlayerWeaponVisuals>();
-        weaponController = GetComponentInParent<PlayerWeaponController>();
+        visualController = GetComponentInParent<Player_WeaponVisuals>();
+        weaponController = GetComponentInParent<Player_WeaponController>();
     }
     /// <summary>
     /// 装弹完毕
