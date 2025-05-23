@@ -4357,6 +4357,7 @@ MonoBehaviour:
   levelParts:
   - {fileID: 1991272890459435278, guid: 90930d72b104f2a4695eb75a93da76fd, type: 3}
   - {fileID: 1948250904709095467, guid: 7102440c6df531e4997216ed28cb9646, type: 3}
+  - {fileID: 1991272890459435278, guid: 90930d72b104f2a4695eb75a93da76fd, type: 3}
   nextSnapPoint: {fileID: 1162976522}
   generationCooldown: 0.25
 --- !u!1001 &1162976521

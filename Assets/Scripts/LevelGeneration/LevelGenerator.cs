@@ -12,8 +12,10 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     private List<Transform> levelParts;//关卡组件列表
     private List<Transform> currentLevelParts;//当前关卡组件列表
+    private List<Transform> generatedLevelParts = new List<Transform>();//已生成的关卡组件列表
     [SerializeField]
     private SnapPoint nextSnapPoint;//下一个连接点
+    private SnapPoint defaultSnapPoint;
 
     [Space]
     [SerializeField]
@@ -24,7 +26,8 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
-        currentLevelParts = new List<Transform>(levelParts);
+        defaultSnapPoint = nextSnapPoint;
+        InitializedGeneration();
     }
     private void Update()
     {
@@ -44,6 +47,26 @@ public class LevelGenerator : MonoBehaviour
             }
         }
     }
+    [ContextMenu("Restart generation")]
+    private void InitializedGeneration()
+    {
+        nextSnapPoint = defaultSnapPoint;
+        generationOver = false;
+        currentLevelParts = new List<Transform>(levelParts);
+
+        DestroyOldLevelParts();
+    }
+
+    private void DestroyOldLevelParts()
+    {
+        foreach (Transform part in generatedLevelParts)
+        {
+            Destroy(part.gameObject);
+        }
+
+        generatedLevelParts = new List<Transform>();
+    }
+
     /// <summary>
     /// 结束生成
     /// </summary>
@@ -51,10 +74,7 @@ public class LevelGenerator : MonoBehaviour
     {
         generationOver = true;
 
-        Transform levelPart = Instantiate(lastLevelPart);
-        LevelPart levelPartScript = levelPart.GetComponent<LevelPart>();
-
-        levelPartScript.SnapAndAlignPartTo(nextSnapPoint);
+        GenerateNextLevelPart();
     }
     /// <summary>
     /// 生成下一个关卡部件
@@ -62,10 +82,28 @@ public class LevelGenerator : MonoBehaviour
     [ContextMenu("Create next level part 生成下一个关卡部件")]
     private void GenerateNextLevelPart()
     {
-        Transform newPart = Instantiate(ChooseRandomPart());
-        LevelPart levelPartScript = newPart.GetComponent<LevelPart>();
+        Transform newPart = null;
 
+        if (generationOver)
+        {
+            newPart = Instantiate(lastLevelPart);
+        }
+        else
+        {
+            newPart = Instantiate(ChooseRandomPart());
+        }
+
+        generatedLevelParts.Add(newPart);
+
+        LevelPart levelPartScript = newPart.GetComponent<LevelPart>();
         levelPartScript.SnapAndAlignPartTo(nextSnapPoint);
+
+        if (levelPartScript.IntersectionDetected())
+        {
+            InitializedGeneration();
+            return;
+        }
+
         nextSnapPoint = levelPartScript.GetExitPoint();
     }
     /// <summary>

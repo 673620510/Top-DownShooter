@@ -7,6 +7,35 @@ using UnityEngine;
 //****************************************
 public class LevelPart : MonoBehaviour
 {
+    [Header("Intersection check")]
+    [SerializeField]
+    private LayerMask intersectionLayer;
+    [SerializeField]
+    private Collider[] intersectionColliders;
+    [SerializeField]
+    private Transform intersectionCheckParent;
+    /// <summary>
+    /// 是否检测到交集
+    /// </summary>
+    /// <returns></returns>
+    public bool IntersectionDetected()
+    {
+        Physics.SyncTransforms();
+
+        foreach (Collider collider in intersectionColliders)
+        {
+            Collider[] hitColliders = Physics.OverlapBox(collider.bounds.center, collider.bounds.extents, Quaternion.identity, intersectionLayer);
+            
+            foreach (Collider hit in hitColliders)
+            {
+                IntersectionCheck intersectionCheck = hit.GetComponentInParent<IntersectionCheck>();
+
+                if (intersectionCheck != null && intersectionCheckParent != intersectionCheck.transform) return true;
+            }
+        }
+
+        return false;
+    }
     /// <summary>
     /// 对齐目标点
     /// </summary>
