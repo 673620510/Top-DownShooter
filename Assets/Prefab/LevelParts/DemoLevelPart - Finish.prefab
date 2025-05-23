@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 3625715854136098912}
   - component: {fileID: 8171057789158062893}
   m_Layer: 6
-  m_Name: LevelPart - Finish
+  m_Name: DemoLevelPart - Finish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

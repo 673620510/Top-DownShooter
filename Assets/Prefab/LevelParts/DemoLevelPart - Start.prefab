@@ -290,7 +290,7 @@ GameObject:
   - component: {fileID: 4631325048120539127}
   - component: {fileID: -5227617093632787705}
   m_Layer: 6
-  m_Name: LevelPart - Start
+  m_Name: DemoLevelPart - Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
