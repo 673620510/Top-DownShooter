@@ -24,6 +24,7 @@ public enum GrenadePerk
 public class Enemy_Range : Enemy
 {
     [Header("Enemy perks 敌人特性")]
+    public Enemy_RangeWeaponType weaponType;//武器类型
     public CoverPerk coverPerk;//掩体特性
     public UnStoppablePerk unStoppablePerk;//不可阻挡特性
     public GrenadePerk grendPerk;//手雷特性
@@ -52,7 +53,6 @@ public class Enemy_Range : Enemy
 
     [Header("Weapon details 武器细节")]
     public float attackDelay;//攻击延迟
-    public Enemy_RangeWeaponType weaponType;//武器类型
     public Enemy_RangeWeaponData weaponData;//武器数据
     
     [Space]

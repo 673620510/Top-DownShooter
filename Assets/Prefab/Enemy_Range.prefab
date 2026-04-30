@@ -4475,10 +4475,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5844697302440867585}
   - component: {fileID: 1942556042057852966}
+  - component: {fileID: 1714272517805264781}
   - component: {fileID: 3370301250974932487}
   - component: {fileID: 2516467756925104884}
   - component: {fileID: 1675730407378357604}
-  - component: {fileID: 1714272517805264781}
   m_Layer: 11
   m_Name: Enemy_Range
   m_TagString: Untagged
@@ -4527,6 +4527,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1714272517805264781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4775922327835908791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a030d4e479582864d8a1de8c58177c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  currentHealth: 0
 --- !u!114 &3370301250974932487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4545,7 +4559,6 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 256
-  healthPoints: 2
   idleTime: 3
   aggresionRange: 15
   walkSpeed: 1.5
@@ -4556,6 +4569,7 @@ MonoBehaviour:
   - {fileID: 8447671314389137292}
   - {fileID: 8746709158187487892}
   - {fileID: 6109166969411242370}
+  weaponType: 3
   coverPerk: 0
   unStoppablePerk: 0
   grendPerk: 0
@@ -4567,12 +4581,11 @@ MonoBehaviour:
   grenadeCooldown: 1
   grenadeStartPoint: {fileID: 6720115598787212091}
   advanceSpeed: 3
-  advanceStoppingDistance: 4
+  advanceStoppingDistance: 8
   advanceDuration: 2.5
   minCoverTime: 4
   safeDistance: 2
   attackDelay: 1
-  weaponType: 3
   weaponData: {fileID: 0}
   gunPoint: {fileID: 3354389727419283657}
   weaponHolder: {fileID: 5554142544056313418}
@@ -4628,20 +4641,6 @@ MonoBehaviour:
   leftElbowIK: {fileID: 7007525242039308657}
   leftHandIKConstraint: {fileID: 3816412444910227494}
   weaponAimConstraint: {fileID: 3218331737188478739}
---- !u!114 &1714272517805264781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4775922327835908791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a030d4e479582864d8a1de8c58177c6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 20
-  currentHealth: 0
 --- !u!1 &4786061520019040383
 GameObject:
   m_ObjectHideFlags: 0

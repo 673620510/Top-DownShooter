@@ -11,8 +11,6 @@ public class Enemy : MonoBehaviour
 {
     public LayerMask whatIsAlly;//友军层级遮罩
     public LayerMask whatIsPlayer;
-    [Space]
-    public int healthPoints = 20;//生命值
 
     [Header("Idle data 待机数据")]
     public float idleTime;//待机时间
