@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -38,6 +39,8 @@ public class Enemy : MonoBehaviour
     public Ragdoll ragdoll { get; private set; }//敌人刚体类
     public Enemy_Health health { get; private set; }//敌人生命类
 
+    public Enemy_DropController dropController { get; private set; }
+
     protected virtual void Awake()
     {
         stateMachine = new EnemyStateMachine();
@@ -47,6 +50,7 @@ public class Enemy : MonoBehaviour
         visuals = GetComponent<Enemy_Visuals>();//获取敌人视觉效果类
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
+        dropController = GetComponent<Enemy_DropController>();
         player = GameObject.Find("Player").GetComponent<Transform>();
     }
 
@@ -113,6 +117,7 @@ public class Enemy : MonoBehaviour
         health.ReduceHealth(damage);
         if (health.ShouldDie())
         {
+            dropController.DropItems();
             Die();
         }
         EnterBattleMode();

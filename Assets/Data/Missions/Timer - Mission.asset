@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1dce105c07e0c42bc2d4c99b3c4886, type: 3}
+  m_Name: Timer - Mission
+  m_EditorClassIdentifier: Assembly-CSharp::Mission_Timer
+  missionName: "Race against time \u548C\u65F6\u95F4\u8D5B\u8DD1"
+  missionDescription: "\u572815\u5206\u949F\u4E4B\u5185\u8D76\u5230\u98DE\u673A"
+  time: 300

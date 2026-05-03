@@ -7,13 +7,33 @@ using UnityEngine;
 //****************************************
 public class LevelPart : MonoBehaviour
 {
-    [Header("Intersection check")]
+    [Header("Intersection check 交集检查")]
     [SerializeField]
     private LayerMask intersectionLayer;
     [SerializeField]
     private Collider[] intersectionColliders;
     [SerializeField]
     private Transform intersectionCheckParent;
+
+    [ContextMenu("Set static to environment layer 设置静态环境层")]
+    private void AdjustLayerForStationObjecets()
+    {
+        foreach (Transform childTransorm in transform.GetComponentsInChildren<Transform>(true))
+        {
+            if (childTransorm.gameObject.isStatic)
+            {
+                childTransorm.gameObject.layer = LayerMask.NameToLayer("Environment");
+            }
+        }
+    }
+
+    private void Start()
+    {
+        if (intersectionColliders.Length <= 0)
+        {
+            intersectionColliders = intersectionCheckParent.GetComponentsInChildren<Collider>();
+        }
+    }
     /// <summary>
     /// 是否检测到交集
     /// </summary>
@@ -104,4 +124,6 @@ public class LevelPart : MonoBehaviour
         }
         return null;
     }
+
+    public Enemy[] MyEnemies() => GetComponentsInChildren<Enemy>(true);
 }

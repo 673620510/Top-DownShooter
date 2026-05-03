@@ -209,6 +209,9 @@ public class BattleState_Range : EnemyState
     {
         if (firstTimeAttack)
         {
+            //停止距离始终保持小于侵略范围，保证敌人一直进攻
+            enemy.aggresionRange = enemy.advanceStoppingDistance + 2;
+
             firstTimeAttack = false;
             bulletsPerAttack = enemy.weaponData.GetBulletsPerAttack();
             weaponCooldown = enemy.weaponData.GetWeaponCooldown();

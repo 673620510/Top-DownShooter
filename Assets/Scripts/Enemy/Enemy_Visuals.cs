@@ -18,7 +18,8 @@ public enum Enemy_RangeWeaponType
     Revolver,//左轮
     Shotgun,//霰弹枪
     AutoRifle,//自动步枪
-    Rifle//步枪
+    Rifle,//步枪
+    Random//随机武器
 }
 public class Enemy_Visuals : MonoBehaviour
 {

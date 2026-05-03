@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //****************************************
@@ -116,6 +118,9 @@ public class Enemy_Range : Enemy
     {
         base.OnDrawGizmos();
 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, advanceStoppingDistance);
+
         if (player)
         {
             Gizmos.DrawLine(transform.position, player.transform.position);
@@ -147,6 +152,11 @@ public class Enemy_Range : Enemy
     }
     protected override void InitializePerk()
     {
+        if (weaponType == Enemy_RangeWeaponType.Random)
+        {
+            ChooseRandomWeaponType();
+        }
+
         if (IsUnStoppable())
         {
             advanceSpeed = 1;
@@ -157,6 +167,21 @@ public class Enemy_Range : Enemy
             anim.SetFloat("AdvanceAnimindex", 0);
         }
     }
+    /// <summary>
+    /// 随机选择一个武器类型（如果设置为随机的话）
+    /// </summary>
+    private void ChooseRandomWeaponType()
+    {
+        List<Enemy_RangeWeaponType> validTypes = new List<Enemy_RangeWeaponType>();
+        foreach (Enemy_RangeWeaponType value in Enum.GetValues(typeof(Enemy_RangeWeaponType)))
+        {
+            if (value != Enemy_RangeWeaponType.Random && value != Enemy_RangeWeaponType.Rifle) validTypes.Add(value);
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, validTypes.Count);
+        weaponType = validTypes[randomIndex];
+    }
+
     /// <summary>
     /// 检查是否可以投掷手雷
     /// </summary>
@@ -297,7 +322,7 @@ public class Enemy_Range : Enemy
         }
         if (filteredData.Count > 0)
         {
-            int randomIndex = Random.Range(0, filteredData.Count);
+            int randomIndex = UnityEngine.Random.Range(0, filteredData.Count);
             weaponData = filteredData[randomIndex];
         }
         else

@@ -1,0 +1,34 @@
+using UnityEngine;
+
+//****************************************
+//创建人：逸龙
+//功能说明：
+//****************************************
+[CreateAssetMenu(fileName = "New Timer Mission", menuName = "Missions/Timer mission")]
+public class Mission_Timer : Mission
+{
+    public float time;
+    private float currentTime;
+
+    public override void StartMission()
+    {
+        currentTime = time;
+
+    }
+    public override void UpdateMission()
+    {
+        currentTime -= Time.deltaTime;
+
+        if (currentTime < 0)
+        {
+            Debug.Log("Game Over");
+        }
+
+        string timeText = System.TimeSpan.FromSeconds(currentTime).ToString("mm':'ss");
+        Debug.Log(timeText);
+    }
+    public override bool MissionCompleted()
+    {
+        return currentTime > 0;
+    }
+}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 //****************************************
@@ -7,6 +8,12 @@ using UnityEngine;
 //****************************************
 public class LevelGenerator : MonoBehaviour
 {
+    private List<Enemy> enemyList; 
+
+    [SerializeField]
+    private NavMeshSurface navMeshSurface;//导航网格组件
+
+    [Space]
     [SerializeField]
     private Transform lastLevelPart;//最后一个关卡组件
     [SerializeField]
@@ -15,7 +22,7 @@ public class LevelGenerator : MonoBehaviour
     private List<Transform> generatedLevelParts = new List<Transform>();//已生成的关卡组件列表
     [SerializeField]
     private SnapPoint nextSnapPoint;//下一个连接点
-    private SnapPoint defaultSnapPoint;
+    private SnapPoint defaultSnapPoint;//默认连接点
 
     [Space]
     [SerializeField]
@@ -26,6 +33,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
+        enemyList = new List<Enemy>();
         defaultSnapPoint = nextSnapPoint;
         InitializedGeneration();
     }
@@ -54,17 +62,25 @@ public class LevelGenerator : MonoBehaviour
         generationOver = false;
         currentLevelParts = new List<Transform>(levelParts);
 
-        DestroyOldLevelParts();
+        DestroyOldLevelPartsAndEnemies();
     }
-
-    private void DestroyOldLevelParts()
+    /// <summary>
+    /// 销毁旧的关卡部件和敌人
+    /// </summary>
+    private void DestroyOldLevelPartsAndEnemies()
     {
+        foreach (Enemy enemy in enemyList)
+        {
+            Destroy(enemy.gameObject);
+        }
+
         foreach (Transform part in generatedLevelParts)
         {
             Destroy(part.gameObject);
         }
 
         generatedLevelParts = new List<Transform>();
+        enemyList = new List<Enemy>();
     }
 
     /// <summary>
@@ -75,6 +91,14 @@ public class LevelGenerator : MonoBehaviour
         generationOver = true;
 
         GenerateNextLevelPart();
+
+        navMeshSurface.BuildNavMesh();
+
+        foreach (Enemy enemy in enemyList)
+        {
+            enemy.transform.parent = null;
+            enemy.gameObject.SetActive(true);
+        }
     }
     /// <summary>
     /// 生成下一个关卡部件
@@ -105,6 +129,7 @@ public class LevelGenerator : MonoBehaviour
         }
 
         nextSnapPoint = levelPartScript.GetExitPoint();
+        enemyList.AddRange(levelPartScript.MyEnemies());
     }
     /// <summary>
     /// 选择随机的关卡部件
