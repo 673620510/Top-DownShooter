@@ -2,7 +2,7 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：任务类
 //****************************************
 public abstract class Mission : ScriptableObject
 {
