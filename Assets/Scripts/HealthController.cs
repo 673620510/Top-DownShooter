@@ -2,7 +2,7 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：血条控制器
 //****************************************
 public class HealthController : MonoBehaviour
 {
@@ -30,6 +30,10 @@ public class HealthController : MonoBehaviour
             currentHealth = maxHealth;
         }
     }
+    /// <summary>
+    /// 判断死亡状态
+    /// </summary>
+    /// <returns></returns>
     public bool ShouldDie()
     {
         if (isDead) return false;

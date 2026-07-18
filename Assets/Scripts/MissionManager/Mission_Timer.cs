@@ -2,9 +2,9 @@ using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：
+//功能说明：任务计时器类
 //****************************************
-[CreateAssetMenu(fileName = "New Timer Mission", menuName = "Missions/Timer mission")]
+[CreateAssetMenu(fileName = "New Timer Mission 新任务计时器", menuName = "Missions/Timer mission 任务/任务计时器")]
 public class Mission_Timer : Mission
 {
     public float time;

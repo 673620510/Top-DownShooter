@@ -363,8 +363,8 @@ public class Enemy_Range : Enemy
         if (Physics.Raycast(myPosition, directionToPlayer, out RaycastHit hit, Mathf.Infinity, ~whatToIgnore))
         {
             Debug.DrawRay(myPosition, directionToPlayer, Color.red);
-            Debug.Log("Hit: " + hit.transform);
-            Debug.Log("player: " + player);
+            //Debug.Log("Hit: " + hit.transform);
+            //Debug.Log("player: " + player);
             if (hit.transform.root == player.root)
             {
                 UpdateAimPosition();

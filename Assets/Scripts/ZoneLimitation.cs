@@ -50,6 +50,6 @@ public class ZoneLimitation : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         StartCoroutine(WallActivationCo());
-        Debug.Log("My sensors are going crazy, I think it's dangerous");
+        Debug.Log("My sensors are going crazy, I think it's dangerous 我的传感器快疯了，我觉得有危险");
     }
 }

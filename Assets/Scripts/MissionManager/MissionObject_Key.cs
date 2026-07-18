@@ -1,14 +1,16 @@
+using System;
 using UnityEngine;
 
 //****************************************
 //创建人：逸龙
-//功能说明：任务结束触发器
+//功能说明：
 //****************************************
-public class MissionEnd_Trigger : MonoBehaviour
+public class MissionObject_Key : MonoBehaviour
 {
     private GameObject player;
+    public static event Action OnKeyPickedUp; // 定义钥匙拾取事件
 
-    private void Start()
+    private void Awake()
     {
         player = GameObject.Find("Player");
     }
@@ -16,7 +18,7 @@ public class MissionEnd_Trigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject != player) return;
-
-        if (MissionManager.instance.MissionCompleted()) Debug.Log("Level Completed! 任务完成");
+        OnKeyPickedUp?.Invoke(); // 触发钥匙拾取事件
+        Destroy(gameObject); // 销毁钥匙对象
     }
 }

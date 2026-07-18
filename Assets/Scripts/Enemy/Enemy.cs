@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
     public Ragdoll ragdoll { get; private set; }//敌人刚体类
     public Enemy_Health health { get; private set; }//敌人生命类
 
-    public Enemy_DropController dropController { get; private set; }
+    public Enemy_DropController dropController { get; private set; }//掉落控制器
 
     protected virtual void Awake()
     {
@@ -74,6 +74,17 @@ public class Enemy : MonoBehaviour
     /// 初始化敌人特性
     /// </summary>
     protected virtual void InitializePerk() { }
+    /// <summary>
+    /// 将敌人设为VIP
+    /// </summary>
+    public virtual void MakeEnemyVIP()
+    {
+        int additionalHealth = Mathf.RoundToInt(health.maxHealth * 1.5f);//增加50%生命值
+
+        health.currentHealth += additionalHealth;//增加当前生命值
+
+        transform.localScale = transform.localScale * 1.25f;//增加25%体型
+    }
     /// <summary>
     /// 面向目标
     /// </summary>

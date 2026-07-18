@@ -8,6 +8,8 @@ using UnityEngine;
 //****************************************
 public class LevelGenerator : MonoBehaviour
 {
+    public static LevelGenerator instance;
+
     private List<Enemy> enemyList; 
 
     [SerializeField]
@@ -31,6 +33,10 @@ public class LevelGenerator : MonoBehaviour
 
     private bool generationOver;//是否生成完毕
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         enemyList = new List<Enemy>();
@@ -141,5 +147,15 @@ public class LevelGenerator : MonoBehaviour
         Transform choosenPart = currentLevelParts[randomIndex];
         currentLevelParts.RemoveAt(randomIndex);
         return choosenPart;
+    }
+    /// <summary>
+    /// 获取随机敌人
+    /// </summary>
+    /// <returns></returns>
+    public Enemy GetRandomEnemy()
+    {
+        if (enemyList.Count == 0) return null;
+        int randomIndex = Random.Range(0, enemyList.Count);
+        return enemyList[randomIndex];
     }
 }
